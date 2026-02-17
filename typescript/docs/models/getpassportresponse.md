@@ -1,0 +1,26 @@
+# GetPassportResponse
+
+## Example Usage
+
+```typescript
+import { GetPassportResponse } from "raijin-labs-lucid-ai/models";
+
+let value: GetPassportResponse = {
+  success: true,
+  passport: {
+    passportId: "<id>",
+    type: "model",
+    owner: "<value>",
+    status: "deprecated",
+    createdAt: 59407,
+    updatedAt: 596104,
+  },
+};
+```
+
+## Fields
+
+| Field                                    | Type                                     | Required                                 | Description                              |
+| ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
+| `success`                                | *boolean*                                | :heavy_check_mark:                       | N/A                                      |
+| `passport`                               | [models.Passport](../models/passport.md) | :heavy_check_mark:                       | N/A                                      |

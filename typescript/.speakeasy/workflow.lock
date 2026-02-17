@@ -1,0 +1,39 @@
+speakeasyVersion: 1.698.0
+sources:
+    LucidLayer API:
+        sourceNamespace: lucid-layer-api
+        sourceRevisionDigest: sha256:5ee73f9e2c46e3fd957fd5fac245e15de1c064458c1e9e7d74d5df01a81dedb6
+        sourceBlobDigest: sha256:42aac0780953dd6faab26dd26cac5f57965274e09e2fe7ecf04dd739f9625f97
+        tags:
+            - latest
+            - 0.2.0
+targets:
+    raijin-labs-lucid-ai:
+        source: LucidLayer API
+        sourceNamespace: lucid-layer-api
+        sourceRevisionDigest: sha256:5ee73f9e2c46e3fd957fd5fac245e15de1c064458c1e9e7d74d5df01a81dedb6
+        sourceBlobDigest: sha256:42aac0780953dd6faab26dd26cac5f57965274e09e2fe7ecf04dd739f9625f97
+        codeSamplesNamespace: lucid-layer-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:f81635d5ba566e0ed1e9c5f76fb8ff76a7f47d450ddc7289e299cc867c69df64
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        LucidLayer API:
+            inputs:
+                - location: ../../openapi.yaml
+            overlays:
+                - location: .speakeasy/speakeasy-modifications-overlay.yaml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api
+    targets:
+        raijin-labs-lucid-ai:
+            target: typescript
+            source: LucidLayer API
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

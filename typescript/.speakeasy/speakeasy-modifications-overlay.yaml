@@ -1,0 +1,371 @@
+overlay: 1.0.0
+x-speakeasy-jsonpath: rfc9535
+info:
+  title: Speakeasy Modifications
+  version: 0.0.3
+  x-speakeasy-metadata:
+    after: ""
+    before: ""
+    type: speakeasy-modifications
+actions:
+  - target: $["paths"]["/v1/receipts"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      after: sdk.receipts.create()
+      before: sdk.Receipts.lucid_create_receipt()
+      created_at: 1769528220379
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/payouts/{run_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      after: sdk.payouts.get()
+      before: sdk.Payouts.lucid_get_payout()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/{epoch_id}/verify"]["get"]
+    update:
+      x-speakeasy-name-override: verify
+    x-speakeasy-metadata:
+      after: sdk.epochs.verify()
+      before: sdk.Epochs.lucid_verify_epoch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/compute/nodes/{computePassportId}/health"]["get"]
+    update:
+      x-speakeasy-name-override: getNodeHealth
+    x-speakeasy-metadata:
+      after: sdk.compute.getNodeHealth()
+      before: sdk.Compute.lucid_get_health()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/compute/nodes/heartbeat"]["post"]
+    update:
+      x-speakeasy-name-override: heartbeat
+    x-speakeasy-metadata:
+      after: sdk.compute.heartbeat()
+      before: sdk.Compute.lucid_heartbeat()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/ready"]["get"]
+    update:
+      x-speakeasy-name-override: listReady
+    x-speakeasy-metadata:
+      after: sdk.epochs.listReady()
+      before: sdk.Epochs.lucid_list_epochs_ready()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/receipts/{receipt_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      after: sdk.receipts.get()
+      before: sdk.Receipts.lucid_get_receipt()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/{epoch_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      after: sdk.epochs.get()
+      before: sdk.Epochs.lucid_get_epoch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/chat/completions"]["post"]
+    update:
+      x-speakeasy-name-override: chatCompletions
+    x-speakeasy-metadata:
+      after: sdk.run.chatCompletions()
+      before: sdk.Run.lucid_chat_completions()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/match"]["post"]
+    update:
+      x-speakeasy-name-override: compute
+    x-speakeasy-metadata:
+      after: sdk.match.compute()
+      before: sdk.Match.lucid_match()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/{passport_id}"]["patch"]
+    update:
+      x-speakeasy-name-override: update
+    x-speakeasy-metadata:
+      after: sdk.passports.update()
+      before: sdk.Passports.lucid_update_passport()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/mmr/root"]["get"]
+    update:
+      x-speakeasy-name-override: getMmrRoot
+    x-speakeasy-metadata:
+      after: sdk.receipts.getMmrRoot()
+      before: sdk.Receipts.lucid_get_mmr_root()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/stats"]["get"]
+    update:
+      x-speakeasy-name-override: getStats
+    x-speakeasy-metadata:
+      after: sdk.passports.getStats()
+      before: sdk.Passports.lucid_get_passport_stats()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/payouts/{run_id}/verify"]["get"]
+    update:
+      x-speakeasy-name-override: verify
+    x-speakeasy-metadata:
+      after: sdk.payouts.verify()
+      before: sdk.Payouts.lucid_verify_payout()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      after: sdk.passports.create()
+      before: sdk.Passports.lucid_create_passport()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/signer/pubkey"]["get"]
+    update:
+      x-speakeasy-name-override: getSignerPubKey
+    x-speakeasy-metadata:
+      after: sdk.receipts.getSignerPubKey()
+      before: sdk.Receipts.lucid_get_signer_pubkey()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/run/inference"]["post"]
+    update:
+      x-speakeasy-name-override: inference
+    x-speakeasy-metadata:
+      after: sdk.run.inference()
+      before: sdk.Run.lucid_run_inference()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/{passport_id}"]["get"]
+    update:
+      x-speakeasy-name-override: get
+    x-speakeasy-metadata:
+      after: sdk.passports.get()
+      before: sdk.Passports.lucid_get_passport()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/match/explain"]["post"]
+    update:
+      x-speakeasy-name-override: explain
+    x-speakeasy-metadata:
+      after: sdk.match.explain()
+      before: sdk.Match.lucid_match_explain()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/compute"]["get"]
+    update:
+      x-speakeasy-name-override: searchCompute
+    x-speakeasy-metadata:
+      after: sdk.passports.searchCompute()
+      before: sdk.Passports.lucid_search_compute()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/{epoch_id}/transaction"]["get"]
+    update:
+      x-speakeasy-name-override: getTransaction
+    x-speakeasy-metadata:
+      after: sdk.epochs.getTransaction()
+      before: sdk.Epochs.lucid_get_epoch_transaction()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/{passport_id}"]["delete"]
+    update:
+      x-speakeasy-name-override: delete
+    x-speakeasy-metadata:
+      after: sdk.passports.delete()
+      before: sdk.Passports.lucid_delete_passport()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/receipts/{receipt_id}/verify"]["get"]
+    update:
+      x-speakeasy-name-override: verify
+    x-speakeasy-metadata:
+      after: sdk.receipts.verify()
+      before: sdk.Receipts.lucid_verify_receipt()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/anchoring/health"]["get"]
+    update:
+      x-speakeasy-name-override: getAnchoringHealth
+    x-speakeasy-metadata:
+      after: sdk.epochs.getAnchoringHealth()
+      before: sdk.Epochs.lucid_get_anchoring_health()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/current"]["get"]
+    update:
+      x-speakeasy-name-override: getCurrent
+    x-speakeasy-metadata:
+      after: sdk.epochs.getCurrent()
+      before: sdk.Epochs.lucid_get_current_epoch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/pending-sync"]["get"]
+    update:
+      x-speakeasy-name-override: listPendingSync
+    x-speakeasy-metadata:
+      after: sdk.passports.listPendingSync()
+      before: sdk.Passports.lucid_list_passports_pending_sync()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/route"]["post"]
+    update:
+      x-speakeasy-name-override: planRoute
+    x-speakeasy-metadata:
+      after: sdk.match.planRoute()
+      before: sdk.Match.lucid_route()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/stats"]["get"]
+    update:
+      x-speakeasy-name-override: getStats
+    x-speakeasy-metadata:
+      after: sdk.epochs.getStats()
+      before: sdk.Epochs.lucid_get_epoch_stats()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs/{epoch_id}/retry"]["post"]
+    update:
+      x-speakeasy-name-override: retry
+    x-speakeasy-metadata:
+      after: sdk.epochs.retry()
+      before: sdk.Epochs.lucid_retry_epoch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/receipts/commit-roots-batch"]["post"]
+    update:
+      x-speakeasy-name-override: commitRootsBatch
+    x-speakeasy-metadata:
+      after: sdk.epochs.commitRootsBatch()
+      before: sdk.Epochs.lucid_commit_epoch_roots_batch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/receipts/commit-root"]["post"]
+    update:
+      x-speakeasy-name-override: commitRoot
+    x-speakeasy-metadata:
+      after: sdk.epochs.commitRoot()
+      before: sdk.Epochs.lucid_commit_epoch_root()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/models"]["get"]
+    update:
+      x-speakeasy-name-override: searchModels
+    x-speakeasy-metadata:
+      after: sdk.passports.searchModels()
+      before: sdk.Passports.lucid_search_models()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/payouts/from-receipt"]["post"]
+    update:
+      x-speakeasy-name-override: createFromReceipt
+    x-speakeasy-metadata:
+      after: sdk.payouts.createFromReceipt()
+      before: sdk.Payouts.lucid_payout_from_receipt()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs"]["post"]
+    update:
+      x-speakeasy-name-override: create
+    x-speakeasy-metadata:
+      after: sdk.epochs.create()
+      before: sdk.Epochs.lucid_create_epoch()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports/{passport_id}/sync"]["post"]
+    update:
+      x-speakeasy-name-override: sync
+    x-speakeasy-metadata:
+      after: sdk.passports.sync()
+      before: sdk.Passports.lucid_trigger_passport_sync()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/passports"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      after: sdk.passports.list()
+      before: sdk.Passports.lucid_list_passports()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/receipts/{receipt_id}/proof"]["get"]
+    update:
+      x-speakeasy-name-override: getProof
+    x-speakeasy-metadata:
+      after: sdk.receipts.getProof()
+      before: sdk.Receipts.lucid_get_receipt_proof()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/payouts/calculate"]["post"]
+    update:
+      x-speakeasy-name-override: calculate
+    x-speakeasy-metadata:
+      after: sdk.payouts.calculate()
+      before: sdk.Payouts.lucid_calculate_payout()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs"]["get"]
+    update:
+      x-speakeasy-name-override: list
+    x-speakeasy-metadata:
+      after: sdk.epochs.list()
+      before: sdk.Epochs.lucid_list_epochs()
+      created_at: 1769528220380
+      reviewed_at: 1769528251735
+      type: method-name
+  - target: $["paths"]["/v1/epochs"]["post"]["requestBody"]["required"]
+    update: true
+    x-speakeasy-metadata:
+      created_at: 1769528419620
+      type: user-edit
+  - target: $["paths"]["/v1/receipts/commit-root"]["post"]["requestBody"]["required"]
+    update: true
+    x-speakeasy-metadata:
+      created_at: 1769528419620
+      type: user-edit

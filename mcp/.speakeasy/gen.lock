@@ -1,0 +1,1133 @@
+lockVersion: 2.0.0
+id: 09896386-f36d-4a7b-88c3-1f08bdca9084
+management:
+  docChecksum: fd8ded96341a8f29ddf5a3dffa67e6ba
+  docVersion: 0.1.0
+  speakeasyVersion: 1.697.5
+  generationVersion: 2.799.0
+  releaseVersion: 0.0.1
+  configChecksum: df4819597eb34b105bd03e51a99f93c4
+persistentEdits:
+  generation_id: d600e95f-3e57-402b-b0d7-24e6c40cb2e7
+  pristine_commit_hash: 91b4272d2d4912d962b05cd5391f774d905924bc
+  pristine_tree_hash: 04b09bd05008298cb650fa5e28a27c293e189b44
+features:
+  mcp-typescript:
+    additionalDependencies: 0.1.0
+    constsAndDefaults: 0.1.0
+    core: 1.1.1
+    defaultEnabledRetries: 0.1.0
+    enumUnions: 0.1.0
+    globalSecurityCallbacks: 0.0.0
+    globalServerURLs: 0.1.1
+    nullables: 0.1.0
+    responseFormat: 0.1.1
+    retries: 0.1.0
+    sdkHooks: 0.3.0
+    unions: 0.2.0
+trackedFiles:
+  .dxtignore:
+    id: 0ee1c4f92736
+    last_write_checksum: sha1:0cbab1b303d9060f6324f6a9cddabe13c2cfa7c9
+    pristine_git_object: 21eeace1d85822ffb013f6c0667a19f35c33cee0
+  .gitattributes:
+    id: 24139dae6567
+    last_write_checksum: sha1:26d16d8297b104945139da8c25bd38feeaad3e25
+    pristine_git_object: 113eead5093c17d43a46159132885318f281a68a
+  .npmignore:
+    id: aa70c1f807c3
+    last_write_checksum: sha1:31ba03a712796b133695c4c410504b6824e09506
+    pristine_git_object: 146d4cc4e80691410519da81c141ce381d30c265
+  eslint.config.mjs:
+    id: 461c8d07f6da
+    last_write_checksum: sha1:576025302d3d8650f37276bc9075f6ade3842cc7
+    pristine_git_object: 4f9e60a9462fc4def738d60c3aaadf8232ef185f
+  manifest.json:
+    id: ca642a226869
+    last_write_checksum: sha1:7887ad872fb80406a540301ff31c2cbfdc60860a
+    pristine_git_object: 98faeb656e6082985e7feccfe2fc42da2c7e2281
+  package.json:
+    id: 7030d0b2f71b
+    last_write_checksum: sha1:d88795de6e44982a9baf74123d769f3a5572fd58
+    pristine_git_object: 37a9facfe968cebb646cc35189952e5aae953558
+  src/core.ts:
+    id: f431fdbcd144
+    last_write_checksum: sha1:a090ce62f014726140be2e55630bafb710f8aeab
+    pristine_git_object: 4b753cf38f9fa378092b42b8ac45a6e6a7684cf0
+  src/funcs/computeLucidGetHealth.ts:
+    id: b602312dd858
+    last_write_checksum: sha1:943f694b38172e4e04c4966292703d532db95608
+    pristine_git_object: 270ee83a3da92300c9c646fcbc167064e7086812
+  src/funcs/computeLucidHeartbeat.ts:
+    id: 249d381cc46b
+    last_write_checksum: sha1:001f461a33ac7c00082b9c2380b61885e5a568a4
+    pristine_git_object: 02233f8710fc962b2116e721e2a88291917a9761
+  src/funcs/epochsLucidCommitEpochRoot.ts:
+    id: 7e4f4179da41
+    last_write_checksum: sha1:ad2cd92b747ca9c5d21520061c88ff8cd66ffaec
+    pristine_git_object: d499b69d6c0410128a0912b83aeb6d87307c70e8
+  src/funcs/epochsLucidCommitEpochRootsBatch.ts:
+    id: 31c396da7479
+    last_write_checksum: sha1:9273e6bb87775bffbee9ac53b40b4bace3e25f0d
+    pristine_git_object: d48049888f7d827d3514aad7ff396323e6f4ad6a
+  src/funcs/epochsLucidCreateEpoch.ts:
+    id: 5d1fb5b98ff5
+    last_write_checksum: sha1:346b79ea3644c43da79aab641a12271ac34b2705
+    pristine_git_object: e20cc837b2daaae2238bd52757430284f5a243a7
+  src/funcs/epochsLucidGetAnchoringHealth.ts:
+    id: c247db434a92
+    last_write_checksum: sha1:6ff2f4f9bb30619ca0c86a8339cedc0092c2f7d6
+    pristine_git_object: 2195d0aeaa653a5fb851d8745ca23f5950adb00b
+  src/funcs/epochsLucidGetCurrentEpoch.ts:
+    id: 62a173a0f07b
+    last_write_checksum: sha1:d67158094e0318e158c2d60c07e29399e8d99752
+    pristine_git_object: 70c6915974472c8c7816142ce68234b7fa6d0c53
+  src/funcs/epochsLucidGetEpoch.ts:
+    id: 706de36e4612
+    last_write_checksum: sha1:0f054883d3b14215c3ec8f6464d36219525ab425
+    pristine_git_object: 62a57ba087d3a2560c5dd6c83ae1687233f07fa0
+  src/funcs/epochsLucidGetEpochStats.ts:
+    id: f55bc66266cf
+    last_write_checksum: sha1:15b0990ce1afa01e5e96ac29543c14ada68e5180
+    pristine_git_object: d78bf1b94b04e1e61a241889cc25e82706b6427c
+  src/funcs/epochsLucidGetEpochTransaction.ts:
+    id: 60e5c85b8171
+    last_write_checksum: sha1:4e7bb539b4b2675ad0671f60ff4c9e4b13b395f0
+    pristine_git_object: e240eb47e76d2457c6b93f5801b18e8a4223054e
+  src/funcs/epochsLucidListEpochs.ts:
+    id: a8fa683e25f6
+    last_write_checksum: sha1:eaa3e43394f495e5c502f36bacdf5daedd110d8a
+    pristine_git_object: adbb1dc9015d484a67f02e1cd7881849ac10a67f
+  src/funcs/epochsLucidListEpochsReady.ts:
+    id: 98ce24316882
+    last_write_checksum: sha1:a92819c57207932843f07a3ccd75ab16dc623b8b
+    pristine_git_object: 171f2ce29c063dc48f90b16132a7059d21fe42e3
+  src/funcs/epochsLucidRetryEpoch.ts:
+    id: 119438cb7722
+    last_write_checksum: sha1:ab4740b3e787c2f94e087d57c829f696ed1a444b
+    pristine_git_object: 8505aab90802b72725aa6fa7fdab960a431d99d2
+  src/funcs/epochsLucidVerifyEpoch.ts:
+    id: 5db463ef0f2e
+    last_write_checksum: sha1:a317f4ff5771c5f4581b1025b44598963125e80b
+    pristine_git_object: e2665f0b8755b35f2bf41b0ee3a22e3f038c181e
+  src/funcs/matchLucidMatch.ts:
+    id: 922eb5d7e35b
+    last_write_checksum: sha1:94288c8059b528f371fcc640059e639356603742
+    pristine_git_object: c4486af2c689d4badf38cd5f2cf9db9b2f12f2e4
+  src/funcs/matchLucidMatchExplain.ts:
+    id: 4a90d2dbfed2
+    last_write_checksum: sha1:492d5e83493fd32501e3a859744a5a4850c9557e
+    pristine_git_object: 81d45436137ef6752f2bf98be1542c7eb7046ea9
+  src/funcs/matchLucidRoute.ts:
+    id: 01dcb8929db3
+    last_write_checksum: sha1:9b49b1b0062a11894e0765f3aee9d2c7a376e08c
+    pristine_git_object: ea29126d46a83a4cf6e58cc85b3b22e31d6df9cf
+  src/funcs/passportsLucidCreatePassport.ts:
+    id: ddf142276dc1
+    last_write_checksum: sha1:380e3b92eac4a2ecbdd3a1af90fb7e4a7f97f0e1
+    pristine_git_object: 107028298bf9e880b26ec1a398ddda708eeeca9e
+  src/funcs/passportsLucidDeletePassport.ts:
+    id: 1cacc3c67444
+    last_write_checksum: sha1:7168a088c1b77a4502b7c7094bb6c84cdee43111
+    pristine_git_object: 04bfe1c67409c27c3f731406149f6fbb37e44267
+  src/funcs/passportsLucidGetPassport.ts:
+    id: 3e5978ffe408
+    last_write_checksum: sha1:7ca4785553018907d5f8925237f05e095d93ff40
+    pristine_git_object: 6601a069afdac5852408e0e7c89085f70c05f08b
+  src/funcs/passportsLucidGetPassportStats.ts:
+    id: dc437654a40a
+    last_write_checksum: sha1:f9fafebd3517b307569519be1e4ee492b447d343
+    pristine_git_object: 0ee43aa7afc9a466f7d0828d915d2fade4392ea3
+  src/funcs/passportsLucidListPassports.ts:
+    id: c57ecf582a7f
+    last_write_checksum: sha1:8ce6bbfce7be2eee6e16f964a72b9c1c109a1497
+    pristine_git_object: 61863f53912acc602cdcf9cd5542c45bbdc15744
+  src/funcs/passportsLucidListPassportsPendingSync.ts:
+    id: b9e027122c19
+    last_write_checksum: sha1:072c4d01e1bf3523c8c6d781fed8699a6ff7cad5
+    pristine_git_object: b2cf42a3659bef6345f3a2f7a66ecef5901fe532
+  src/funcs/passportsLucidSearchCompute.ts:
+    id: 707ed36a255b
+    last_write_checksum: sha1:35af9885771fa6ddface778a8fd642e6247943d7
+    pristine_git_object: fc35d1a6206262e40d84fd8d42bbfec73e604305
+  src/funcs/passportsLucidSearchModels.ts:
+    id: fd6170ed4692
+    last_write_checksum: sha1:58c7a64832f1f3adb3fb23a6c35d124c82c90e65
+    pristine_git_object: 4053533df8965458465be4843dbef84fb0e9c847
+  src/funcs/passportsLucidTriggerPassportSync.ts:
+    id: 45cee8a4fdbb
+    last_write_checksum: sha1:055dd6cac99d9818292ecb2d92befaa474b5ead3
+    pristine_git_object: 735eba94ef179bfb76751f56751b20e5d59d3cca
+  src/funcs/passportsLucidUpdatePassport.ts:
+    id: bdd117915ef8
+    last_write_checksum: sha1:cbb6e6c05dea4c5ab822c88908894ee1e25a5cea
+    pristine_git_object: 7b2b6d5779ec93b44c739dc9664328ef80e68911
+  src/funcs/payoutsLucidCalculatePayout.ts:
+    id: 3d879056e0b5
+    last_write_checksum: sha1:7a79dbbfce3f46ad1a35e79d84e68711bba6bf3b
+    pristine_git_object: 305ee5f9b6e47312ccb9cf2205aae543d79ac634
+  src/funcs/payoutsLucidGetPayout.ts:
+    id: ebd4ba830d90
+    last_write_checksum: sha1:8727d35f95ef70653250a17b58c34d8f9c125bd3
+    pristine_git_object: c046ccb3b1cb3d6cfcc42231db7131b2ea9e2552
+  src/funcs/payoutsLucidPayoutFromReceipt.ts:
+    id: 2e034706aabf
+    last_write_checksum: sha1:dcb6245baa907a8f2d10d6bf34a811c991bb86b7
+    pristine_git_object: 6ffb90a22289e2c4cdab4ae1af5f6c852bd79034
+  src/funcs/payoutsLucidVerifyPayout.ts:
+    id: 60f835b4e63c
+    last_write_checksum: sha1:e4d198d6036ea0368b1eaec9e3a4e1d6ae1ba2a5
+    pristine_git_object: 1f90c6375428ad738571647a47089bd1945ca117
+  src/funcs/receiptsLucidCreateReceipt.ts:
+    id: cf6263665057
+    last_write_checksum: sha1:19d2e4c54c0935c424c486f780073c111684be87
+    pristine_git_object: a6567359c6e9e251b403eee6d0d7c79d36e0e986
+  src/funcs/receiptsLucidGetMmrRoot.ts:
+    id: ec6a8533faed
+    last_write_checksum: sha1:4879a0b287ebf51eb78fc83328a6a3577aec80ea
+    pristine_git_object: 0741bae62a85635de7240cce6d05142dc2d8560f
+  src/funcs/receiptsLucidGetReceipt.ts:
+    id: f1d35d9664c4
+    last_write_checksum: sha1:dabc12e7a2cd8c343f710de214d3c46359a2b8d7
+    pristine_git_object: 26f8dd68558af239e4ddcd3ab13069c80c20b78d
+  src/funcs/receiptsLucidGetReceiptProof.ts:
+    id: e3f3dea91e66
+    last_write_checksum: sha1:7d0625a1dcff4f8d7b3c3eb026fcc8dc6284a36c
+    pristine_git_object: d8aa2ae5616ff4fec42910aae8f60d38b14a6ff9
+  src/funcs/receiptsLucidGetSignerPubkey.ts:
+    id: c777882b3cd6
+    last_write_checksum: sha1:47011a89dda0b0f354354b1056c6ddc830b53d4d
+    pristine_git_object: 7f386d23a4e5e77dc759904ba284f894d614941f
+  src/funcs/receiptsLucidVerifyReceipt.ts:
+    id: 0e43cee6908e
+    last_write_checksum: sha1:508b4664f95eb34a1ec2a3289d1d20a8202de0a3
+    pristine_git_object: e3e248dcebc5c2cb430fa22b8eea465902c933a8
+  src/funcs/runLucidChatCompletions.ts:
+    id: 68774dea0eeb
+    last_write_checksum: sha1:427f23386b7c237c56e5e940a1e77a88c42eac6c
+    pristine_git_object: 5a69aa0d1a93ca0594f71b7c033f8b16838afe88
+  src/funcs/runLucidRunInference.ts:
+    id: e2897226b4b0
+    last_write_checksum: sha1:f94878388b7f69c905f0205665106b76c18bd726
+    pristine_git_object: 7378b1956816010451a66e6bdb682328bc9b0a85
+  src/hooks/hooks.ts:
+    id: a2463fc6f69b
+    last_write_checksum: sha1:327ed0fa581be991d633155a30a13e502caa80ef
+    pristine_git_object: 7709c66d855a856043daf58e863129c4dd437b6f
+  src/hooks/types.ts:
+    id: 2a02d86ec24f
+    last_write_checksum: sha1:27a3444c4839bec58ae89820fd8c2483edafc3f4
+    pristine_git_object: 9c36bf01332084f735909a71036c3544cc4c7e3a
+  src/lib/base64.ts:
+    id: "598522066688"
+    last_write_checksum: sha1:e9f04a037018040361043104960982f7c22db52d
+    pristine_git_object: d4bd8b341290e7a828a171d840bd0b0fff7c7cd7
+  src/lib/config.ts:
+    id: 320761608fb3
+    last_write_checksum: sha1:768d806cba43a875865c80b32e778e7cb6892271
+    pristine_git_object: f8a574151477fbdf62f9791d3aed4e6919a4e25e
+  src/lib/dlv.ts:
+    id: b1988214835a
+    last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
+    pristine_git_object: e81091f5e536f82739f71379b1fddc2d147c49e2
+  src/lib/encodings.ts:
+    id: 3bd8ead98afd
+    last_write_checksum: sha1:c042529292568e18a69a04c1be7e18588ccd3821
+    pristine_git_object: 4495783e008be951066aee565964077cac1321d7
+  src/lib/env.ts:
+    id: c52972a3b198
+    last_write_checksum: sha1:d0e554af7855bcb8554ee96365272a9167277555
+    pristine_git_object: 8f4cee039eccd8d25fccfd0a6a067511b520701f
+  src/lib/files.ts:
+    id: e5efa54fcb95
+    last_write_checksum: sha1:d0f325f445b8d22e7d73baf052c585ec2dd24841
+    pristine_git_object: 0344cd046d033f9e8a55de02f7935c5cec5dc30b
+  src/lib/http.ts:
+    id: 63a80782d37e
+    last_write_checksum: sha1:797cbf16d3c7c4d62d3ba0eedb08617524938457
+    pristine_git_object: 13cf1fd7894a89f727b8d2db2ad24313a94f68c7
+  src/lib/is-plain-object.ts:
+    id: b9862591096a
+    last_write_checksum: sha1:df687f25a9590b6fd95d39df41a652ae3fd4e517
+    pristine_git_object: 61070d3d7c7e5e95b1ed7e7ea21869eb0767db77
+  src/lib/logger.ts:
+    id: 7ee7741a02bf
+    last_write_checksum: sha1:0ec9d3a2a34c362746b767e4f9a746c055d57a7b
+    pristine_git_object: d181f2937d4128afbe9b0327e0f81d1fa9c877b7
+  src/lib/matchers.ts:
+    id: d54b2253b719
+    last_write_checksum: sha1:595f63f2a10c6999a616521fa8d00768dd9ff09e
+    pristine_git_object: 8ab970f93cc431d9bef1073f4bb57f21d59e2787
+  src/lib/primitives.ts:
+    id: 74859f750b28
+    last_write_checksum: sha1:d5fbb4e2feef5747fc8071046bdd4122c87bd066
+    pristine_git_object: 668ab9d500d77bee730a619c5fda4a1d3cd1d16c
+  src/lib/result.ts:
+    id: ab7a4c1c4c71
+    last_write_checksum: sha1:d24994d58f37a1ca106847fcc6d2e976c6f1c093
+    pristine_git_object: ccbe51eac69dfb0da5131f14fd753c4b47c1d527
+  src/lib/retries.ts:
+    id: b24a69d15639
+    last_write_checksum: sha1:f3da74dffcbe2756c69393f8600205aa1dc06e68
+    pristine_git_object: e3ce9aba72150fc3c18f3105d39b21aba809377b
+  src/lib/schemas.ts:
+    id: deb4b531fae1
+    last_write_checksum: sha1:7c7ba40781682f6d44bb585b5016e2527b52660e
+    pristine_git_object: 542d9972403c5bc4aa70619f8c4b0af3ef2ce679
+  src/lib/sdks.ts:
+    id: 8a6d91f1218d
+    last_write_checksum: sha1:19d332120219f5c604028e7799cbf2f3f44aa740
+    pristine_git_object: d933bf6e75f9ab894a7a8b276d838d46959fec1f
+  src/lib/security.ts:
+    id: 0502afa7922e
+    last_write_checksum: sha1:bcea52c9dc6a19454eda01814dcd2691e7a8c662
+    pristine_git_object: 78f56b04000e9dfb65a4068249bfb539222efd99
+  src/lib/url.ts:
+    id: b0057e24ed76
+    last_write_checksum: sha1:9550819577dc1e514e61496167aefcc137238aaf
+    pristine_git_object: 6bc6356e222c4f2c20fda5616e00be6dadfa80f8
+  src/mcp-server/build.mts:
+    id: f7a2ed2de4d7
+    last_write_checksum: sha1:7b8c149c24879c0c2c31995c0ab34bd84eee4433
+    pristine_git_object: 4baaf7aa90f8e67c680d13120722955fdc3b6f73
+  src/mcp-server/cli.ts:
+    id: 4ade0ef98b00
+    last_write_checksum: sha1:7331efddde881832342fa8779d23be7445d4480c
+    pristine_git_object: b878d8de9f2a0275c3cdbfdcaed48a31092e558a
+  src/mcp-server/cli/start/command.ts:
+    id: b3e53408ccb4
+    last_write_checksum: sha1:57cf6e446279f77ee46ba9612cb418422b10dad0
+    pristine_git_object: dc349d5b0a6700bc9b432af30a94dcf37e3de694
+  src/mcp-server/cli/start/impl.ts:
+    id: 37494f674015
+    last_write_checksum: sha1:f81b19d1d8d20fb7252134107393d048314b0c26
+    pristine_git_object: d169fa78045705b238471c47be3f842ae197d77b
+  src/mcp-server/console-logger.ts:
+    id: 57aff4ff2e15
+    last_write_checksum: sha1:0c4b9b7c79ad0a81359210cb31b9ee4d887d5de1
+    pristine_git_object: 640bca96dc5acf142b0a25dedad7ffb5d55c6375
+  src/mcp-server/extensions.ts:
+    id: 3d9d20ff158f
+    last_write_checksum: sha1:27de1e2b8aaedc8965d1d4c4d4c500df1f28b483
+    pristine_git_object: 78394e413ea070824f370b829eaf1416883e6680
+  src/mcp-server/flags.ts:
+    id: 0167e624a516
+    last_write_checksum: sha1:94f961d6e88ce86cdc0a4d30d62a4b424bcedfe6
+    pristine_git_object: 828c15c3004f3537df122ce2bf6928ffb3c59f48
+  src/mcp-server/mcp-server.ts:
+    id: aabbc4ab07c1
+    last_write_checksum: sha1:d2401496879f437672e2ce60da9b099397ef7c87
+    pristine_git_object: 4f70eadadaca597ad57b666cd59c082e81e89673
+  src/mcp-server/prompts.ts:
+    id: 26f3d73cbf31
+    last_write_checksum: sha1:9a0c2d81c90a3e9d2de9a82cac5ae02a06a1ddfd
+    pristine_git_object: 984bbf77995e707c16d222ced9d6afababac556c
+  src/mcp-server/resources.ts:
+    id: cb0c57ebeaea
+    last_write_checksum: sha1:ac05560ca71c52c55900b59fafd61888939e5b7f
+    pristine_git_object: 973ddc289e910b28ba27b01ade153af8e4ec3994
+  src/mcp-server/scopes.ts:
+    id: 8966d24256b2
+    last_write_checksum: sha1:77d0eb95785e84f9fd0b27c4612f8c6470489fe4
+    pristine_git_object: c25696d4c4f70e081fa5d87ad6891874c509a577
+  src/mcp-server/server.ts:
+    id: 2784dd48e82a
+    last_write_checksum: sha1:6b6443bab5964130b3bb1bea13a844e7a4b2a7ae
+    pristine_git_object: 118a685fe002ed8471cd8def604dae89801c470d
+  src/mcp-server/shared.ts:
+    id: 074e80d4be1e
+    last_write_checksum: sha1:19c9034032819a14f15c430de4350c8aba99d725
+    pristine_git_object: bb74a74788ebd7d11262f5f63b8fdd29ab817f48
+  src/mcp-server/tools.ts:
+    id: 654d5d1f2062
+    last_write_checksum: sha1:030163809d59319e63716288f551d33ee9fe6f0a
+    pristine_git_object: f169cb7a68592a77982a46f3c8d9d02fffe6bd2d
+  src/mcp-server/tools/computeLucidGetHealth.ts:
+    id: 25eb0eb3dc26
+    last_write_checksum: sha1:2b8e6d8a38fce0ca860be1ec39edcdfcf543b20e
+    pristine_git_object: c34730d796c2714ff513c7bfb0fb7873bd5e4970
+  src/mcp-server/tools/computeLucidHeartbeat.ts:
+    id: 9c25201a5457
+    last_write_checksum: sha1:a738859af92a262b4ed9ba37235dbe1f183a2e3b
+    pristine_git_object: e06da2493abcb0ac09ebaa6d222a01bc9b7ed6b2
+  src/mcp-server/tools/epochsLucidCommitEpochRoot.ts:
+    id: ad1e33af1e82
+    last_write_checksum: sha1:5679b365090e461fde06c2dc268a6a2a18508dfb
+    pristine_git_object: dfacd72f09593d1aeab2bba1259e7dd719f7659f
+  src/mcp-server/tools/epochsLucidCommitEpochRootsBatch.ts:
+    id: 07fff09ec3e6
+    last_write_checksum: sha1:980d9e55ca384471e4d967c373c3a2642e45492e
+    pristine_git_object: 98e2cc0b092702b884eb14de08b711cb59e05ff8
+  src/mcp-server/tools/epochsLucidCreateEpoch.ts:
+    id: 24d9a0967fce
+    last_write_checksum: sha1:4db67fb387b01e6db9eab4579b798dc451ea6d5d
+    pristine_git_object: 46f4da0e386f073962cf9a63f1a5aa6e70b4fd4f
+  src/mcp-server/tools/epochsLucidGetAnchoringHealth.ts:
+    id: ef6cf9fd7612
+    last_write_checksum: sha1:7702eca433834ad8cd541e44a060235ce253bf51
+    pristine_git_object: e12d6458062087cbd8c53de1ad5fc08bf499b47b
+  src/mcp-server/tools/epochsLucidGetCurrentEpoch.ts:
+    id: 8129d4b86cb7
+    last_write_checksum: sha1:1ed5f76d68170e48903fbcd4bcd84d5a03b1e934
+    pristine_git_object: e04bf0386cd4341e0b1b5b95b7c7c492c12cc9dd
+  src/mcp-server/tools/epochsLucidGetEpoch.ts:
+    id: 4468867e5798
+    last_write_checksum: sha1:04bec278b0b0455e7e88d12a3cb319a8a56a85d6
+    pristine_git_object: ba80524c925adb73cacbdaecd5dd5a94103a12d1
+  src/mcp-server/tools/epochsLucidGetEpochStats.ts:
+    id: 5d4e99fa54a4
+    last_write_checksum: sha1:55f7710bc8b4cbb2d89742592965b321b05e5833
+    pristine_git_object: afbea8b2c50573865fb6865f699c46588265313a
+  src/mcp-server/tools/epochsLucidGetEpochTransaction.ts:
+    id: d77ffc72c393
+    last_write_checksum: sha1:b13cab868e6c2a6b1e9f9fcf63f5154377c2af76
+    pristine_git_object: 079c2f7f47fb7a94d8d8bbb17f8ed09a3c96fc85
+  src/mcp-server/tools/epochsLucidListEpochs.ts:
+    id: 52a63eb3f7ec
+    last_write_checksum: sha1:313ac89d39c3b86c0d8f6cc473858e319a850494
+    pristine_git_object: ab2ad3fd447d8d9bf8813e714efb1e5c2e823433
+  src/mcp-server/tools/epochsLucidListEpochsReady.ts:
+    id: 39a89c61dcbf
+    last_write_checksum: sha1:8fb01044315b7768b8248be216bafafcd38c66a5
+    pristine_git_object: 44d9b0cb82b4b86dc9565ffa3b6ad86047115f32
+  src/mcp-server/tools/epochsLucidRetryEpoch.ts:
+    id: 7a54bf8a8f51
+    last_write_checksum: sha1:6fd5fa52515fd3ef013c7d1b459ef7ab5d4beb63
+    pristine_git_object: ced2fd2872e58f767104d70ebd7341abba287a7c
+  src/mcp-server/tools/epochsLucidVerifyEpoch.ts:
+    id: cdf0abaa34ab
+    last_write_checksum: sha1:b85da4e6f59c232623b5cc6b092b250fce008b4e
+    pristine_git_object: 55600417d874da6419a6d2433368470b8ff2d85b
+  src/mcp-server/tools/matchLucidMatch.ts:
+    id: 3459708c192a
+    last_write_checksum: sha1:c91e7b9942aa31381053ae5a270d94bc149a0c8e
+    pristine_git_object: 509e704aadc2932be44e6226f95b054803e9a038
+  src/mcp-server/tools/matchLucidMatchExplain.ts:
+    id: 471ab8a8ac50
+    last_write_checksum: sha1:00a543baefd63c309eda3d62504d15476eb7e3e5
+    pristine_git_object: 91df1c7de054931bc39f29b206ef9ad7cfc705ed
+  src/mcp-server/tools/matchLucidRoute.ts:
+    id: 72b3e40dc7c4
+    last_write_checksum: sha1:bb41ee37f28144cd549af59c137027bc32cf49b3
+    pristine_git_object: 880275e88b998b486544dcd78f61596f18c680e5
+  src/mcp-server/tools/passportsLucidCreatePassport.ts:
+    id: c04bbade6610
+    last_write_checksum: sha1:bd177c304d4f8ee9445036e893c0d33b62420095
+    pristine_git_object: a6b3c9594384420abc91415d7a96dc8e930a7a5e
+  src/mcp-server/tools/passportsLucidDeletePassport.ts:
+    id: a61a75d36128
+    last_write_checksum: sha1:23139ef3ac43016c41f7304ae20f8195a2a3a3c9
+    pristine_git_object: cd6e2b36f1077cede5399df40f1d81ab27602ce7
+  src/mcp-server/tools/passportsLucidGetPassport.ts:
+    id: 84b790c20b8a
+    last_write_checksum: sha1:f96c9a6d5cdf35b80f3495f761bb3c895fea3c61
+    pristine_git_object: d276c7165857a48ec6efaab797a5b24a3b0008d8
+  src/mcp-server/tools/passportsLucidGetPassportStats.ts:
+    id: 50e888356db5
+    last_write_checksum: sha1:dd2330146f4e33b16ab425fe72ed73c8f70fa901
+    pristine_git_object: 4a51911a09ad7e62134195a7b85b242af8544aab
+  src/mcp-server/tools/passportsLucidListPassports.ts:
+    id: 463a1a5198c2
+    last_write_checksum: sha1:3fde7d35571491756053ac2a40c08ecc13c6a274
+    pristine_git_object: 641ee28d226cb55781041f24d8786ad18dc915c2
+  src/mcp-server/tools/passportsLucidListPassportsPendingSync.ts:
+    id: a379f93071be
+    last_write_checksum: sha1:93fedf20e810c15c3059a242f631248e75b47005
+    pristine_git_object: b0471fd13aa11639d11405663f8d3a4e8846df45
+  src/mcp-server/tools/passportsLucidSearchCompute.ts:
+    id: 7c8f3260f3c3
+    last_write_checksum: sha1:b5df8c3ed22d5167110daea77d80329502b2a321
+    pristine_git_object: b41be616db861e9dc00eb2c0025b9ccad85ebb41
+  src/mcp-server/tools/passportsLucidSearchModels.ts:
+    id: 6c6b2cfb039e
+    last_write_checksum: sha1:b09620b24ae53cd4cbce3a0f4591b54b5904ae2c
+    pristine_git_object: 60ec116c1ad62bfed94ca7fd823aaeff4e732172
+  src/mcp-server/tools/passportsLucidTriggerPassportSync.ts:
+    id: 0eca0465329d
+    last_write_checksum: sha1:cb553daa83c73725c1a490b4de525b113505b6fd
+    pristine_git_object: 22eca41c8bf394739ff9535b0c259f74ac999fbf
+  src/mcp-server/tools/passportsLucidUpdatePassport.ts:
+    id: fbab4e16258c
+    last_write_checksum: sha1:e4546942e264dd622fed83ee46f2baafebdd890a
+    pristine_git_object: ae5b7ca3b8f56cc58d2e36c3d830f41ed8466cfc
+  src/mcp-server/tools/payoutsLucidCalculatePayout.ts:
+    id: 9585a2cd2975
+    last_write_checksum: sha1:fe979ae76539d74b6ac27890f649e9419ccb3b49
+    pristine_git_object: c9c7db0eb25f5f9756ab7087552b542705380033
+  src/mcp-server/tools/payoutsLucidGetPayout.ts:
+    id: 85ad2f2ac9fc
+    last_write_checksum: sha1:96a973fcb900b9e6146e513dd842041ebe29ff82
+    pristine_git_object: c3896c9dd438dfd81480db3047a24a510bccf508
+  src/mcp-server/tools/payoutsLucidPayoutFromReceipt.ts:
+    id: a004b2a1775f
+    last_write_checksum: sha1:714426a137629d2581de1d94aba47418cf58fbb2
+    pristine_git_object: 25bfaf763fa7e0bb2fb9b4ddaadae02fc23a4afb
+  src/mcp-server/tools/payoutsLucidVerifyPayout.ts:
+    id: 77d3d7323bb9
+    last_write_checksum: sha1:b5d595b139368703f6889b875dd32bd1fde095dd
+    pristine_git_object: 2c38dd56d6a017b12916751f4a077add65cfe819
+  src/mcp-server/tools/receiptsLucidCreateReceipt.ts:
+    id: 4bf8601e47c9
+    last_write_checksum: sha1:870186907c2a8e1eb52dbf7c0691db573e080191
+    pristine_git_object: aee15eab210fdac5427157d7952034b08cd33161
+  src/mcp-server/tools/receiptsLucidGetMmrRoot.ts:
+    id: ef1fcbd6d62c
+    last_write_checksum: sha1:22712992e9e54ab4d7a901fb8a3001d7cf357794
+    pristine_git_object: eb09e2723340f87031d4fada6cd367c3fae0b1a6
+  src/mcp-server/tools/receiptsLucidGetReceipt.ts:
+    id: 4ad8f62320d7
+    last_write_checksum: sha1:3d66efaab310a4027c535fef30cde43b29e70c45
+    pristine_git_object: cb148b86d9d392d6bde989a8605ca04acb53887c
+  src/mcp-server/tools/receiptsLucidGetReceiptProof.ts:
+    id: 3112dc6f1d62
+    last_write_checksum: sha1:c2de5c0df409a5e252b37f144a5d73c947dbad93
+    pristine_git_object: e79a6f28474764f14a88defabb921fa801e1ab45
+  src/mcp-server/tools/receiptsLucidGetSignerPubkey.ts:
+    id: 75c3a078860f
+    last_write_checksum: sha1:2a853a586171d26cedc1dd4da41817759d56f580
+    pristine_git_object: 8dc03996f23d801f5cb144c63e4e9f40187a7acd
+  src/mcp-server/tools/receiptsLucidVerifyReceipt.ts:
+    id: ddff91808252
+    last_write_checksum: sha1:b8ecd7742ce9f30e9487003eaefa363ec0336367
+    pristine_git_object: 2d31462c6604425344df78569f988386855948d0
+  src/mcp-server/tools/runLucidChatCompletions.ts:
+    id: 360bee3669a8
+    last_write_checksum: sha1:14cd0fe1dac1e6f7fc04540513148e3b341bd65a
+    pristine_git_object: f1b9cb8aa1a37046a9f147a3611021dcb955fc0b
+  src/mcp-server/tools/runLucidRunInference.ts:
+    id: b33d5c740976
+    last_write_checksum: sha1:0b85084aa007c242084dbc28bec673a8dd5bbdf0
+    pristine_git_object: 030f782e92c8df0d6cff86816d76c7b57f74b381
+  src/models/chatcompletionrequest.ts:
+    id: e8b4ab5d0b7a
+    last_write_checksum: sha1:b6539d6f4613a6c382651e64d7a8294995dc7f06
+    pristine_git_object: 06b7baf06ba90d2fd3419d91cea0606a969528f7
+  src/models/chatcompletionresponse.ts:
+    id: e6a3e7b4f2cb
+    last_write_checksum: sha1:d72dcc36aada32b8a9becb8f032a05823408c987
+    pristine_git_object: 3923decc897fcf8f8b2125659d358568496ed5d0
+  src/models/chatmessage.ts:
+    id: 87811712a148
+    last_write_checksum: sha1:a088066c5759c1321285776c7c6db5f3841c61da
+    pristine_git_object: dffe0cee14d5262013969c216d18df3c80b48e20
+  src/models/computeheartbeat.ts:
+    id: 8d27c4bc04e3
+    last_write_checksum: sha1:bb39400d46c339147a7eebb62f14c3d0e802c7d8
+    pristine_git_object: 66bbc3072fed258c32e78315b14e3e4e35375eec
+  src/models/createpassportrequest.ts:
+    id: 397d4a1791bd
+    last_write_checksum: sha1:45feda56f02b52cad519d4bb257e1ef416a27e63
+    pristine_git_object: fe8f8d61b92e482c519cc40ca877c8c9ef6c078c
+  src/models/createpassportresponse.ts:
+    id: 00a12ea11fd6
+    last_write_checksum: sha1:66f27e04cb7351d1ea0d450171358a7c059ab83f
+    pristine_git_object: 674daaef42525b766fa95a99284195c0fb56fd71
+  src/models/epoch.ts:
+    id: d8baaf6d3721
+    last_write_checksum: sha1:616afb8c50b39b3c74b06d8416b2a882c7b9dceb
+    pristine_git_object: cddb607b83578ab749e1f8f6a4dcfbc8331ee8fb
+  src/models/errorresponse.ts:
+    id: 55a21b891851
+    last_write_checksum: sha1:aaebbc47e87778bcc389e59c5413603264dbf7dd
+    pristine_git_object: 1a5b1893d53db2356a79fc625eb100a5bea56772
+  src/models/errors/apierror.ts:
+    id: e2280e075454
+    last_write_checksum: sha1:1a4199dec47757c19b2e88dbd767d7f24ab9522a
+    pristine_git_object: 7e098c1187dbd81288c0d2cd8802dfff25a295bf
+  src/models/errors/httpclienterrors.ts:
+    id: 6948de76af99
+    last_write_checksum: sha1:994ced121c54fecd0af038ccfb7855fbfd3868ec
+    pristine_git_object: b34f612124c797c2a1106b9735708f679a90b74f
+  src/models/errors/sdkvalidationerror.ts:
+    id: fb6b2b49c445
+    last_write_checksum: sha1:ce8bb73a1243f8ea8fa3b71a181e586e29dd02c9
+    pristine_git_object: 7749cf32c29ba2d44124253d9f07fbb1913b89f6
+  src/models/getpassportresponse.ts:
+    id: 40b0b32d3bc8
+    last_write_checksum: sha1:fc70b5518ddaed33a8f0656acd3c3db38c6e0634
+    pristine_git_object: d001ba765e0bb9fa5c3c249ad16e090c98b279e0
+  src/models/inferencerequest.ts:
+    id: 2129018d0dce
+    last_write_checksum: sha1:76010e273703aa47a0e9df618d3b1192fff1e025
+    pristine_git_object: ac111d6ce4c33812e52a181d1a052c59fd2b9528
+  src/models/inferenceresult.ts:
+    id: a1cd5e67e418
+    last_write_checksum: sha1:e97c4ed0c0dd42551f27c2379ceeb6a09b786b68
+    pristine_git_object: 0f7c757c9d335d7b16a4b20c327f11a20ce3571a
+  src/models/listpassportsresponse.ts:
+    id: 7dd491cd2c3e
+    last_write_checksum: sha1:bd8acf93a4f3b07fc278592413f08507a7d3781a
+    pristine_git_object: dbe3d3167d545ad06d44e39f64715c73197f8041
+  src/models/lucidcalculatepayoutop.ts:
+    id: 7af3c8e9418c
+    last_write_checksum: sha1:d12a68f9f252a74459c5b497635d70a1848f4c47
+    pristine_git_object: 2208101561956ced6f620946e0770cb0a7832940
+  src/models/lucidchatcompletionsop.ts:
+    id: c5a0c7af47aa
+    last_write_checksum: sha1:6ff7daabe213a22b5a33cbdd98dbac9ff5aadf5f
+    pristine_git_object: 282f320c2f2e0862d520d655e41982df2039a379
+  src/models/lucidcommitepochrootop.ts:
+    id: 57d2d1403ce9
+    last_write_checksum: sha1:ad754e2c26c91be53c10ae3b82cccc4e41ac08c9
+    pristine_git_object: cec0c213ca6def39477b3eacc240ea46da166a06
+  src/models/lucidcommitepochrootsbatchop.ts:
+    id: 15438d6edbf4
+    last_write_checksum: sha1:5c6483ca9f0cfecca63ed4f0be739b8acb8904dc
+    pristine_git_object: 9eb6ff24192fca4288e9875767304af7fd989476
+  src/models/lucidcreateepochop.ts:
+    id: de8ada50e10b
+    last_write_checksum: sha1:28be6f92b67110699fa8e8c3462bbcec494d4dc1
+    pristine_git_object: baced1da20d1dc5f0d92d7e871cb6a9a0111d5ec
+  src/models/lucidcreatepassportop.ts:
+    id: 5192d67f578a
+    last_write_checksum: sha1:17783511b1db1537fd1c25490a286d3d76b575bd
+    pristine_git_object: 474b12de352efe581dacf7e88bfe6a6b662c10ac
+  src/models/lucidcreatereceiptop.ts:
+    id: 783ef5a84f22
+    last_write_checksum: sha1:6f5b4badbd790de5015a4f398dce8f92ea069974
+    pristine_git_object: 6e8b7aee958911c9eefbe778fffe2abef642e8b1
+  src/models/luciddeletepassportop.ts:
+    id: 9bbdda4c93c5
+    last_write_checksum: sha1:8b74968954f3d423c38a0d628200f3660a8c2cce
+    pristine_git_object: 806da6153f1fd181d02accee46b50d167b676c9d
+  src/models/lucidgetanchoringhealthop.ts:
+    id: 68a3d7dc5f1a
+    last_write_checksum: sha1:62decc5706a4af16b475ca8db446321f4d4eec5a
+    pristine_git_object: ab232c83f838fb34487e124e027512322f01ce2b
+  src/models/lucidgetcurrentepochop.ts:
+    id: bfea63c65d0a
+    last_write_checksum: sha1:b515af5cb2ddc5398b719f5de7a953c27bad1944
+    pristine_git_object: f41f97d76aa9265826704f282fa48f1a00ae8b91
+  src/models/lucidgetepochop.ts:
+    id: 38dcd7352a56
+    last_write_checksum: sha1:6f8adbd4b251ff1aa264ad86c9fde71b6cb70361
+    pristine_git_object: 9aab9e349833eaf198e696deae745c77894bbc1d
+  src/models/lucidgetepochstatsop.ts:
+    id: 9e57c9e1c69a
+    last_write_checksum: sha1:b8654ab1ccd982e91b2c55bc7ac379ca223089b0
+    pristine_git_object: a7626acc886af13b96c77401cbb529aba39402ca
+  src/models/lucidgetepochtransactionop.ts:
+    id: bd7263731e9f
+    last_write_checksum: sha1:9674edd5f35aa3f68832099e1e446930b254a27c
+    pristine_git_object: 89f3477a90dd1cc31290cc7087a5c1097278a638
+  src/models/lucidgethealthop.ts:
+    id: f61f5280aad6
+    last_write_checksum: sha1:8c120c0c86856626778bfb899f9ede80db0ae350
+    pristine_git_object: b8c77a69d9064ca4e4864d18672ff2516c951781
+  src/models/lucidgetmmrrootop.ts:
+    id: 316e2fb233b2
+    last_write_checksum: sha1:628e92b8e6c56d58a1a5d5984e17667e1a3e0222
+    pristine_git_object: bf31930e44b33d63f45827cffe6c05e6b723b724
+  src/models/lucidgetpassportop.ts:
+    id: d213b4ffbc63
+    last_write_checksum: sha1:344b4c273b483021e9a7a03955157fb5653f6f69
+    pristine_git_object: a15cc347b3f7202e422d33424874384607a43ef6
+  src/models/lucidgetpassportstatsop.ts:
+    id: 6ed04f112ff2
+    last_write_checksum: sha1:a510a7e86de15917b0777d3baec2b046088e170c
+    pristine_git_object: 1f2964ef498e408989febedbc83d85a00e54ca32
+  src/models/lucidgetpayoutop.ts:
+    id: 92717172d3af
+    last_write_checksum: sha1:9201f1916576538705d197bd8a6b4da15f015ced
+    pristine_git_object: 542359e266952ca4d0644f2a8541769099723c92
+  src/models/lucidgetreceiptop.ts:
+    id: b3b6788c7cd7
+    last_write_checksum: sha1:aee99925cd594871ff12ce53b51484b97f02e612
+    pristine_git_object: 42f51c1c6f5906f30a4409ba8fdb8dd075be56cd
+  src/models/lucidgetreceiptproofop.ts:
+    id: 1acafd9002c6
+    last_write_checksum: sha1:a465ee27fb9ac159ca2705ccdef302936d0a375f
+    pristine_git_object: 40f35e1f174c2724f8ceaf26a5c80a37505ced07
+  src/models/lucidgetsignerpubkeyop.ts:
+    id: d4c3901ef575
+    last_write_checksum: sha1:ebb72e4897166f4914a3e85ea727c2299804aeaa
+    pristine_git_object: 0f090f69be496b46f5a95942b883d62f084ece47
+  src/models/lucidheartbeatop.ts:
+    id: 66c11573ff07
+    last_write_checksum: sha1:e78b9d65af3ab613588a996a10012dd57685a474
+    pristine_git_object: 63183f3e415dbcd47e9eb32013a1c1b2483c7007
+  src/models/lucidlistepochsop.ts:
+    id: ecac371cabf1
+    last_write_checksum: sha1:49afecfcb196620d73e8205d9b87b44dacdbaf15
+    pristine_git_object: b5fc454a9fdec6de4d25a5041b5137aa0aafd7b7
+  src/models/lucidlistepochsreadyop.ts:
+    id: 4e8d4816ff8d
+    last_write_checksum: sha1:b16940bc84d7fa548be443fa180c823fda60651b
+    pristine_git_object: f1608ac62e0f2efe1a256b7f2b2737c5916355ae
+  src/models/lucidlistpassportsop.ts:
+    id: c775e0045f9b
+    last_write_checksum: sha1:f852e11b93499311a024b9ef5ac516057eb87dac
+    pristine_git_object: 7da32326a05479c8b645da2e6414c49181258e95
+  src/models/lucidlistpassportspendingsyncop.ts:
+    id: eac31c1fd77a
+    last_write_checksum: sha1:abebb6e1f79e9e14713269b13e2f797e1f89d163
+    pristine_git_object: 75eedc1d8a0018e2ad6201438033523b91842b0f
+  src/models/lucidmatchexplainop.ts:
+    id: 5d9b3728d4e3
+    last_write_checksum: sha1:86e506a8b347759cc8c9e00b544c4a3194c885c4
+    pristine_git_object: bf7f301490956a9ab8a010e36d7c8b6fdc7ae1ee
+  src/models/lucidmatchop.ts:
+    id: 669b7ab11c20
+    last_write_checksum: sha1:7d0e5fad7e9e869cd41b05fc70ed09edbed715ee
+    pristine_git_object: e8517914418a4cf03088d1bcc94df3619d38d8d0
+  src/models/lucidpayoutfromreceiptop.ts:
+    id: 1abac38fdc65
+    last_write_checksum: sha1:92c4135a8c2f98ba04a00335eeb0eb6febad7cb7
+    pristine_git_object: 595f6037c2a953b5b2a137c2f020257fb82eda0e
+  src/models/lucidretryepochop.ts:
+    id: 3c95e809fbdd
+    last_write_checksum: sha1:4d87f2b39f3619d93cf1bdba03636c4a071a9d1a
+    pristine_git_object: bea09380fffbbe6fed1bd49641d448c85bbd0e2e
+  src/models/lucidrouteop.ts:
+    id: 2aaa13cb5111
+    last_write_checksum: sha1:ac7d2e4320130f654b1e317582703c14a6de0fb1
+    pristine_git_object: b46ca8338290611385fab2c6d9bb171bda299f41
+  src/models/lucidruninferenceop.ts:
+    id: 4980f24a7b22
+    last_write_checksum: sha1:7514dc41136a294e6bcb077d21e18c955b03cfc9
+    pristine_git_object: 40812ece7a52fdbda5bfb93fa921d93577a75cc2
+  src/models/lucidsearchcomputeop.ts:
+    id: 159b897d294d
+    last_write_checksum: sha1:6147df5b2563d835f4281a3db63e90a7be495e7e
+    pristine_git_object: 9d3093f1c32747cd42b930eb4a0d77218eeab058
+  src/models/lucidsearchmodelsop.ts:
+    id: 6c06a24044c3
+    last_write_checksum: sha1:71eb6c431efcad19695c7140882deca1608e9825
+    pristine_git_object: 7ab1e33443662d7ee0a1c1c58b9032f2053bf324
+  src/models/lucidtriggerpassportsyncop.ts:
+    id: aecd6ff566df
+    last_write_checksum: sha1:294b8f38af4190b70a436071fc85273d02b3680d
+    pristine_git_object: 7d4b5c0c2aab4f5d2b0f2b28cea3ec7abd9557af
+  src/models/lucidupdatepassportop.ts:
+    id: 04db505234f7
+    last_write_checksum: sha1:731e1399d77f06383bd5a03045a8536c36589015
+    pristine_git_object: af355312e09116c41f9e1563d956390a01d5681a
+  src/models/lucidverifyepochop.ts:
+    id: b2f36ab54012
+    last_write_checksum: sha1:95df4f6d212d37a7c59dad17ff452a025aa883a1
+    pristine_git_object: 6bd925eeaa80c67327b143cef48e868a35cfca26
+  src/models/lucidverifypayoutop.ts:
+    id: cbeb9a8a39b4
+    last_write_checksum: sha1:4ca07391fa548e9c1c1aa5f1f92aa82ab1c9da07
+    pristine_git_object: ca16c29531eb6424ef87a1e45f979cc7e1ce1bf4
+  src/models/lucidverifyreceiptop.ts:
+    id: 2fdb2c9cf02a
+    last_write_checksum: sha1:7e557eeb2c2f7c1307a866d458aeb9818cfd4382
+    pristine_git_object: 7d42f305aa0430fbcef76d0c2a3dc9a100ee58e0
+  src/models/passport.ts:
+    id: 8b26d6065f09
+    last_write_checksum: sha1:377ada6394b8f1593123cd8f5991efeac3a7df17
+    pristine_git_object: c920ff87027f03c26e6285589836e1a83f82f118
+  src/models/passportstatus.ts:
+    id: f0e61ac3333d
+    last_write_checksum: sha1:9f0f40f0f0b7c12b3e9f3936d9d6f389549a967c
+    pristine_git_object: 7c4da6cef3935a4f1406f1260f874123cfa41d0e
+  src/models/passporttype.ts:
+    id: 8c51aae45124
+    last_write_checksum: sha1:cf121caa466a723122cea1b9bd1ce604c6347906
+    pristine_git_object: ff96c2e66e15df44b930cc1eba16765b3db1b3cb
+  src/models/payoutcalculaterequest.ts:
+    id: d14bcac7140b
+    last_write_checksum: sha1:e19d2d52f84a18ecf06ec0b08675881251373fef
+    pristine_git_object: 6df5355612d5f0441da36bfb0ad426dda7a35103
+  src/models/payoutfromreceiptrequest.ts:
+    id: de39e7e2ba48
+    last_write_checksum: sha1:e6123ee48a63eb726ea39ae9428c617f631d6e46
+    pristine_git_object: a5df55b3fb5c4b86f483c754b3f7948f35e9de3d
+  src/models/policy.ts:
+    id: ec06353ae265
+    last_write_checksum: sha1:6c16e82ca71ad6afc08ff43d8f50167953a44441
+    pristine_git_object: bd53d8ff5ad686d375612e318aebbbb755ee8031
+  src/models/receipt.ts:
+    id: bc35f44ad3ac
+    last_write_checksum: sha1:2aba30e4bc4491e850948952555fec06d9c47d9f
+    pristine_git_object: 422cfe1fa849a64d1f63690cf071bf09996a9cf4
+  src/models/receiptproof.ts:
+    id: f58dcc29dffa
+    last_write_checksum: sha1:800d5ba19b2679c8703c6017d34670e0d4a7f693
+    pristine_git_object: bfa00471239b711e5a4c3a941cee1686563e8e9b
+  src/models/receiptverification.ts:
+    id: da2273cdc394
+    last_write_checksum: sha1:4c851fb990dcb7dec78d585c4a6922487452bcc1
+    pristine_git_object: f5a83eba360640036a846d93bc334fae6edf6d60
+  src/models/updatepassportrequest.ts:
+    id: 296e00e1b47d
+    last_write_checksum: sha1:98fa0ff95f2405a64fedca3286115465eae704d3
+    pristine_git_object: ab8b2aad2672f8178b71a95b6acce6c615ab5a8e
+  src/types/async.ts:
+    id: fac8da972f86
+    last_write_checksum: sha1:3ff07b3feaf390ec1aeb18ff938e139c6c4a9585
+    pristine_git_object: 689dba5de50e8769e5f3bb913e3f42a146d15bc1
+  src/types/bigint.ts:
+    id: 3ca6e3280e43
+    last_write_checksum: sha1:58178437a7d38f022b5d9bef691ba5539fad4655
+    pristine_git_object: f32ee5fe6a2dbf82bd2d1ec7c17cd2987bcff1d6
+  src/types/blobs.ts:
+    id: f8ab9b326c86
+    last_write_checksum: sha1:9cc86e0e9420999afb48d53c57d71584be745fd7
+    pristine_git_object: c1cc513af4ca0e96d1525954241592e3f57711bb
+  src/types/enums.ts:
+    id: 4d03ddfe5100
+    last_write_checksum: sha1:384e3fc4bee3f006cd8f39556a44b3508597b8e5
+    pristine_git_object: 6fb6d9109d8a9f27160bdb3a20456a5c3a608a51
+  src/types/fp.ts:
+    id: ae9f0fb8aab6
+    last_write_checksum: sha1:d24994d58f37a1ca106847fcc6d2e976c6f1c093
+    pristine_git_object: ccbe51eac69dfb0da5131f14fd753c4b47c1d527
+  src/types/rfcdate.ts:
+    id: 9eb64906dcd6
+    last_write_checksum: sha1:8e5f382e02fe21c2f2e24deb1b7bbf8cddd3dd16
+    pristine_git_object: c79b3f53a3dd922aa2ace5a4191c8652cf9a8e89
+  src/types/streams.ts:
+    id: f99be9c4bf14
+    last_write_checksum: sha1:cc9ced2dd34a76c3a1bd7784ccda1cc3b37ab9a9
+    pristine_git_object: a0163e7a99cea88f21d0ad4ce3af1c720180ee20
+  tsconfig.json:
+    id: 61ebb9fd6e8c
+    last_write_checksum: sha1:2a1769fabf9e934fa0b118db46d3b66cb500a6b7
+    pristine_git_object: 0ca48942a1b9cd923d614985dfb81f0dc7e1d298
+examples:
+  lucid_create_passport:
+    speakeasy-default-lucid-create-passport:
+      requestBody:
+        application/json: {"type": "dataset", "owner": "<value>", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}}
+      responses:
+        "201":
+          application/json: {"success": false, "passport_id": "<id>", "passport": {"passport_id": "<id>", "type": "agent", "owner": "<value>", "status": "deprecated", "metadata": {"key": "<value>", "key1": "<value>"}, "metadata_hash": "<value>", "created_at": 649513, "updated_at": 660118}}
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_list_passports:
+    speakeasy-default-lucid-list-passports:
+      responses:
+        "200":
+          application/json: {"success": true, "passports": [{"passport_id": "<id>", "type": "dataset", "owner": "<value>", "status": "deprecated", "metadata": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "metadata_hash": "<value>", "created_at": 73932, "updated_at": 745063}], "pagination": {"total": 278595, "page": 321349, "per_page": 201164, "total_pages": 274684}}
+        "500":
+          application/json: {}
+  lucid_get_passport:
+    speakeasy-default-lucid-get-passport:
+      parameters:
+        path:
+          passport_id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false, "passport": {"passport_id": "<id>", "type": "model", "owner": "<value>", "status": "deprecated", "metadata": {"key": "<value>", "key1": "<value>"}, "metadata_hash": "<value>", "created_at": 500601, "updated_at": 745153}}
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_update_passport:
+    speakeasy-default-lucid-update-passport:
+      parameters:
+        path:
+          passport_id: "<id>"
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"success": true, "passport": {"passport_id": "<id>", "type": "dataset", "owner": "<value>", "status": "revoked", "metadata": {}, "metadata_hash": "<value>", "created_at": 145151, "updated_at": 341019}}
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_delete_passport:
+    speakeasy-default-lucid-delete-passport:
+      parameters:
+        path:
+          passport_id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false, "deleted": false}
+        "403":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_trigger_passport_sync:
+    speakeasy-default-lucid-trigger-passport-sync:
+      parameters:
+        path:
+          passport_id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false}
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_list_passports_pending_sync:
+    speakeasy-default-lucid-list-passports-pending-sync:
+      responses:
+        "200":
+          application/json: {"success": false, "count": 848432, "passports": [{"passport_id": "<id>", "type": "compute", "owner": "<value>", "status": "revoked", "metadata": {"key": "<value>", "key1": "<value>"}, "metadata_hash": "<value>", "created_at": 89585, "updated_at": 269335}]}
+        "500":
+          application/json: {}
+  lucid_get_passport_stats:
+    speakeasy-default-lucid-get-passport-stats:
+      responses:
+        "500":
+          application/json: {}
+  lucid_search_models:
+    speakeasy-default-lucid-search-models:
+      responses:
+        "500":
+          application/json: {}
+  lucid_search_compute:
+    speakeasy-default-lucid-search-compute:
+      responses:
+        "500":
+          application/json: {}
+  lucid_match_explain:
+    speakeasy-default-lucid-match-explain:
+      requestBody:
+        application/json: {}
+      responses:
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_match:
+    speakeasy-default-lucid-match:
+      requestBody:
+        application/json: {"require_live_healthy": true}
+      responses:
+        "422":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_route:
+    speakeasy-default-lucid-route:
+      requestBody:
+        application/json: {"require_live_healthy": true}
+      responses:
+        "422":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_run_inference:
+    speakeasy-default-lucid-run-inference:
+      requestBody:
+        application/json: {}
+      responses:
+        "200":
+          application/json: {"success": true, "run_id": "<id>", "tokens_in": 716053, "tokens_out": 446391, "ttft_ms": 985533, "total_latency_ms": 699516, "model_passport_id": "<id>", "compute_passport_id": "<id>", "runtime": "<value>"}
+        "422":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_chat_completions:
+    speakeasy-default-lucid-chat-completions:
+      requestBody:
+        application/json: {"model": "Alpine", "messages": []}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "object": "<value>", "created": 901163, "model": "Camry", "choices": [{}], "usage": {"prompt_tokens": 537496, "completion_tokens": 54483, "total_tokens": 53355}}
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_heartbeat:
+    speakeasy-default-lucid-heartbeat:
+      requestBody:
+        application/json: {"compute_passport_id": "<id>", "status": "healthy"}
+      responses:
+        "200":
+          application/json: {}
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_health:
+    speakeasy-default-lucid-get-health:
+      parameters:
+        path:
+          computePassportId: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_create_receipt:
+    speakeasy-default-lucid-create-receipt:
+      requestBody:
+        application/json: {"run_id": "<id>", "model_passport_id": "<id>", "compute_passport_id": "<id>", "policy_hash": "<value>", "runtime": "<value>", "tokens_in": 184620, "tokens_out": 329999, "ttft_ms": 417264, "timestamp": 770594, "receipt_hash": "<value>", "signature": "<value>"}
+      responses:
+        "200":
+          application/json: {"success": true, "receipt": {"run_id": "<id>", "model_passport_id": "<id>", "compute_passport_id": "<id>", "policy_hash": "<value>", "runtime": "<value>", "tokens_in": 2550, "tokens_out": 582327, "ttft_ms": 258140, "timestamp": 982592, "receipt_hash": "<value>", "signature": "<value>"}}
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_receipt:
+    speakeasy-default-lucid-get-receipt:
+      parameters:
+        path:
+          receipt_id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false, "receipt": {"run_id": "<id>", "model_passport_id": "<id>", "compute_passport_id": "<id>", "policy_hash": "<value>", "runtime": "<value>", "tokens_in": 151425, "tokens_out": 125418, "ttft_ms": 623151, "timestamp": 630950, "receipt_hash": "<value>", "signature": "<value>"}}
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_verify_receipt:
+    speakeasy-default-lucid-verify-receipt:
+      parameters:
+        path:
+          receipt_id: "<id>"
+      responses:
+        "200":
+          application/json: {}
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_receipt_proof:
+    speakeasy-default-lucid-get-receipt-proof:
+      parameters:
+        path:
+          receipt_id: "<id>"
+      responses:
+        "200":
+          application/json: {"success": false, "proof": {"run_id": "<id>", "receipt_hash": "<value>", "leaf_index": 126476, "proof": ["<value 1>", "<value 2>", "<value 3>"], "root": "<value>"}}
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_mmr_root:
+    speakeasy-default-lucid-get-mmr-root:
+      responses:
+        "200":
+          application/json: {"success": false, "root": "<value>", "leaf_count": 480532}
+        "500":
+          application/json: {}
+  lucid_get_signer_pubkey:
+    speakeasy-default-lucid-get-signer-pubkey:
+      responses:
+        "200":
+          application/json: {"success": true, "pubkey": "<value>"}
+        "500":
+          application/json: {}
+  lucid_get_current_epoch:
+    speakeasy-default-lucid-get-current-epoch:
+      responses:
+        "200":
+          application/json: {"success": true, "epoch": {"epoch_id": "<id>", "mmr_root": "<value>", "leaf_count": 171509, "created_at": 80350, "status": "anchoring"}}
+        "500":
+          application/json: {}
+  lucid_list_epochs:
+    speakeasy-default-lucid-list-epochs:
+      responses:
+        "500":
+          application/json: {}
+  lucid_create_epoch:
+    speakeasy-default-lucid-create-epoch:
+      responses:
+        "500":
+          application/json: {}
+  lucid_get_epoch:
+    speakeasy-default-lucid-get-epoch:
+      parameters:
+        path:
+          epoch_id: "<id>"
+      responses:
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_retry_epoch:
+    speakeasy-default-lucid-retry-epoch:
+      parameters:
+        path:
+          epoch_id: "<id>"
+      responses:
+        "500":
+          application/json: {}
+  lucid_verify_epoch:
+    speakeasy-default-lucid-verify-epoch:
+      parameters:
+        path:
+          epoch_id: "<id>"
+      responses:
+        "500":
+          application/json: {}
+  lucid_get_epoch_transaction:
+    speakeasy-default-lucid-get-epoch-transaction:
+      parameters:
+        path:
+          epoch_id: "<id>"
+      responses:
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_commit_epoch_root:
+    speakeasy-default-lucid-commit-epoch-root:
+      responses:
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_commit_epoch_roots_batch:
+    speakeasy-default-lucid-commit-epoch-roots-batch:
+      requestBody:
+        application/json: {"epoch_ids": ["<value 1>"]}
+      responses:
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_anchoring_health:
+    speakeasy-default-lucid-get-anchoring-health:
+      responses:
+        "500":
+          application/json: {}
+  lucid_list_epochs_ready:
+    speakeasy-default-lucid-list-epochs-ready:
+      responses:
+        "500":
+          application/json: {}
+  lucid_get_epoch_stats:
+    speakeasy-default-lucid-get-epoch-stats:
+      responses:
+        "500":
+          application/json: {}
+  lucid_calculate_payout:
+    speakeasy-default-lucid-calculate-payout:
+      requestBody:
+        application/json: {"run_id": "<id>", "total_amount_lamports": 721074, "compute_wallet": "<value>"}
+      responses:
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_payout_from_receipt:
+    speakeasy-default-lucid-payout-from-receipt:
+      requestBody:
+        application/json: {"run_id": "<id>", "tokens_in": 844317, "tokens_out": 600261, "price_per_1k_tokens_lamports": "<value>", "compute_wallet": "<value>"}
+      responses:
+        "400":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_get_payout:
+    speakeasy-default-lucid-get-payout:
+      parameters:
+        path:
+          run_id: "<id>"
+      responses:
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+  lucid_verify_payout:
+    speakeasy-default-lucid-verify-payout:
+      parameters:
+        path:
+          run_id: "<id>"
+      responses:
+        "404":
+          application/json: {}
+        "500":
+          application/json: {}
+examplesVersion: 1.0.2

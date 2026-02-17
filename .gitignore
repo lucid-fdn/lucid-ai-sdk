@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+esm/
+bin/
+.tshy/
+.tshy-build/
+*.tsbuildinfo
+
+# Speakeasy temp files
+.speakeasy/logs/
+.speakeasy/reports/
+.speakeasy/temp/
+.speakeasy/bin/
+
+# Environment
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lint caches
+.eslintcache
+
+# Pack artifacts
+*.tgz
+*.mcpb
+npm-pack-*.txt
+
+# Lock files (bun)
+bun.lock

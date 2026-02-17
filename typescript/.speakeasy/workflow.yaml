@@ -1,0 +1,21 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    LucidLayer API:
+        inputs:
+            - location: ../openapi.yaml
+        overlays:
+            - location: .speakeasy/speakeasy-modifications-overlay.yaml
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api
+targets:
+    raijin-labs-lucid-ai:
+        target: typescript
+        source: LucidLayer API
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

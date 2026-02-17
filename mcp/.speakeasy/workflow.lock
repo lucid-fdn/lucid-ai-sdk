@@ -1,0 +1,29 @@
+speakeasyVersion: 1.697.5
+sources:
+    LucidLayer API:
+        sourceNamespace: lucid-layer-api
+        sourceRevisionDigest: sha256:d29b3deb08ccb8f7e36410f3ae7894a767de7943618678523008818ceb904f5f
+        sourceBlobDigest: sha256:9e6bc05481bbf6dd7d4bd9799a431de31d6525cb06393c461aba9714bf91767a
+        tags:
+            - latest
+            - 0.1.0
+targets:
+    raijinlabs-mcp:
+        source: LucidLayer API
+        sourceNamespace: lucid-layer-api
+        sourceRevisionDigest: sha256:d29b3deb08ccb8f7e36410f3ae7894a767de7943618678523008818ceb904f5f
+        sourceBlobDigest: sha256:9e6bc05481bbf6dd7d4bd9799a431de31d6525cb06393c461aba9714bf91767a
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        LucidLayer API:
+            inputs:
+                - location: ../../openapi.yaml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api
+    targets:
+        raijinlabs-mcp:
+            target: mcp-typescript
+            source: LucidLayer API
