@@ -1,120 +1,310 @@
 # raijin-labs-lucid-ai
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *raijin-labs-lucid-ai* API.
+Developer-friendly & type-safe TypeScript SDK for the [LucidLayer API](https://www.lucid.foundation/).
 
-[![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=raijin-labs-lucid-ai&utm_campaign=typescript)
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/raijin-labs-lucid-ai)](https://www.npmjs.com/package/raijin-labs-lucid-ai)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/raijinlabs/lucid-ai-sdk/blob/main/LICENSE)
 
-
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/raijin-labs-gc4/lucid). Delete this section before > publishing to a package manager.
-
-<!-- Start Summary [summary] -->
 ## Summary
 
 LucidLayer API: LucidLayer Offchain API.
-
-This OpenAPI spec is the source of truth for the actual backend routes.
-It is used to generate SDK clients via Speakeasy.
 
 Route groups:
 - `/v1/*` — Passports, Match, Run, Receipts, Epochs, Payouts, Compute
 - `/health/*` — System health and dependency checks
 - `/api/agents/*` — AI Agent MMR, Planner, and Orchestrator
-<!-- End Summary [summary] -->
 
-<!-- Start Table of Contents [toc] -->
-## Table of Contents
-<!-- $toc-max-depth=2 -->
-* [raijin-labs-lucid-ai](#raijin-labs-lucid-ai)
-  * [SDK Installation](#sdk-installation)
-  * [Requirements](#requirements)
-  * [SDK Example Usage](#sdk-example-usage)
-  * [Available Resources and Operations](#available-resources-and-operations)
-  * [Standalone functions](#standalone-functions)
-  * [Retries](#retries)
-  * [Error Handling](#error-handling)
-  * [Server Selection](#server-selection)
-  * [Custom HTTP Client](#custom-http-client)
-  * [Debugging](#debugging)
-* [Development](#development)
-  * [Maturity](#maturity)
-  * [Contributions](#contributions)
-
-<!-- End Table of Contents [toc] -->
-
-<!-- Start SDK Installation [installation] -->
-## SDK Installation
-
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
-The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
-
-### NPM
+## Installation
 
 ```bash
-npm add <UNSET>
-```
-
-### PNPM
-
-```bash
-pnpm add <UNSET>
-```
-
-### Bun
-
-```bash
-bun add <UNSET>
-```
-
-### Yarn
-
-```bash
-yarn add <UNSET>
+npm install raijin-labs-lucid-ai
 ```
 
 > [!NOTE]
 > This package is published with CommonJS and ES Modules (ESM) support.
-<!-- End SDK Installation [installation] -->
 
-<!-- Start Requirements [requirements] -->
 ## Requirements
 
 For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
-<!-- End Requirements [requirements] -->
 
-<!-- Start SDK Example Usage [usage] -->
-## SDK Example Usage
-
-### Example
+## Quick Start
 
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const raijinLabsLucidAi = new RaijinLabsLucidAi();
+const sdk = new RaijinLabsLucidAi({
+  serverURL: "https://api.lucid.foundation",
+});
 
-async function run() {
-  const result = await raijinLabsLucidAi.passports.create({
-    type: "dataset",
-    owner: "<value>",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-  });
-
-  console.log(result);
-}
-
-run();
-
+// Check system health
+const health = await sdk.health.checkSystemHealth();
+console.log("Status:", health.status);
 ```
-<!-- End SDK Example Usage [usage] -->
+
+## Usage Examples
+
+### Passport CRUD
+
+Create, list, update, and delete passports for models, compute nodes, tools, datasets, and agents.
+
+```typescript
+import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+const sdk = new RaijinLabsLucidAi({
+  serverURL: "https://api.lucid.foundation",
+});
+
+const OWNER = "YOUR_WALLET_ADDRESS";
+
+// Create a model passport
+const model = await sdk.passports.create({
+  type: "model",
+  owner: OWNER,
+  name: "my-llm-7b",
+  description: "7B parameter language model",
+  version: "1.0.0",
+  tags: ["nlp", "inference"],
+  metadata: {
+    schema_version: "1.0",
+    model_passport_id: "mdl-my-llm-7b",
+    format: "gguf",
+    runtime_recommended: "vllm",
+    name: "my-llm-7b",
+    context_length: 4096,
+    requirements: { min_vram_gb: 24 },
+  },
+});
+console.log("Model passport:", model.passportId);
+
+// Create a compute passport
+const compute = await sdk.passports.create({
+  type: "compute",
+  owner: OWNER,
+  name: "gpu-node-us-east",
+  version: "1.0.0",
+  tags: ["gpu", "a100"],
+  metadata: {
+    schema_version: "1.0",
+    compute_passport_id: "cmp-gpu-node-us-east",
+    provider_type: "cloud",
+    regions: ["us-east-1"],
+    hardware: { gpu: "NVIDIA-A100-80GB", vram_gb: 80 },
+    runtimes: [{ name: "vllm", version: "0.4.0", image: "vllm/vllm:0.4.0" }],
+    endpoints: { inference_url: "http://my-node:8080/v1" },
+  },
+});
+console.log("Compute passport:", compute.passportId);
+
+// List passports
+const list = await sdk.passports.list({ owner: OWNER, perPage: 10 });
+console.log("Total:", list.pagination.total);
+
+// Update a passport
+await sdk.passports.update({
+  passportId: model.passportId,
+  xOwnerAddress: OWNER,
+  body: { description: "Updated description", version: "1.0.1" },
+});
+
+// Delete a passport (soft delete)
+await sdk.passports.delete({
+  passportId: model.passportId,
+  xOwnerAddress: OWNER,
+});
+```
+
+### Match Compute to a Model
+
+Evaluate whether a compute node satisfies a deployment policy for a given model.
+
+```typescript
+const match = await sdk.match.explain({
+  policy: {
+    policyVersion: "1.0",
+    allowRegions: ["us-east-1", "eu-west-1"],
+    residencyRequired: false,
+    attestation: {
+      attestationRequired: false,
+      requireCcOn: false,
+      fallbackAllowed: true,
+    },
+    latency: { p95MsBudget: 3000, hardTimeoutMs: 10000 },
+    cost: { maxPricePer1kTokensUsd: 0.05, spotOnly: false },
+    privacy: { storeInputs: false, redactPii: true },
+  },
+  computeMeta: {
+    schema_version: "1.0",
+    compute_passport_id: "cmp-gpu-node-us-east",
+    provider_type: "cloud",
+    regions: ["us-east-1"],
+    hardware: { gpu: "NVIDIA-A100-80GB", vram_gb: 80 },
+    runtimes: [{ name: "vllm", version: "0.4.0", image: "vllm/vllm:0.4.0" }],
+    endpoints: { inference_url: "http://my-node:8080/v1" },
+    pricing: { price_per_1k_tokens_estimate: 0.02 },
+    network: { p95_ms_estimate: 1500 },
+    capabilities: { supports_attestation: false },
+  },
+  modelMeta: {
+    schema_version: "1.0",
+    model_passport_id: "mdl-my-llm-7b",
+    format: "gguf",
+    runtime_recommended: "vllm",
+    requirements: { min_vram_gb: 24 },
+  },
+});
+
+console.log("Allowed:", match.allowed);
+console.log("Reasons:", match.reasons);
+console.log("Policy hash:", match.policyHash);
+```
+
+### Receipts & Proofs
+
+Create an inference receipt and verify it with a cryptographic inclusion proof.
+
+```typescript
+// Create a receipt
+const created = await sdk.receipts.create({
+  modelPassportId: "mdl-my-llm-7b",
+  computePassportId: "cmp-gpu-node-us-east",
+  policyHash: match.policyHash,
+  runtime: "vllm",
+  tokensIn: 128,
+  tokensOut: 256,
+  ttftMs: 120,
+  totalLatencyMs: 850,
+  traceId: `trace-${Date.now()}`,
+  executionMode: "standard",
+});
+console.log("Receipt ID:", created.receipt.runId);
+
+// Verify the receipt
+const verification = await sdk.receipts.verify({
+  receiptId: created.receipt.runId,
+});
+console.log("Valid:", verification.isValid);
+
+// Get the inclusion proof
+const proof = await sdk.receipts.getProof({
+  receiptId: created.receipt.runId,
+});
+console.log("Proof:", proof.proof);
+
+// Get the current MMR root
+const mmrRoot = await sdk.receipts.getMmrRoot();
+console.log("MMR root:", mmrRoot.root);
+```
+
+### Agent MMR (Proof of Contribution)
+
+Initialize agents, process contribution vectors into epochs, and generate cryptographic proofs.
+
+```typescript
+const agentId = "my-agent";
+
+// Initialize an agent
+await sdk.agents.initAgent({ agentId });
+
+// Process an epoch with contribution vectors
+const epoch = await sdk.agents.processAgentEpoch({
+  agentId,
+  epochNumber: 1,
+  vectors: [
+    "Inference completed with 256 tokens",
+    "Model loaded in 1.2 seconds",
+    "Batch of 32 requests processed",
+  ],
+});
+console.log("Epoch root:", epoch.root);
+
+// Generate a proof for a specific contribution
+const proof = await sdk.agents.generateAgentProof({
+  agentId,
+  epochNumber: 1,
+  vectorText: "Inference completed with 256 tokens",
+});
+console.log("Proof valid:", proof.valid);
+
+// Get agent stats
+const stats = await sdk.agents.getAgentStats({ agentId });
+console.log("Total vectors:", stats.totalVectors);
+
+// Verify MMR integrity
+const verification = await sdk.agents.verifyAgentMmr({ agentId });
+console.log("MMR valid:", verification.valid);
+
+// List all agents
+const agents = await sdk.agents.listAgents();
+console.log("Agents:", agents.agents);
+```
+
+### Payouts
+
+Calculate and verify payout splits between compute, model, and orchestrator wallets.
+
+```typescript
+// Calculate a payout split
+const payout = await sdk.payouts.calculate({
+  runId: `run-${Date.now()}`,
+  totalAmountLamports: 1_000_000,
+  computeWallet: "COMPUTE_WALLET_ADDRESS",
+  modelWallet: "MODEL_WALLET_ADDRESS",
+  orchestratorWallet: "ORCHESTRATOR_WALLET_ADDRESS",
+});
+console.log("Payout recipients:", payout.recipients);
+
+// Create payout from receipt token data
+const fromReceipt = await sdk.payouts.createFromReceipt({
+  runId: `run-${Date.now()}`,
+  tokensIn: 128,
+  tokensOut: 256,
+  pricePer1kTokensLamports: 5000,
+  computeWallet: "COMPUTE_WALLET_ADDRESS",
+});
+console.log("Total:", fromReceipt.totalAmount);
+
+// Verify a payout
+const verified = await sdk.payouts.verify({ runId: payout.runId });
+console.log("Payout valid:", verified.valid);
+```
+
+### Run Inference
+
+Run inference through LucidLayer or use the OpenAI-compatible chat completions endpoint.
+
+```typescript
+// OpenAI-compatible chat completions
+const chat = await sdk.run.chatCompletions({
+  model: "my-model",
+  messages: [
+    { role: "system", content: "You are a helpful assistant." },
+    { role: "user", content: "Hello!" },
+  ],
+  temperature: 0.7,
+  maxTokens: 256,
+});
+console.log("Response:", chat.choices[0].message.content);
+```
+
+### Epochs
+
+Manage on-chain anchoring epochs.
+
+```typescript
+// Get current epoch
+const current = await sdk.epochs.getCurrent({});
+console.log("Current epoch:", current.epochId);
+
+// List epochs
+const epochs = await sdk.epochs.list({});
+console.log("Epochs:", epochs.epochs);
+
+// Get epoch stats
+const stats = await sdk.epochs.getStats();
+console.log("Stats:", stats);
+```
+
+For a complete end-to-end example, see [`examples/full-walkthrough.ts`](./examples/full-walkthrough.ts).
 
 <!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
@@ -312,48 +502,37 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 <!-- Start Retries [retries] -->
 ## Retries
 
-Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
+Some of the endpoints in this SDK support retries. If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API. However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const raijinLabsLucidAi = new RaijinLabsLucidAi();
+const sdk = new RaijinLabsLucidAi();
 
-async function run() {
-  const result = await raijinLabsLucidAi.passports.create({
-    type: "dataset",
-    owner: "<value>",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+const result = await sdk.passports.create({
+  type: "model",
+  owner: "YOUR_WALLET_ADDRESS",
+  metadata: { schema_version: "1.0" },
+}, {
+  retries: {
+    strategy: "backoff",
+    backoff: {
+      initialInterval: 1,
+      maxInterval: 50,
+      exponent: 1.1,
+      maxElapsedTime: 100,
     },
-  }, {
-    retries: {
-      strategy: "backoff",
-      backoff: {
-        initialInterval: 1,
-        maxInterval: 50,
-        exponent: 1.1,
-        maxElapsedTime: 100,
-      },
-      retryConnectionErrors: false,
-    },
-  });
-
-  console.log(result);
-}
-
-run();
-
+    retryConnectionErrors: false,
+  },
+});
 ```
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const raijinLabsLucidAi = new RaijinLabsLucidAi({
+const sdk = new RaijinLabsLucidAi({
   retryConfig: {
     strategy: "backoff",
     backoff: {
@@ -365,23 +544,6 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi({
     retryConnectionErrors: false,
   },
 });
-
-async function run() {
-  const result = await raijinLabsLucidAi.passports.create({
-    type: "dataset",
-    owner: "<value>",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-  });
-
-  console.log(result);
-}
-
-run();
-
 ```
 <!-- End Retries [retries] -->
 
@@ -404,49 +566,33 @@ run();
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 import * as errors from "raijin-labs-lucid-ai/models/errors";
 
-const raijinLabsLucidAi = new RaijinLabsLucidAi();
+const sdk = new RaijinLabsLucidAi();
 
-async function run() {
-  try {
-    const result = await raijinLabsLucidAi.passports.create({
-      type: "dataset",
-      owner: "<value>",
-      metadata: {
-        "key": "<value>",
-        "key1": "<value>",
-        "key2": "<value>",
-      },
-    });
+try {
+  const result = await sdk.passports.create({
+    type: "model",
+    owner: "YOUR_WALLET_ADDRESS",
+    metadata: { schema_version: "1.0" },
+  });
+  console.log(result);
+} catch (error) {
+  if (error instanceof errors.RaijinLabsLucidAiError) {
+    console.log(error.message);
+    console.log(error.statusCode);
+    console.log(error.body);
 
-    console.log(result);
-  } catch (error) {
-    // The base class for HTTP error responses
-    if (error instanceof errors.RaijinLabsLucidAiError) {
-      console.log(error.message);
-      console.log(error.statusCode);
-      console.log(error.body);
-      console.log(error.headers);
-
-      // Depending on the method different errors may be thrown
-      if (error instanceof errors.ErrorResponse) {
-        console.log(error.data$.success); // boolean
-        console.log(error.data$.error); // string
-        console.log(error.data$.message); // string
-        console.log(error.data$.errorCode); // string
-        console.log(error.data$.details); // any
-      }
+    if (error instanceof errors.ErrorResponse) {
+      console.log(error.data$.error);
+      console.log(error.data$.message);
     }
   }
 }
-
-run();
-
 ```
 
 ### Error Classes
 **Primary errors:**
 * [`RaijinLabsLucidAiError`](./src/models/errors/raijinlabslucidaierror.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Bad Request. *
+  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Bad Request.
 
 <details><summary>Less common errors (9)</summary>
 
@@ -459,47 +605,26 @@ run();
 * [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
 * [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
-
 **Inherit from [`RaijinLabsLucidAiError`](./src/models/errors/raijinlabslucidaierror.ts)**:
-* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 69 methods.*
-* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 69 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 69 methods.*
+* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 69 methods.
+* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 69 methods.
+* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 69 methods.
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
-
-\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-### Override Server URL Per-Client
+The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance:
 
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const raijinLabsLucidAi = new RaijinLabsLucidAi({
+const sdk = new RaijinLabsLucidAi({
   serverURL: "https://api.lucid.foundation",
 });
-
-async function run() {
-  const result = await raijinLabsLucidAi.passports.create({
-    type: "dataset",
-    owner: "<value>",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
-    },
-  });
-
-  console.log(result);
-}
-
-run();
-
 ```
 <!-- End Server Selection [server] -->
 
@@ -516,7 +641,7 @@ The `HTTPClient` constructor takes an optional `fetcher` argument that can be
 used to integrate a third-party HTTP client or when writing tests to mock out
 the HTTP client and feed in fixtures.
 
-The following example shows how to use the `"beforeRequest"` hook to to add a
+The following example shows how to use the `"beforeRequest"` hook to add a
 custom header and a timeout to requests and how to use the `"requestError"` hook
 to log errors:
 
@@ -525,7 +650,6 @@ import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 import { HTTPClient } from "raijin-labs-lucid-ai/lib/http";
 
 const httpClient = new HTTPClient({
-  // fetcher takes a function that has the same signature as native `fetch`.
   fetcher: (request) => {
     return fetch(request);
   }
@@ -535,9 +659,7 @@ httpClient.addHook("beforeRequest", (request) => {
   const nextRequest = new Request(request, {
     signal: request.signal || AbortSignal.timeout(5000)
   });
-
   nextRequest.headers.set("x-custom-header", "custom value");
-
   return nextRequest;
 });
 
@@ -548,7 +670,7 @@ httpClient.addHook("requestError", (error, request) => {
   console.groupEnd();
 });
 
-const sdk = new RaijinLabsLucidAi({ httpClient: httpClient });
+const sdk = new RaijinLabsLucidAi({ httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
@@ -571,19 +693,17 @@ const sdk = new RaijinLabsLucidAi({ debugLogger: console });
 You can also enable a default debug logger by setting an environment variable `RAIJINLABSLUCIDAI_DEBUG` to true.
 <!-- End Debugging [debug] -->
 
-<!-- Placeholder for Future Speakeasy SDK Sections -->
+## Development
 
-# Development
-
-## Maturity
+### Maturity
 
 This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning usage
 to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
 looking for the latest version.
 
-## Contributions
+### Contributions
 
-While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
+While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation.
+We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.
 
 ### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=raijin-labs-lucid-ai&utm_campaign=typescript)

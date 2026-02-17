@@ -1,50 +1,44 @@
 # raijinlabs-mcp
 
-Model Context Protocol (MCP) Server for the *raijinlabs-mcp* API.
+Model Context Protocol (MCP) server for the [LucidLayer API](https://www.lucid.foundation/).
 
-[![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=raijinlabs-mcp&utm_campaign=mcp-typescript)
-[![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/raijinlabs-mcp)](https://www.npmjs.com/package/raijinlabs-mcp)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/raijinlabs/lucid-ai-sdk/blob/main/LICENSE)
 
-
-<br /><br />
-> [!IMPORTANT]
-> This MCP Server is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/raijin-labs-gc4/lucid). Delete this notice before publishing to a package manager.
-
-<!-- Start Summary [summary] -->
 ## Summary
 
-LucidLayer API: LucidLayer Offchain API.
+Exposes all LucidLayer API operations as MCP tools, enabling AI assistants to manage passports, match compute, create receipts, verify proofs, orchestrate agents, and more — directly from Claude, Cursor, VS Code, or any MCP-compatible client.
 
-This OpenAPI spec is used to generate SDK clients.
-<!-- End Summary [summary] -->
-
-<!-- Start Table of Contents [toc] -->
-## Table of Contents
-<!-- $toc-max-depth=2 -->
-* [raijinlabs-mcp](#raijinlabs-mcp)
-  * [Installation](#installation)
-  * [Development](#development)
-  * [Publishing to Anthropic MCP Registry](#publishing-to-anthropic-mcp-registry)
-  * [Contributions](#contributions)
-
-<!-- End Table of Contents [toc] -->
-
-<!-- Start Installation [installation] -->
 ## Installation
 
-> [!TIP]
-> To finish publishing your MCP Server to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
+<details open>
+<summary>Claude Code</summary>
+
+```bash
+claude mcp add raijinlabs-mcp npx raijinlabs-mcp start --
+```
+
+</details>
+
 <details>
-<summary>MCP Bundle (Desktop Extension)</summary>
+<summary>Claude Desktop</summary>
 
-Install the MCP server as a Desktop Extension using the pre-built [`mcp-server.mcpb`](./mcp-server.mcpb) file:
+1. Open Claude Desktop
+2. Open the left-hand side pane, then click on your Username
+3. Go to **Settings** > **Developer** tab
+4. Click **Edit Config**
+5. Paste the following:
 
-Simply drag and drop the [`mcp-server.mcpb`](./mcp-server.mcpb) file onto Claude Desktop to install the extension.
-
-The MCP bundle package includes the MCP server and all necessary configuration. Once installed, the server will be available without additional setup.
-
-> [!NOTE]
-> MCP bundles provide a streamlined way to package and distribute MCP servers. Learn more about [Desktop Extensions](https://www.anthropic.com/engineering/desktop-extensions).
+```json
+{
+  "mcpServers": {
+    "RaijinlabsMcp": {
+      "command": "npx",
+      "args": ["raijinlabs-mcp", "start"]
+    }
+  }
+}
+```
 
 </details>
 
@@ -56,19 +50,16 @@ The MCP bundle package includes the MCP server and all necessary configuration. 
 Or manually:
 
 1. Open Cursor Settings
-2. Select Tools and Integrations
-3. Select New MCP Server
-4. If the configuration file is empty paste the following JSON into the MCP Server Configuration:
+2. Select **Tools and Integrations**
+3. Select **New MCP Server**
+4. Paste the following JSON:
 
 ```json
 {
   "mcpServers": {
     "RaijinlabsMcp": {
       "command": "npx",
-      "args": [
-        "raijinlabs-mcp",
-        "start"
-      ]
+      "args": ["raijinlabs-mcp", "start"]
     }
   }
 }
@@ -76,82 +67,19 @@ Or manually:
 
 </details>
 
-<details>
-<summary>Claude Code CLI</summary>
-
-```bash
-claude mcp add raijinlabs-mcp npx raijinlabs-mcp start --
-```
-
-</details>
-<details>
-<summary>Windsurf</summary>
-
-Refer to [Official Windsurf documentation](https://docs.windsurf.com/windsurf/cascade/mcp#adding-a-new-mcp-plugin) for latest information
-
-1. Open Windsurf Settings
-2. Select Cascade on left side menu
-3. Click on `Manage MCPs`. (To Manage MCPs you should be signed in with a Windsurf Account)
-4. Click on `View raw config` to open up the mcp configuration file.
-5. If the configuration file is empty paste the full json
-```
-{
-  "mcpServers": {
-    "RaijinlabsMcp": {
-      "command": "npx",
-      "args": [
-        "raijinlabs-mcp",
-        "start"
-      ]
-    }
-  }
-}
-```
-</details>
 <details>
 <summary>VS Code</summary>
 
-Refer to [Official VS Code documentation](https://code.visualstudio.com/api/extension-guides/ai/mcp) for latest information
-
-1. Open [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette)
-1. Search and open `MCP: Open User Configuration`. This should open mcp.json file
-2. If the configuration file is empty paste the full json
-```
-{
-  "mcpServers": {
-    "RaijinlabsMcp": {
-      "command": "npx",
-      "args": [
-        "raijinlabs-mcp",
-        "start"
-      ]
-    }
-  }
-}
-```
-
-</details>
-<details>
-<summary>Claude Desktop</summary>
-Claude Desktop doesn't yet support SSE/remote MCP servers.
-
-You need to do the following
-1. Open claude Desktop
-2. Open left hand side pane, then click on your Username
-3. Go to `Settings`
-4. Go to `Developer` tab (on the left hand side)
-5. Click on `Edit Config`
-Paste the following config in the configuration
+1. Open the Command Palette
+2. Search and open **MCP: Open User Configuration** (opens `mcp.json`)
+3. Paste the following:
 
 ```json
 {
   "mcpServers": {
     "RaijinlabsMcp": {
       "command": "npx",
-      "args": [
-        "raijinlabs-mcp",
-        "start"
-      ]
+      "args": ["raijinlabs-mcp", "start"]
     }
   }
 }
@@ -159,159 +87,267 @@ Paste the following config in the configuration
 
 </details>
 
+<details>
+<summary>Windsurf</summary>
+
+1. Open Windsurf Settings
+2. Select **Cascade** on the left side menu
+3. Click **Manage MCPs** (requires sign-in)
+4. Click **View raw config** to open the MCP configuration file
+5. Paste the following:
+
+```json
+{
+  "mcpServers": {
+    "RaijinlabsMcp": {
+      "command": "npx",
+      "args": ["raijinlabs-mcp", "start"]
+    }
+  }
+}
+```
+
+</details>
 
 <details>
-<summary> Stdio installation via npm </summary>
-To start the MCP server, run:
+<summary>Stdio via npm</summary>
 
 ```bash
 npx raijinlabs-mcp start
 ```
 
-For a full list of server arguments, run:
+For a full list of server arguments:
 
-```
+```bash
 npx raijinlabs-mcp --help
 ```
 
 </details>
-<!-- End Installation [installation] -->
 
-<!-- Placeholder for Future Speakeasy SDK Sections -->
+<details>
+<summary>MCP Bundle (Desktop Extension)</summary>
+
+Drag and drop the `mcp-server.mcpb` file onto Claude Desktop to install the extension. The MCP bundle includes the server and all necessary configuration.
+
+> [!NOTE]
+> MCP bundles provide a streamlined way to package and distribute MCP servers. Learn more about [Desktop Extensions](https://www.anthropic.com/engineering/desktop-extensions).
+
+</details>
+
+## Usage Examples
+
+Once the MCP server is connected, your AI assistant can use any of the tools below. Here are some common workflows expressed as natural language prompts:
+
+### Check System Health
+
+> "Check the LucidLayer system health"
+
+The assistant will call `check_system_health` and report the status of the API, database, Redis, and other dependencies.
+
+### Create a Passport
+
+> "Create a model passport for my-llm-7b model owned by wallet 7cBsSH...q1S9 with gguf format and vllm runtime, requiring 24GB VRAM"
+
+The assistant will call `lucid_create_passport` with:
+
+```json
+{
+  "type": "model",
+  "owner": "7cBsSHBB4nSVQy6ceUvmrA8Z2ks8Me8AjxSUqvJ2q1S9",
+  "name": "my-llm-7b",
+  "metadata": {
+    "schema_version": "1.0",
+    "model_passport_id": "mdl-my-llm-7b",
+    "format": "gguf",
+    "runtime_recommended": "vllm",
+    "requirements": { "min_vram_gb": 24 }
+  }
+}
+```
+
+### Match Compute to a Model
+
+> "Evaluate whether a compute node in us-east-1 with an A100 GPU can serve my model under a policy that requires latency under 3 seconds and costs below $0.05 per 1k tokens"
+
+The assistant will call `lucid_match_explain` with the policy, compute metadata, and model metadata, then explain whether the match is allowed and why.
+
+### Create and Verify a Receipt
+
+> "Create an inference receipt for model mdl-abc on compute cmp-xyz with 128 input tokens and 256 output tokens, then verify it"
+
+The assistant will:
+1. Call `lucid_create_receipt` to record the inference
+2. Call `lucid_verify_receipt` to check hash, signature, and inclusion proof
+3. Report whether the receipt is valid
+
+### Agent Proof of Contribution
+
+> "Initialize an agent called my-agent, process an epoch with these vectors: 'completed inference A', 'completed inference B', then generate a proof for the first vector"
+
+The assistant will:
+1. Call `init_agent` to create the agent
+2. Call `process_agent_epoch` to process the vectors
+3. Call `generate_agent_proof` to get the cryptographic proof
+
+### Search and List Passports
+
+> "List all model passports owned by wallet 7cBsSH...q1S9"
+
+> "Search for compute passports with A100 GPUs in the us-east-1 region"
+
+> "Show me the passport stats"
+
+### Manage Epochs
+
+> "What's the current epoch? Are there any epochs ready for finalization?"
+
+> "Show me the epoch statistics"
+
+## Available Tools
+
+### Passports
+| Tool | Description |
+|------|-------------|
+| `lucid_create_passport` | Create a new passport (model/compute/tool/dataset/agent) |
+| `lucid_list_passports` | List passports with filtering, sorting, and pagination |
+| `lucid_get_passport` | Retrieve a passport by ID |
+| `lucid_update_passport` | Update an existing passport |
+| `lucid_delete_passport` | Soft-delete a passport |
+| `lucid_trigger_passport_sync` | Trigger on-chain sync |
+| `lucid_list_passports_pending_sync` | List passports pending sync |
+| `lucid_get_passport_stats` | Get passport statistics |
+| `lucid_search_models` | Search model passports |
+| `lucid_search_compute` | Search compute passports |
+| `lucid_list_tools` | List tool passports |
+| `lucid_list_datasets` | List dataset passports |
+| `lucid_list_agent_passports` | List agent passports |
+
+### Match & Routing
+| Tool | Description |
+|------|-------------|
+| `lucid_match_explain` | Evaluate a policy against compute & model metadata |
+| `lucid_match` | Match compute for a model given constraints |
+| `lucid_route` | Match + resolve an executable inference endpoint |
+
+### Receipts & Proofs
+| Tool | Description |
+|------|-------------|
+| `lucid_create_receipt` | Create a receipt and append to the MMR |
+| `lucid_get_receipt` | Retrieve a receipt by ID |
+| `lucid_verify_receipt` | Verify receipt hash, signature, and inclusion proof |
+| `lucid_verify_receipt_by_hash` | Verify a receipt by its hash |
+| `lucid_get_receipt_proof` | Get the inclusion proof for a receipt |
+| `lucid_get_mmr_root` | Get the current MMR root and leaf count |
+| `lucid_get_signer_pubkey` | Get the orchestrator signing public key |
+
+### Epochs
+| Tool | Description |
+|------|-------------|
+| `lucid_get_current_epoch` | Get the current epoch |
+| `lucid_list_epochs` | List epochs |
+| `lucid_create_epoch` | Create a new epoch |
+| `lucid_get_epoch` | Get an epoch by ID |
+| `lucid_retry_epoch` | Retry a failed epoch |
+| `lucid_verify_epoch` | Verify an epoch anchor |
+| `lucid_get_epoch_transaction` | Get epoch anchoring transaction |
+| `lucid_commit_epoch_root` | Commit an epoch root to chain |
+| `lucid_commit_epoch_roots_batch` | Commit multiple epoch roots |
+| `lucid_get_anchoring_health` | Anchoring service health |
+| `lucid_list_epochs_ready` | List epochs ready for finalization |
+| `lucid_get_epoch_stats` | Get epoch statistics |
+
+### Payouts
+| Tool | Description |
+|------|-------------|
+| `lucid_calculate_payout` | Calculate payout split between recipients |
+| `lucid_payout_from_receipt` | Create payout split from receipt token data |
+| `lucid_get_payout` | Get payout by run_id |
+| `lucid_verify_payout` | Verify payout split integrity |
+
+### Compute
+| Tool | Description |
+|------|-------------|
+| `lucid_heartbeat` | Submit a compute node heartbeat |
+| `lucid_get_health` | Get compute node health state |
+
+### AI Agents
+| Tool | Description |
+|------|-------------|
+| `init_agent` | Initialize an AI agent for MMR proof-of-contribution |
+| `process_agent_epoch` | Process an epoch of vectors for an agent |
+| `process_agent_batch_epochs` | Process multiple epochs in batch |
+| `generate_agent_proof` | Generate cryptographic proof of contribution |
+| `get_agent_stats` | Get agent statistics and status |
+| `get_agent_history` | Get agent MMR root history across epochs |
+| `get_agent_root` | Get the current MMR root for an agent |
+| `verify_agent_mmr` | Verify MMR integrity for an agent |
+| `list_agents` | List all registered agents |
+
+### Agent Orchestrator
+| Tool | Description |
+|------|-------------|
+| `plan_agent_workflow` | Plan a workflow from a natural language goal |
+| `accomplish_agent_goal` | Plan and execute a workflow in one call |
+| `preview_agent_workflow` | Preview a workflow without executing |
+| `execute_agent_flowspec` | Execute a FlowSpec with automatic executor selection |
+| `validate_flowspec` | Validate a FlowSpec structure |
+| `get_planner_info` | Get planner service info |
+| `check_executor_health` | Check executor backend health |
+| `get_executor_decision` | Get recommended executor for a FlowSpec |
+| `get_agent_orchestrator_history` | Get agent execution history |
+| `check_agent_orchestrator_health` | Agent orchestrator health check |
+
+### Run Inference
+| Tool | Description |
+|------|-------------|
+| `lucid_run_inference` | Run inference through LucidLayer |
+| `lucid_chat_completions` | OpenAI-compatible chat completions |
+
+### Health
+| Tool | Description |
+|------|-------------|
+| `check_system_health` | Overall system health including all dependencies |
+| `check_liveness` | Liveness probe |
+| `check_readiness` | Readiness probe |
+| `check_database_health` | Database connectivity and latency |
+| `check_redis_health` | Redis connectivity and latency |
+| `check_nango_health` | Nango service connectivity and latency |
+| `get_detailed_health` | Detailed health with system resources and statistics |
 
 ## Development
 
 Run locally without a published npm package:
-1. Clone this repository
-2. Run `npm install`
-3. Run `npm run build`
-4. Run `node ./bin/mcp-server.js start`
-To use this local version with Cursor, Claude or other MCP Clients, you'll need to add the following config:
+
+```bash
+git clone https://github.com/raijinlabs/lucid-ai-sdk.git
+cd lucid-ai-sdk/mcp
+npm install
+npm run build
+node ./bin/mcp-server.js start
+```
+
+To use this local version with Cursor, Claude, or other MCP clients:
 
 ```json
 {
   "mcpServers": {
     "RaijinlabsMcp": {
       "command": "node",
-      "args": [
-        "./bin/mcp-server.js",
-        "start"
-      ]
+      "args": ["./bin/mcp-server.js", "start"]
     }
   }
 }
 ```
 
-Or to debug the MCP server locally, use the official MCP Inspector: 
+To debug with the MCP Inspector:
 
 ```bash
 npx @modelcontextprotocol/inspector node ./bin/mcp-server.js start
 ```
 
-
-
-## Publishing to Anthropic MCP Registry
-
-To publish your MCP server to the [Anthropic MCP Registry](https://github.com/modelcontextprotocol/registry), follow these steps based on the [official publishing guide](https://github.com/modelcontextprotocol/registry/blob/main/docs/guides/publishing/publish-server.md).
-
-### Step 1: Configure mcpName in Your Generation Config
-
-Add the `mcpName` field to your `.speakeasy/gen.yaml` file:
-
-```yaml
-mcp-typescript:
-  mcpName: io.github.username/server-name  # Use reverse-DNS format
-  # ... other configuration
-```
-
-The `mcpName` should follow the reverse-DNS format (e.g., `io.github.username/server-name`) to ensure uniqueness in the registry.
-
-### Step 2: Regenerate Your MCP Server
-
-Run Speakeasy generation with the updated configuration. This will:
-- Add the `mcpName` field to your `package.json` (required for npm package validation)
-- Generate a `server.json` file with registry metadata
-
-### Step 3: Publish to npm
-
-The registry validates npm packages by checking that your published package includes the `mcpName` field:
-
-```bash
-npm publish
-```
-
-The registry will fetch your package from npm and verify that the `mcpName` in `package.json` matches your server name.
-
-### Step 4: Install the Publisher CLI
-
-Install the `mcp-publisher` CLI tool:
-
-**macOS/Linux (Homebrew)**:
-```bash
-brew install mcp-publisher
-```
-
-**macOS/Linux/WSL (curl)**:
-```bash
-curl -L "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/').tar.gz" | tar xz mcp-publisher && sudo mv mcp-publisher /usr/local/bin/
-```
-
-**Windows PowerShell**:
-```powershell
-$arch = if ([System.Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture -eq "Arm64") { "arm64" } else { "amd64" }
-Invoke-WebRequest -Uri "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_windows_$arch.tar.gz" -OutFile "mcp-publisher.tar.gz"
-tar xf mcp-publisher.tar.gz mcp-publisher.exe
-rm mcp-publisher.tar.gz
-# Move mcp-publisher.exe to a directory in your PATH
-```
-
-### Step 5: Authenticate
-
-Authenticate based on your namespace:
-
-**For `io.github.*` namespaces (GitHub OAuth)**:
-```bash
-mcp-publisher login github
-```
-
-**For custom domains like `com.yourcompany.*` (DNS authentication)**:
-```bash
-# Generate keypair
-openssl genpkey -algorithm Ed25519 -out key.pem
-
-# Get public key for DNS record
-echo "yourcompany.com. IN TXT \"v=MCPv1; k=ed25519; p=$(openssl pkey -in key.pem -pubout -outform DER | tail -c 32 | base64)\""
-
-# Add the TXT record to your DNS, then login
-mcp-publisher login dns --domain yourcompany.com --private-key $(openssl pkey -in key.pem -noout -text | grep -A3 "priv:" | tail -n +2 | tr -d ' :\n')
-```
-
-### Step 6: Publish to the Registry
-
-From your server directory, publish to the registry:
-
-```bash
-mcp-publisher publish
-```
-
-You'll see:
-```
-✓ Successfully published
-```
-
-### Step 7: Verify Publication
-
-Check that your server appears in the registry:
-
-```bash
-curl "https://registry.modelcontextprotocol.io/v0/servers?search=io.github.username/server-name"
-```
-
-For complete documentation including remote deployments, troubleshooting, and CI/CD automation, see the [official publishing guide](https://github.com/modelcontextprotocol/registry/blob/main/docs/guides/publishing/publish-server.md).
-
 ## Contributions
 
-While we value contributions to this MCP Server, the code is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
-We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
+While we value contributions to this MCP Server, the code is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation.
+We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.
 
 ### MCP Server Created by [Speakeasy](https://www.speakeasy.com/?utm_source=raijinlabs-mcp&utm_campaign=mcp-typescript)
