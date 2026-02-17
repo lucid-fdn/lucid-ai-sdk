@@ -1,4 +1,6 @@
-# Lucid SDK
+# Lucid AI SDK
+
+[![GitHub](https://img.shields.io/github/license/raijinlabs/lucid-ai-sdk)](https://github.com/raijinlabs/lucid-ai-sdk/blob/main/LICENSE)
 
 Official SDK and MCP server for the [LucidLayer API](https://lucidlayer.com) by Raijin Labs.
 
@@ -45,4 +47,4 @@ cd mcp && npm install && npm run build
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](https://github.com/raijinlabs/lucid-ai-sdk/blob/main/LICENSE)
