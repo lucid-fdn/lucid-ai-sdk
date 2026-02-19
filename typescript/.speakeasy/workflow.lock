@@ -1,27 +1,28 @@
-speakeasyVersion: 1.698.0
+speakeasyVersion: 1.722.5
 sources:
     LucidLayer API:
         sourceNamespace: lucid-layer-api
-        sourceRevisionDigest: sha256:5ee73f9e2c46e3fd957fd5fac245e15de1c064458c1e9e7d74d5df01a81dedb6
-        sourceBlobDigest: sha256:42aac0780953dd6faab26dd26cac5f57965274e09e2fe7ecf04dd739f9625f97
+        sourceRevisionDigest: sha256:954968edf20ec513444c9f6b9d3d783a02065e1f9e97438fc2463418856d8e08
+        sourceBlobDigest: sha256:ca9dca4e31ab80da814e12becc0d0a2cc17f4f5641c4bab0f0c0e5000ceed359
         tags:
             - latest
+            - speakeasy-sdk-regen-1771494941
             - 0.2.0
 targets:
     raijin-labs-lucid-ai:
         source: LucidLayer API
         sourceNamespace: lucid-layer-api
-        sourceRevisionDigest: sha256:5ee73f9e2c46e3fd957fd5fac245e15de1c064458c1e9e7d74d5df01a81dedb6
-        sourceBlobDigest: sha256:42aac0780953dd6faab26dd26cac5f57965274e09e2fe7ecf04dd739f9625f97
+        sourceRevisionDigest: sha256:954968edf20ec513444c9f6b9d3d783a02065e1f9e97438fc2463418856d8e08
+        sourceBlobDigest: sha256:ca9dca4e31ab80da814e12becc0d0a2cc17f4f5641c4bab0f0c0e5000ceed359
         codeSamplesNamespace: lucid-layer-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:f81635d5ba566e0ed1e9c5f76fb8ff76a7f47d450ddc7289e299cc867c69df64
+        codeSamplesRevisionDigest: sha256:5fa821acc401450432a6bbff449d49cb8e31b00dd9a97b51dcdbccc3b69e8e7c
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
     sources:
         LucidLayer API:
             inputs:
-                - location: ../../openapi.yaml
+                - location: ../openapi.yaml
             overlays:
                 - location: .speakeasy/speakeasy-modifications-overlay.yaml
             output: .speakeasy/out.openapi.yaml

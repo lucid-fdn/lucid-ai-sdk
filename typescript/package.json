@@ -1,6 +1,6 @@
 {
   "name": "raijin-labs-lucid-ai",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "author": "Speakeasy",
   "type": "module",
   "tshy": {
@@ -19,6 +19,11 @@
     }
   },
   "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raijinlabs/lucid-ai-sdk.git",
+    "directory": "typescript"
+  },
   "scripts": {
     "lint": "eslint --cache --max-warnings=0 src",
     "build": "tshy",
@@ -26,8 +31,8 @@
   },
   "peerDependencies": {},
   "devDependencies": {
-    "@eslint/js": "^9.19.0",
-    "eslint": "^9.19.0",
+    "@eslint/js": "^9.26.0",
+    "eslint": "^9.26.0",
     "globals": "^15.14.0",
     "tshy": "^2.0.0",
     "typescript": "~5.8.3",

@@ -306,6 +306,114 @@ console.log("Stats:", stats);
 
 For a complete end-to-end example, see [`examples/full-walkthrough.ts`](./examples/full-walkthrough.ts).
 
+<!-- Start Summary [summary] -->
+## Summary
+
+LucidLayer API: LucidLayer Offchain API.
+
+This OpenAPI spec is the source of truth for the actual backend routes.
+It is used to generate SDK clients via Speakeasy.
+
+Route groups:
+- `/v1/*` — Passports, Match, Run, Receipts, Epochs, Payouts, Compute
+- `/health/*` — System health and dependency checks
+- `/api/agents/*` — AI Agent MMR, Planner, and Orchestrator
+<!-- End Summary [summary] -->
+
+<!-- Start Table of Contents [toc] -->
+## Table of Contents
+<!-- $toc-max-depth=2 -->
+* [raijin-labs-lucid-ai](#raijin-labs-lucid-ai)
+  * [Installation](#installation)
+  * [Requirements](#requirements)
+  * [Quick Start](#quick-start)
+  * [Usage Examples](#usage-examples)
+  * [SDK Installation](#sdk-installation)
+  * [Requirements](#requirements-1)
+  * [SDK Example Usage](#sdk-example-usage)
+  * [Available Resources and Operations](#available-resources-and-operations)
+  * [Standalone functions](#standalone-functions)
+  * [Retries](#retries)
+  * [Error Handling](#error-handling)
+  * [Server Selection](#server-selection)
+  * [Custom HTTP Client](#custom-http-client)
+  * [Debugging](#debugging)
+  * [Development](#development)
+
+<!-- End Table of Contents [toc] -->
+
+<!-- Start SDK Installation [installation] -->
+## SDK Installation
+
+> [!TIP]
+> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
+
+
+The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
+
+### NPM
+
+```bash
+npm add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+```
+
+### PNPM
+
+```bash
+pnpm add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+```
+
+### Bun
+
+```bash
+bun add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+```
+
+### Yarn
+
+```bash
+yarn add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+```
+
+> [!NOTE]
+> This package is published with CommonJS and ES Modules (ESM) support.
+<!-- End SDK Installation [installation] -->
+
+<!-- Start Requirements [requirements] -->
+## Requirements
+
+For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
+<!-- End Requirements [requirements] -->
+
+<!-- Start SDK Example Usage [usage] -->
+## SDK Example Usage
+
+### Example
+
+```typescript
+import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.create({
+    type: "dataset",
+    owner: "<value>",
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End SDK Example Usage [usage] -->
+
 <!-- Start Available Resources and Operations [operations] -->
 ## Available Resources and Operations
 
@@ -502,37 +610,48 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 <!-- Start Retries [retries] -->
 ## Retries
 
-Some of the endpoints in this SDK support retries. If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API. However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
+Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const sdk = new RaijinLabsLucidAi();
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
-const result = await sdk.passports.create({
-  type: "model",
-  owner: "YOUR_WALLET_ADDRESS",
-  metadata: { schema_version: "1.0" },
-}, {
-  retries: {
-    strategy: "backoff",
-    backoff: {
-      initialInterval: 1,
-      maxInterval: 50,
-      exponent: 1.1,
-      maxElapsedTime: 100,
+async function run() {
+  const result = await raijinLabsLucidAi.passports.create({
+    type: "dataset",
+    owner: "<value>",
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
     },
-    retryConnectionErrors: false,
-  },
-});
+  }, {
+    retries: {
+      strategy: "backoff",
+      backoff: {
+        initialInterval: 1,
+        maxInterval: 50,
+        exponent: 1.1,
+        maxElapsedTime: 100,
+      },
+      retryConnectionErrors: false,
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+
 ```
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const sdk = new RaijinLabsLucidAi({
+const raijinLabsLucidAi = new RaijinLabsLucidAi({
   retryConfig: {
     strategy: "backoff",
     backoff: {
@@ -544,6 +663,23 @@ const sdk = new RaijinLabsLucidAi({
     retryConnectionErrors: false,
   },
 });
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.create({
+    type: "dataset",
+    owner: "<value>",
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+
 ```
 <!-- End Retries [retries] -->
 
@@ -566,33 +702,49 @@ const sdk = new RaijinLabsLucidAi({
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 import * as errors from "raijin-labs-lucid-ai/models/errors";
 
-const sdk = new RaijinLabsLucidAi();
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
-try {
-  const result = await sdk.passports.create({
-    type: "model",
-    owner: "YOUR_WALLET_ADDRESS",
-    metadata: { schema_version: "1.0" },
-  });
-  console.log(result);
-} catch (error) {
-  if (error instanceof errors.RaijinLabsLucidAiError) {
-    console.log(error.message);
-    console.log(error.statusCode);
-    console.log(error.body);
+async function run() {
+  try {
+    const result = await raijinLabsLucidAi.passports.create({
+      type: "dataset",
+      owner: "<value>",
+      metadata: {
+        "key": "<value>",
+        "key1": "<value>",
+        "key2": "<value>",
+      },
+    });
 
-    if (error instanceof errors.ErrorResponse) {
-      console.log(error.data$.error);
-      console.log(error.data$.message);
+    console.log(result);
+  } catch (error) {
+    // The base class for HTTP error responses
+    if (error instanceof errors.RaijinLabsLucidAiError) {
+      console.log(error.message);
+      console.log(error.statusCode);
+      console.log(error.body);
+      console.log(error.headers);
+
+      // Depending on the method different errors may be thrown
+      if (error instanceof errors.ErrorResponse) {
+        console.log(error.data$.success); // boolean
+        console.log(error.data$.error); // string
+        console.log(error.data$.message); // string
+        console.log(error.data$.errorCode); // string
+        console.log(error.data$.details); // any
+      }
     }
   }
 }
+
+run();
+
 ```
 
 ### Error Classes
 **Primary errors:**
 * [`RaijinLabsLucidAiError`](./src/models/errors/raijinlabslucidaierror.ts): The base class for HTTP error responses.
-  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Bad Request.
+  * [`ErrorResponse`](./src/models/errors/errorresponse.ts): Bad Request. *
 
 <details><summary>Less common errors (9)</summary>
 
@@ -605,26 +757,47 @@ try {
 * [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
 * [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
 
+
 **Inherit from [`RaijinLabsLucidAiError`](./src/models/errors/raijinlabslucidaierror.ts)**:
-* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 69 methods.
-* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 69 methods.
-* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 69 methods.
+* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 69 methods.*
+* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 69 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 69 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
 ## Server Selection
 
-The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance:
+### Override Server URL Per-Client
 
+The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
-const sdk = new RaijinLabsLucidAi({
+const raijinLabsLucidAi = new RaijinLabsLucidAi({
   serverURL: "https://api.lucid.foundation",
 });
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.create({
+    type: "dataset",
+    owner: "<value>",
+    metadata: {
+      "key": "<value>",
+      "key1": "<value>",
+      "key2": "<value>",
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+
 ```
 <!-- End Server Selection [server] -->
 
@@ -641,25 +814,32 @@ The `HTTPClient` constructor takes an optional `fetcher` argument that can be
 used to integrate a third-party HTTP client or when writing tests to mock out
 the HTTP client and feed in fixtures.
 
-The following example shows how to use the `"beforeRequest"` hook to add a
-custom header and a timeout to requests and how to use the `"requestError"` hook
-to log errors:
+The following example shows how to:
+- route requests through a proxy server using [undici](https://www.npmjs.com/package/undici)'s ProxyAgent
+- use the `"beforeRequest"` hook to add a custom header and a timeout to requests
+- use the `"requestError"` hook to log errors
 
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+import { ProxyAgent } from "undici";
 import { HTTPClient } from "raijin-labs-lucid-ai/lib/http";
 
+const dispatcher = new ProxyAgent("http://proxy.example.com:8080");
+
 const httpClient = new HTTPClient({
-  fetcher: (request) => {
-    return fetch(request);
-  }
+  // 'fetcher' takes a function that has the same signature as native 'fetch'.
+  fetcher: (input, init) =>
+    // 'dispatcher' is specific to undici and not part of the standard Fetch API.
+    fetch(input, { ...init, dispatcher } as RequestInit),
 });
 
 httpClient.addHook("beforeRequest", (request) => {
   const nextRequest = new Request(request, {
     signal: request.signal || AbortSignal.timeout(5000)
   });
+
   nextRequest.headers.set("x-custom-header", "custom value");
+
   return nextRequest;
 });
 
@@ -670,7 +850,7 @@ httpClient.addHook("requestError", (error, request) => {
   console.groupEnd();
 });
 
-const sdk = new RaijinLabsLucidAi({ httpClient });
+const sdk = new RaijinLabsLucidAi({ httpClient: httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 
@@ -707,3 +887,5 @@ While we value open-source contributions to this SDK, this library is generated 
 We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release.
 
 ### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=raijin-labs-lucid-ai&utm_campaign=typescript)
+
+<!-- Placeholder for Future Speakeasy SDK Sections -->

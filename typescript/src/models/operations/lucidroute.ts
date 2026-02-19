@@ -11,9 +11,12 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidRouteRequest = {
-  modelMeta?: { [k: string]: any } | undefined;
+  /**
+   * Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
+   */
+  modelMeta?: models.ModelMeta | undefined;
   policy?: models.Policy | undefined;
-  computeCatalog?: Array<{ [k: string]: any }> | undefined;
+  computeCatalog?: Array<models.ComputeMeta> | undefined;
   requestId?: string | undefined;
   requireLiveHealthy?: boolean | undefined;
 };
@@ -39,9 +42,9 @@ export type LucidRouteResponse = {
 
 /** @internal */
 export type LucidRouteRequest$Outbound = {
-  model_meta?: { [k: string]: any } | undefined;
+  model_meta?: models.ModelMeta$Outbound | undefined;
   policy?: models.Policy$Outbound | undefined;
-  compute_catalog?: Array<{ [k: string]: any }> | undefined;
+  compute_catalog?: Array<models.ComputeMeta$Outbound> | undefined;
   request_id?: string | undefined;
   require_live_healthy: boolean;
 };
@@ -52,9 +55,9 @@ export const LucidRouteRequest$outboundSchema: z.ZodMiniType<
   LucidRouteRequest
 > = z.pipe(
   z.object({
-    modelMeta: z.optional(z.record(z.string(), z.any())),
+    modelMeta: z.optional(models.ModelMeta$outboundSchema),
     policy: z.optional(models.Policy$outboundSchema),
-    computeCatalog: z.optional(z.array(z.record(z.string(), z.any()))),
+    computeCatalog: z.optional(z.array(models.ComputeMeta$outboundSchema)),
     requestId: z.optional(z.string()),
     requireLiveHealthy: z._default(z.boolean(), true),
   }),

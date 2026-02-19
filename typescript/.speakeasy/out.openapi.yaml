@@ -521,8 +521,8 @@ paths:
               type: object
               properties:
                 policy: {$ref: '#/components/schemas/Policy'}
-                compute_meta: {type: object, additionalProperties: true}
-                model_meta: {type: object, additionalProperties: true}
+                compute_meta: {$ref: '#/components/schemas/ComputeMeta'}
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
       responses:
         '200':
           description: OK
@@ -556,11 +556,11 @@ paths:
             schema:
               type: object
               properties:
-                model_meta: {type: object, additionalProperties: true}
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
                 policy: {$ref: '#/components/schemas/Policy'}
                 compute_catalog:
                   type: array
-                  items: {type: object, additionalProperties: true}
+                  items: {$ref: '#/components/schemas/ComputeMeta'}
                 require_live_healthy: {type: boolean, default: true}
       responses:
         '200':
@@ -592,11 +592,11 @@ paths:
             schema:
               type: object
               properties:
-                model_meta: {type: object, additionalProperties: true}
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
                 policy: {$ref: '#/components/schemas/Policy'}
                 compute_catalog:
                   type: array
-                  items: {type: object, additionalProperties: true}
+                  items: {$ref: '#/components/schemas/ComputeMeta'}
                 request_id: {type: string}
                 require_live_healthy: {type: boolean, default: true}
       responses:
@@ -2313,6 +2313,190 @@ components:
           properties:
             store_inputs: {type: boolean}
             redact_pii: {type: boolean}
+    # =========================================================================
+    # ComputeMeta / ModelMeta schemas  (mirror schemas/*.schema.json)
+    # =========================================================================
+    ComputeHardware:
+      type: object
+      required: [gpu, vram_gb]
+      properties:
+        gpu: {type: string, description: "GPU model (e.g. 'NVIDIA-A100-40GB')"}
+        vram_gb: {type: integer, minimum: 0, description: GPU VRAM in gigabytes}
+        arch: {type: string, description: "GPU architecture (e.g. 'ampere', 'hopper')"}
+        gpu_count: {type: integer, minimum: 1, default: 1}
+        cpu_cores: {type: integer, minimum: 1}
+        memory_gb: {type: integer, minimum: 1, description: System RAM in gigabytes}
+    ComputeRuntime:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          enum: [vllm, tgi, tensorrt, hf-inference-api, openai-compatible, custom]
+        version: {type: string}
+        image: {type: string, description: Docker image reference}
+    ComputeCapabilities:
+      type: object
+      properties:
+        supports_streaming: {type: boolean, default: true}
+        supports_attestation: {type: boolean, default: false}
+        supports_cc_on: {type: boolean, default: false}
+        inference_types:
+          type: array
+          items:
+            type: string
+            enum: [text-generation, chat-completion, embeddings, image-generation, speech-to-text]
+    ComputeEndpoints:
+      type: object
+      required: [inference_url]
+      properties:
+        inference_url: {type: string, description: URL for inference requests}
+        quote_url: {type: string, format: uri}
+        jobs_url: {type: string, format: uri}
+        health_url: {type: string, format: uri}
+        metrics_url: {type: string, format: uri}
+    ComputeWorker:
+      type: object
+      required: [worker_id, status]
+      properties:
+        worker_id: {type: string}
+        status:
+          type: string
+          enum: [online, offline, degraded, draining]
+        last_heartbeat: {type: integer, description: Unix timestamp of last heartbeat}
+    ComputeMeta:
+      type: object
+      description: >-
+        Metadata for a compute provider passport. Validated against schemas/ComputeMeta.schema.json (additionalProperties: false).
+      required: [schema_version, compute_passport_id, provider_type, regions, hardware, runtimes, endpoints]
+      properties:
+        schema_version: {type: string, enum: ['1.0']}
+        compute_passport_id: {type: string, minLength: 10}
+        provider_type:
+          type: string
+          enum: [depin, cloud, onprem, managed]
+        execution_mode:
+          type: string
+          enum: [byo_runtime, managed_endpoint]
+        operator_pubkey:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+          description: ed25519 public key (hex) of the provider operator
+        regions:
+          type: array
+          items: {type: string}
+          minItems: 1
+        residency_supported: {type: boolean, default: false}
+        hardware: {$ref: '#/components/schemas/ComputeHardware'}
+        gpu_fingerprint:
+          type: string
+          nullable: true
+          description: "GPU hardware fingerprint. Must be null for managed_endpoint mode."
+        runtime_hash:
+          type: string
+          nullable: true
+          pattern: '^sha256:[a-f0-9]{64}$'
+          description: "Docker image digest. Must be null for managed_endpoint mode."
+        runtimes:
+          type: array
+          items: {$ref: '#/components/schemas/ComputeRuntime'}
+          minItems: 1
+        capabilities: {$ref: '#/components/schemas/ComputeCapabilities'}
+        network:
+          type: object
+          properties:
+            p95_ms_estimate: {type: integer, minimum: 0}
+            bandwidth: {type: string}
+        limits:
+          type: object
+          properties:
+            max_context: {type: integer, minimum: 0}
+            max_batch: {type: integer, minimum: 0}
+            max_input_tokens: {type: integer, minimum: 1}
+            max_output_tokens: {type: integer, minimum: 1}
+            requests_per_minute: {type: integer, minimum: 1}
+        pricing:
+          type: object
+          properties:
+            price_per_1k_tokens_estimate: {type: number, minimum: 0}
+            price_per_minute_estimate: {type: number, minimum: 0}
+            per_input_token: {type: number, minimum: 0}
+            per_output_token: {type: number, minimum: 0}
+            currency:
+              type: string
+              enum: [lamports, usd_cents, credits]
+        endpoints: {$ref: '#/components/schemas/ComputeEndpoints'}
+        workers:
+          type: array
+          items: {$ref: '#/components/schemas/ComputeWorker'}
+        sla:
+          type: object
+          properties:
+            tier:
+              type: string
+              enum: [best-effort, standard, premium, enterprise]
+            uptime_target: {type: number, minimum: 0, maximum: 100}
+        policy_tags:
+          type: array
+          items: {type: string}
+          description: "Tags for matching (e.g. 'hipaa', 'gdpr', 'no-logging')"
+        metadata:
+          type: object
+          additionalProperties: true
+    ModelRequirements:
+      type: object
+      properties:
+        min_vram_gb: {type: integer, minimum: 0}
+        gpu_classes:
+          type: array
+          items: {type: string}
+        cuda_min: {type: string}
+    ModelMeta:
+      type: object
+      description: >-
+        Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
+      required: [schema_version, model_passport_id, format, runtime_recommended]
+      properties:
+        schema_version: {type: string, enum: ['1.0']}
+        model_passport_id: {type: string, minLength: 10}
+        format:
+          type: string
+          enum: [safetensors, gguf, api]
+        runtime_recommended:
+          type: string
+          enum: [vllm, tgi, tensorrt, llmproxy, openai]
+        name: {type: string}
+        description: {type: string}
+        provider: {type: string, description: "Provider name (e.g. llm-proxy, openai)"}
+        base:
+          type: string
+          enum: [hf, openai, anthropic, google, cohere, custom_endpoint]
+          default: hf
+        hf:
+          type: object
+          properties:
+            repo_id: {type: string}
+            revision: {type: string}
+        context_length: {type: integer, minimum: 1}
+        quantizations:
+          type: array
+          items:
+            type: string
+            enum: [fp16, int8, awq, gptq, gguf_q4]
+        requirements: {$ref: '#/components/schemas/ModelRequirements'}
+        endpoints:
+          type: object
+          properties:
+            openai_compat_base_url: {type: string}
+            auth_mode:
+              type: string
+              enum: [byok, lucid_key, none]
+              default: none
+        artifacts:
+          type: array
+          items: {type: string}
+        weights_uri: {type: string}
+        weights_hash: {type: string}
     # =========================================================================
     # Chat / Inference schemas
     # =========================================================================

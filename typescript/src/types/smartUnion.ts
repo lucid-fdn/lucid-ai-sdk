@@ -88,6 +88,14 @@ export function smartUnion<
 }
 
 function better(a: Candidate, b: Candidate): Candidate {
+  // First prefer exact matches over inexact ones
+  const aIsExact = a.inexactCount === 0;
+  const bIsExact = b.inexactCount === 0;
+  if (aIsExact !== bIsExact) {
+    return aIsExact ? a : b;
+  }
+
+  // Then compare field counts
   const actualFieldCountA = a.fieldCount - a.zeroDefaultCount;
   const actualFieldCountB = b.fieldCount - b.zeroDefaultCount;
   if (actualFieldCountA !== actualFieldCountB) {
