@@ -6,7 +6,7 @@ sources:
         sourceBlobDigest: sha256:ca9dca4e31ab80da814e12becc0d0a2cc17f4f5641c4bab0f0c0e5000ceed359
         tags:
             - latest
-            - speakeasy-sdk-regen-1771498315
+            - speakeasy-sdk-regen-1771499224
             - 0.2.0
 targets:
     raijin-labs-lucid-ai:
@@ -15,7 +15,7 @@ targets:
         sourceRevisionDigest: sha256:954968edf20ec513444c9f6b9d3d783a02065e1f9e97438fc2463418856d8e08
         sourceBlobDigest: sha256:ca9dca4e31ab80da814e12becc0d0a2cc17f4f5641c4bab0f0c0e5000ceed359
         codeSamplesNamespace: lucid-layer-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:3b57014537398c16f1fb7ec85ffd0f297c9b76bd6d7d818aa981f5753d11f5e8
+        codeSamplesRevisionDigest: sha256:9c2ed00b69ab0c23f27a1642cee920a8137c6eb98a293f282f65c9f45f43cfa8
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest
@@ -28,13 +28,6 @@ workflow:
             output: .speakeasy/out.openapi.yaml
             registry:
                 location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api
-        docs-source:
-            inputs:
-                - location: ../openapi.yaml
-            overlays:
-                - location: .speakeasy/speakeasy-modifications-overlay.yaml
-                - location: code-samples.yaml
-            output: ../openapi-with-code-samples.yaml
     targets:
         raijin-labs-lucid-ai:
             target: typescript
