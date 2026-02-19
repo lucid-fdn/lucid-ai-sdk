@@ -1,0 +1,1294 @@
+overlay: 1.0.0
+info:
+  title: CodeSamples overlay for typescript target
+  version: 0.0.0
+actions:
+  - target: $["paths"]["/api/agents"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.listAgents();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/accomplish"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.accomplishAgentGoal({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/accomplish/preview"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.previewAgentWorkflow({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/batch-epochs"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.processAgentBatchEpochs({
+                epochs: [],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/epoch"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.processAgentEpoch({
+                agentId: "<id>",
+                vectors: [
+                  "<value 1>",
+                  "<value 2>",
+                  "<value 3>",
+                ],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/execute"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.executeAgentFlowspec({
+                flowspec: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+                context: {
+                  tenantId: "<id>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/executor/decision"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getExecutorDecision({
+                flowspec: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/executor/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.checkExecutorHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/history/{tenantId}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentOrchestratorHistory({
+                tenantId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/init"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.initAgent({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/orchestrator/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.checkAgentOrchestratorHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/plan"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.planAgentWorkflow({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/planner/info"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getPlannerInfo();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/proof"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.generateAgentProof({
+                agentId: "<id>",
+                vectorText: "<value>",
+                epochNumber: 73472,
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/validate"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.validateFlowspec({
+                "key": "<value>",
+                "key1": "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/{agentId}/history"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentHistory({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/{agentId}/root"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentRoot({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/{agentId}/stats"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentStats({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/api/agents/{agentId}/verify"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.verifyAgentMmr({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkSystemHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/database"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkDatabaseHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/detailed"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.getDetailedHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/live"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkLiveness();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/nango"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkNangoHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/ready"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkReadiness();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/health/redis"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkRedisHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/agents"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListAgentPassports();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/anchoring/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getAnchoringHealth();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/chat/completions"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.run.chatCompletions({
+                model: "Alpine",
+                messages: [],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/compute"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.searchCompute();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/compute/nodes/heartbeat"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.heartbeat({
+                computePassportId: "<id>",
+                status: "healthy",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/compute/nodes/{computePassportId}/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.getNodeHealth({
+                computePassportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/datasets"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListDatasets();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.list();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.create({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/current"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getCurrent();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/ready"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.listReady();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/stats"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getStats();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/{epoch_id}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.get({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/{epoch_id}/retry"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.retry({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/{epoch_id}/transaction"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getTransaction({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/epochs/{epoch_id}/verify"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.verify({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/match"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.compute({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/match/explain"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.explain({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/mmr/root"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getMmrRoot();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/models"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.searchModels();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.list();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.create({
+                type: "dataset",
+                owner: "<value>",
+                metadata: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/pending-sync"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.listPendingSync();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/stats"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.getStats();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/{passport_id}"]["delete"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.delete({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/{passport_id}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.get({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/{passport_id}"]["patch"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.update({
+                passportId: "<id>",
+                body: {},
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/passports/{passport_id}/sync"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.sync({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/payouts/calculate"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.calculate({
+                runId: "<id>",
+                totalAmountLamports: 721074,
+                computeWallet: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/payouts/from-receipt"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.createFromReceipt({
+                runId: "<id>",
+                tokensIn: 844317,
+                tokensOut: 600261,
+                pricePer1kTokensLamports: "<value>",
+                computeWallet: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/payouts/{run_id}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.get({
+                runId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/payouts/{run_id}/verify"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.verify({
+                runId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.create({
+                modelPassportId: "<id>",
+                computePassportId: "<id>",
+                policyHash: "<value>",
+                runtime: "<value>",
+                tokensIn: 184620,
+                tokensOut: 329999,
+                ttftMs: 417264,
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts/commit-root"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.commitRoot({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts/commit-roots-batch"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.commitRootsBatch({
+                epochIds: [
+                  "<value 1>",
+                ],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts/{receipt_id}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.get({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts/{receipt_id}/proof"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getProof({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/receipts/{receipt_id}/verify"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.verify({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/route"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.planRoute({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/run/inference"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.run.inference({});
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/signer/pubkey"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getSignerPubKey();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/tools"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListTools();
+
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/verify/{receipt_hash}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.lucidVerifyReceiptByHash({
+                receiptHash: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();

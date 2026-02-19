@@ -3,17 +3,17 @@ id: 46efd3b8-8233-4c78-b46e-aa117a6adac4
 management:
   docChecksum: 845aa26cfdd622dd7cd87189f371a441
   docVersion: 0.2.0
-  speakeasyVersion: 1.722.5
-  generationVersion: 2.832.5
-  releaseVersion: 0.5.0
-  configChecksum: f24bcfca311a57a69d26e6e14c7318ab
+  speakeasyVersion: 1.722.6
+  generationVersion: 2.832.6
+  releaseVersion: 0.5.1
+  configChecksum: 73e689111cd9119cf809ccd13d208e32
   repoURL: https://github.com/raijinlabs/lucid-ai-sdk.git
   repoSubDirectory: typescript
   installationURL: https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
 persistentEdits:
-  generation_id: 214ea33c-b3de-4012-8f5a-ca79a993f7a2
-  pristine_commit_hash: aef8921d15ddef5770fec02dfe76bcadfbd1719f
-  pristine_tree_hash: 94438b55f6db945bd2b8e4eb23e99728df1e196b
+  generation_id: 5fdc37e7-94bd-49f4-bf1e-90bd98697deb
+  pristine_commit_hash: e9f5d1e5d953ad3d56a634b6648b5882d94274fb
+  pristine_tree_hash: d52b420ac5116f1d9ce4e50350d131dc33261860
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -963,12 +963,12 @@ trackedFiles:
     pristine_git_object: e541374764ba03f72082bca79d57f23eb9bcd560
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:10344722b960bd783adce70bc48c7eac8432ec37
-    pristine_git_object: 800d8734c0d6c68ae7c879f4bd819696331a33f0
+    last_write_checksum: sha1:b675a45232a003581c161f84fc553d12ed912ed1
+    pristine_git_object: 8d8f2ef4a9b7816941d1aed4f10ec1e782111920
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:8b2f2946b401e2a6fabb3b356014a30199acbe63
-    pristine_git_object: 21514e52cb44e6349a0b11e3c5806398d8c8fca8
+    last_write_checksum: sha1:5e1339bb45a2fa10ba272d97b84687d0a46ff0e8
+    pristine_git_object: a317e76daa849dcdfb9c8479655c487de9aadc1c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:acd63588d1ce7b241472994bc970a51fcb131fa4
@@ -1271,8 +1271,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:f375a021e9e9211d22ea6fea9e3fd5c5d3c40af7
-    pristine_git_object: e70fb005d1db00122f276ec766d091d8efbde32a
+    last_write_checksum: sha1:36f22bf999a7c6df031ef489493d99635a65dfd7
+    pristine_git_object: 839eaa9d361de404cc863204b839e3b37106dce1
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -2576,8 +2576,3 @@ examples:
         "500":
           application/json: {}
 examplesVersion: 1.0.2
-releaseNotes: |
-  ## Typescript SDK Changes:
-  * `raijinlabslucidai.match.explain()`:  `request` **Changed** (Breaking ⚠️)
-  * `raijinlabslucidai.match.compute()`:  `request` **Changed** (Breaking ⚠️)
-  * `raijinlabslucidai.match.planRoute()`:  `request` **Changed** (Breaking ⚠️)
