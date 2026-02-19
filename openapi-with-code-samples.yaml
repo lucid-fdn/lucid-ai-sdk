@@ -1,0 +1,4151 @@
+openapi: 3.0.3
+info:
+  title: LucidLayer API
+  version: 0.2.0
+  description: |
+    LucidLayer Offchain API.
+
+    This OpenAPI spec is the source of truth for the actual backend routes.
+    It is used to generate SDK clients via Speakeasy.
+
+    Route groups:
+    - `/v1/*` — Passports, Match, Run, Receipts, Epochs, Payouts, Compute
+    - `/health/*` — System health and dependency checks
+    - `/api/agents/*` — AI Agent MMR, Planner, and Orchestrator
+servers:
+  - url: https://api.lucid.foundation
+    description: Production server
+# Speakeasy MCP tool generation configuration
+x-speakeasy-mcp:
+  scope-mapping:
+    - pattern: "^(get|list|search)"
+      scopes: [read]
+    - pattern: "^(verify|check)"
+      scopes: [read]
+    - pattern: "^(create|update|trigger|submit|commit|retry|run|calculate|init|process|plan|accomplish|execute|validate)"
+      scopes: [write]
+    - pattern: "^(delete)"
+      scopes: [write, destructive]
+tags:
+  - name: Passports
+  - name: Match
+  - name: Run
+  - name: Receipts
+  - name: Epochs
+  - name: Payouts
+  - name: Compute
+  - name: Health
+  - name: Agents
+paths:
+  # ===========================================================================
+  # Passports
+  # ===========================================================================
+  /v1/passports:
+    post:
+      tags: [Passports]
+      operationId: lucid_create_passport
+      summary: Create a passport
+      x-speakeasy-mcp:
+        name: lucid_create_passport
+        description: Create a new passport (model/compute/tool/dataset/agent).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePassportRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePassportResponse'
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '422': {$ref: '#/components/responses/UnprocessableEntity'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.create({
+                type: "dataset",
+                owner: "<value>",
+                metadata: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+    get:
+      tags: [Passports]
+      operationId: lucid_list_passports
+      summary: List passports
+      x-speakeasy-mcp:
+        name: lucid_list_passports
+        description: List passports with filtering, sorting, and pagination.
+      parameters:
+        - in: query
+          name: type
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/PassportType'
+              - type: array
+                items: {$ref: '#/components/schemas/PassportType'}
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: status
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/PassportStatus'
+              - type: array
+                items: {$ref: '#/components/schemas/PassportStatus'}
+        - in: query
+          name: tags
+          description: Comma-separated
+          schema: {type: string}
+        - in: query
+          name: tag_match
+          schema: {type: string, enum: [all, any]}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+        - in: query
+          name: sort_by
+          schema: {type: string, enum: [created_at, updated_at, name]}
+        - in: query
+          name: sort_order
+          schema: {type: string, enum: [asc, desc]}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPassportsResponse'
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.list();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/passports/{passport_id}:
+    get:
+      tags: [Passports]
+      operationId: lucid_get_passport
+      summary: Get a passport
+      x-speakeasy-mcp:
+        name: lucid_get_passport
+        description: Retrieve a passport by its passport_id.
+      parameters:
+        - in: path
+          name: passport_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPassportResponse'
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.get({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+    patch:
+      tags: [Passports]
+      operationId: lucid_update_passport
+      summary: Update a passport
+      x-speakeasy-mcp:
+        name: lucid_update_passport
+        description: Update an existing passport by passport_id.
+      parameters:
+        - in: path
+          name: passport_id
+          required: true
+          schema: {type: string}
+        - in: header
+          name: X-Owner-Address
+          required: false
+          schema: {type: string}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePassportRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPassportResponse'
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.update({
+                passportId: "<id>",
+                body: {},
+              });
+
+              console.log(result);
+            }
+
+            run();
+    delete:
+      tags: [Passports]
+      operationId: lucid_delete_passport
+      summary: Delete a passport (soft delete)
+      x-speakeasy-mcp:
+        name: lucid_delete_passport
+        description: Soft-delete a passport by passport_id.
+      parameters:
+        - in: path
+          name: passport_id
+          required: true
+          schema: {type: string}
+        - in: header
+          name: X-Owner-Address
+          required: false
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, deleted]
+                properties:
+                  success: {type: boolean}
+                  deleted: {type: boolean}
+        '403': {$ref: '#/components/responses/Forbidden'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.delete({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/passports/{passport_id}/sync:
+    post:
+      tags: [Passports]
+      operationId: lucid_trigger_passport_sync
+      summary: Trigger on-chain sync for a passport
+      x-speakeasy-mcp:
+        name: lucid_trigger_passport_sync
+        description: Trigger on-chain sync for a passport.
+      parameters:
+        - in: path
+          name: passport_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success: {type: boolean}
+                  on_chain_pda: {type: string, nullable: true}
+                  on_chain_tx: {type: string, nullable: true}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.sync({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/passports/pending-sync:
+    get:
+      tags: [Passports]
+      operationId: lucid_list_passports_pending_sync
+      summary: Get passports pending sync
+      x-speakeasy-mcp:
+        name: lucid_list_passports_pending_sync
+        description: List passports that are pending on-chain sync.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, count, passports]
+                properties:
+                  success: {type: boolean}
+                  count: {type: integer}
+                  passports:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.listPendingSync();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/passports/stats:
+    get:
+      tags: [Passports]
+      operationId: lucid_get_passport_stats
+      summary: Passport statistics
+      x-speakeasy-mcp:
+        name: lucid_get_passport_stats
+        description: Get passport statistics.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PassportStatsResponse'
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.getStats();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/models:
+    get:
+      tags: [Passports]
+      operationId: lucid_search_models
+      summary: Search model passports
+      x-speakeasy-mcp:
+        name: lucid_search_models
+        description: Search model passports (ModelMeta filters).
+      parameters:
+        - in: query
+          name: runtime
+          schema: {type: string}
+        - in: query
+          name: format
+          schema: {type: string}
+        - in: query
+          name: max_vram
+          schema: {type: integer}
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: tags
+          schema: {type: string}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, models, pagination]
+                properties:
+                  success: {type: boolean}
+                  models:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.searchModels();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/compute:
+    get:
+      tags: [Compute]
+      operationId: lucid_search_compute
+      summary: Search compute passports
+      x-speakeasy-mcp:
+        name: lucid_search_compute
+        description: Search compute passports (ComputeMeta filters).
+      parameters:
+        - in: query
+          name: regions
+          schema: {type: string}
+        - in: query
+          name: runtimes
+          schema: {type: string}
+        - in: query
+          name: provider_type
+          schema: {type: string}
+        - in: query
+          name: min_vram
+          schema: {type: integer}
+        - in: query
+          name: gpu
+          schema: {type: string}
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: tags
+          schema: {type: string}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, compute, pagination]
+                properties:
+                  success: {type: boolean}
+                  compute:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.searchCompute();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/tools:
+    get:
+      tags: [Passports]
+      operationId: lucid_list_tools
+      summary: List tool passports
+      x-speakeasy-mcp:
+        name: lucid_list_tools
+        description: List active tool passports with optional filtering.
+      parameters:
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: tags
+          description: Comma-separated
+          schema: {type: string}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, tools, pagination]
+                properties:
+                  success: {type: boolean}
+                  tools:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListTools();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/datasets:
+    get:
+      tags: [Passports]
+      operationId: lucid_list_datasets
+      summary: List dataset passports
+      x-speakeasy-mcp:
+        name: lucid_list_datasets
+        description: List active dataset passports with optional filtering.
+      parameters:
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: tags
+          description: Comma-separated
+          schema: {type: string}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, datasets, pagination]
+                properties:
+                  success: {type: boolean}
+                  datasets:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListDatasets();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/agents:
+    get:
+      tags: [Passports]
+      operationId: lucid_list_agent_passports
+      summary: List agent passports
+      x-speakeasy-mcp:
+        name: lucid_list_agent_passports
+        description: List active agent passports with optional filtering.
+      parameters:
+        - in: query
+          name: owner
+          schema: {type: string}
+        - in: query
+          name: tags
+          description: Comma-separated
+          schema: {type: string}
+        - in: query
+          name: search
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agents, pagination]
+                properties:
+                  success: {type: boolean}
+                  agents:
+                    type: array
+                    items: {$ref: '#/components/schemas/Passport'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidListAgentPassports();
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Match
+  # ===========================================================================
+  /v1/match/explain:
+    post:
+      tags: [Match]
+      operationId: lucid_match_explain
+      summary: Evaluate policy against compute/model meta
+      x-speakeasy-mcp:
+        name: lucid_match_explain
+        description: Evaluate a policy against compute & model metadata and explain the decision.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                policy: {$ref: '#/components/schemas/Policy'}
+                compute_meta: {$ref: '#/components/schemas/ComputeMeta'}
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, allowed, reasons, policy_hash]
+                properties:
+                  success: {type: boolean}
+                  allowed: {type: boolean}
+                  reasons:
+                    type: array
+                    items: {type: string}
+                  policy_hash: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.explain({});
+
+              console.log(result);
+            }
+
+            run();
+  /v1/match:
+    post:
+      tags: [Match]
+      operationId: lucid_match
+      summary: Match compute for model
+      x-speakeasy-mcp:
+        name: lucid_match
+        description: Match compute for a model given a compute catalog and policy constraints.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
+                policy: {$ref: '#/components/schemas/Policy'}
+                compute_catalog:
+                  type: array
+                  items: {$ref: '#/components/schemas/ComputeMeta'}
+                require_live_healthy: {type: boolean, default: true}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, match, explain]
+                properties:
+                  success: {type: boolean}
+                  match: {type: object, additionalProperties: true}
+                  explain: {type: object, additionalProperties: true}
+        '422': {$ref: '#/components/responses/UnprocessableEntity'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.compute({});
+
+              console.log(result);
+            }
+
+            run();
+  /v1/route:
+    post:
+      tags: [Match]
+      operationId: lucid_route
+      summary: Plan a route (match + resolve endpoint)
+      x-speakeasy-mcp:
+        name: lucid_route
+        description: Match + resolve an executable inference endpoint for a model.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                model_meta: {$ref: '#/components/schemas/ModelMeta'}
+                policy: {$ref: '#/components/schemas/Policy'}
+                compute_catalog:
+                  type: array
+                  items: {$ref: '#/components/schemas/ComputeMeta'}
+                request_id: {type: string}
+                require_live_healthy: {type: boolean, default: true}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, route, explain]
+                properties:
+                  success: {type: boolean}
+                  request_id: {type: string}
+                  route:
+                    type: object
+                    properties:
+                      compute_passport_id: {type: string}
+                      model_passport_id: {type: string}
+                      endpoint: {type: string}
+                      runtime: {type: string}
+                      policy_hash: {type: string}
+                      fallbacks:
+                        type: array
+                        items: {type: object, additionalProperties: true}
+                  explain: {type: object, additionalProperties: true}
+        '422': {$ref: '#/components/responses/UnprocessableEntity'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.match.planRoute({});
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Run / Inference
+  # ===========================================================================
+  /v1/run/inference:
+    post:
+      tags: [Run]
+      operationId: lucid_run_inference
+      summary: Run inference (optionally streaming via SSE)
+      x-speakeasy-mcp:
+        name: lucid_run_inference
+        description: |
+          Run inference through LucidLayer.
+          NOTE: streaming responses may not be supported by all MCP clients.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InferenceRequest'
+      responses:
+        '200':
+          description: Non-streaming inference result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InferenceResult'
+        '422': {$ref: '#/components/responses/UnprocessableEntity'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.run.inference({});
+
+              console.log(result);
+            }
+
+            run();
+  /v1/chat/completions:
+    post:
+      tags: [Run]
+      operationId: lucid_chat_completions
+      summary: OpenAI-compatible chat completions
+      x-speakeasy-mcp:
+        name: lucid_chat_completions
+        description: OpenAI-compatible chat completions routed through LucidLayer.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCompletionRequest'
+      responses:
+        '200':
+          description: Chat completion response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionResponse'
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.run.chatCompletions({
+                model: "Alpine",
+                messages: [],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Compute live-state
+  # ===========================================================================
+  /v1/compute/nodes/heartbeat:
+    post:
+      tags: [Compute]
+      operationId: lucid_heartbeat
+      summary: Submit compute node heartbeat
+      x-speakeasy-mcp:
+        name: lucid_heartbeat
+        description: Submit a compute node heartbeat to update live state.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ComputeHeartbeat'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: {type: boolean}
+                  state: {type: object, additionalProperties: true}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.heartbeat({
+                computePassportId: "<id>",
+                status: "healthy",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/compute/nodes/{computePassportId}/health:
+    get:
+      tags: [Compute]
+      operationId: lucid_get_health
+      summary: Get compute node health
+      x-speakeasy-mcp:
+        name: lucid_get_health
+        description: Get the current health state of a compute node.
+      parameters:
+        - in: path
+          name: computePassportId
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: {type: boolean}
+                  state: {type: object, additionalProperties: true}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.compute.getNodeHealth({
+                computePassportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Receipts
+  # ===========================================================================
+  /v1/receipts:
+    post:
+      tags: [Receipts]
+      operationId: lucid_create_receipt
+      summary: Create a receipt
+      x-speakeasy-mcp:
+        name: lucid_create_receipt
+        description: Create a receipt and append it to the receipt MMR.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateReceiptRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, receipt]
+                properties:
+                  success: {type: boolean}
+                  receipt: {$ref: '#/components/schemas/Receipt'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.create({
+                modelPassportId: "<id>",
+                computePassportId: "<id>",
+                policyHash: "<value>",
+                runtime: "<value>",
+                tokensIn: 184620,
+                tokensOut: 329999,
+                ttftMs: 417264,
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/receipts/{receipt_id}:
+    get:
+      tags: [Receipts]
+      operationId: lucid_get_receipt
+      summary: Get a receipt
+      x-speakeasy-mcp:
+        name: lucid_get_receipt
+        description: Retrieve a receipt by receipt_id.
+      parameters:
+        - in: path
+          name: receipt_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, receipt]
+                properties:
+                  success: {type: boolean}
+                  receipt: {$ref: '#/components/schemas/Receipt'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.get({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/receipts/{receipt_id}/verify:
+    get:
+      tags: [Receipts]
+      operationId: lucid_verify_receipt
+      summary: Verify a receipt (hash + signature + inclusion)
+      x-speakeasy-mcp:
+        name: lucid_verify_receipt
+        description: Verify a receipt (hash + signature + inclusion proof).
+      parameters:
+        - in: path
+          name: receipt_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptVerification'
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.verify({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/receipts/{receipt_id}/proof:
+    get:
+      tags: [Receipts]
+      operationId: lucid_get_receipt_proof
+      summary: Get inclusion proof for receipt
+      x-speakeasy-mcp:
+        name: lucid_get_receipt_proof
+        description: Get the inclusion proof for a receipt.
+      parameters:
+        - in: path
+          name: receipt_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, proof]
+                properties:
+                  success: {type: boolean}
+                  proof: {$ref: '#/components/schemas/ReceiptProof'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getProof({
+                receiptId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/verify/{receipt_hash}:
+    get:
+      tags: [Receipts]
+      operationId: lucid_verify_receipt_by_hash
+      summary: Verify receipt by hash with inclusion proof and epoch info
+      x-speakeasy-mcp:
+        name: lucid_verify_receipt_by_hash
+        description: >
+          Verify a receipt by its hash. Returns inclusion proof and on-chain anchoring status. Critical P0.9 endpoint for Fluid Compute.
+
+      parameters:
+        - in: path
+          name: receipt_hash
+          required: true
+          schema: {type: string, minLength: 64, maxLength: 64}
+          description: 64 hex character receipt hash
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReceiptHashVerification'
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.lucidVerifyReceiptByHash({
+                receiptHash: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/mmr/root:
+    get:
+      tags: [Receipts]
+      operationId: lucid_get_mmr_root
+      summary: Get current MMR root
+      x-speakeasy-mcp:
+        name: lucid_get_mmr_root
+        description: Get the current MMR root and leaf count.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, root, leaf_count]
+                properties:
+                  success: {type: boolean}
+                  root: {type: string}
+                  leaf_count: {type: integer}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getMmrRoot();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/signer/pubkey:
+    get:
+      tags: [Receipts]
+      operationId: lucid_get_signer_pubkey
+      summary: Get orchestrator signing public key
+      x-speakeasy-mcp:
+        name: lucid_get_signer_pubkey
+        description: Get the orchestrator signing public key.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, pubkey]
+                properties:
+                  success: {type: boolean}
+                  signer_type: {type: string}
+                  pubkey: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.receipts.getSignerPubKey();
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Epochs / anchoring
+  # ===========================================================================
+  /v1/epochs/current:
+    get:
+      tags: [Epochs]
+      operationId: lucid_get_current_epoch
+      summary: Get current epoch
+      x-speakeasy-mcp:
+        name: lucid_get_current_epoch
+        description: Get the current epoch.
+      parameters:
+        - in: query
+          name: project_id
+          required: false
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epoch]
+                properties:
+                  success: {type: boolean}
+                  epoch: {$ref: '#/components/schemas/Epoch'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getCurrent();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs:
+    get:
+      tags: [Epochs]
+      operationId: lucid_list_epochs
+      summary: List epochs
+      x-speakeasy-mcp:
+        name: lucid_list_epochs
+        description: List epochs with optional filtering and pagination.
+      parameters:
+        - in: query
+          name: project_id
+          schema: {type: string}
+        - in: query
+          name: status
+          schema: {type: string}
+        - in: query
+          name: page
+          schema: {type: integer, minimum: 1}
+        - in: query
+          name: per_page
+          schema: {type: integer, minimum: 1, maximum: 100}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epochs, pagination]
+                properties:
+                  success: {type: boolean}
+                  epochs:
+                    type: array
+                    items: {$ref: '#/components/schemas/Epoch'}
+                  pagination: {$ref: '#/components/schemas/Pagination'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.list();
+
+              console.log(result);
+            }
+
+            run();
+    post:
+      tags: [Epochs]
+      operationId: lucid_create_epoch
+      summary: Create epoch
+      x-speakeasy-mcp:
+        name: lucid_create_epoch
+        description: Create a new epoch.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_id: {type: string}
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epoch]
+                properties:
+                  success: {type: boolean}
+                  epoch: {$ref: '#/components/schemas/Epoch'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.create({});
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/{epoch_id}:
+    get:
+      tags: [Epochs]
+      operationId: lucid_get_epoch
+      summary: Get epoch
+      x-speakeasy-mcp:
+        name: lucid_get_epoch
+        description: Get an epoch by epoch_id.
+      parameters:
+        - in: path
+          name: epoch_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epoch]
+                properties:
+                  success: {type: boolean}
+                  epoch: {$ref: '#/components/schemas/Epoch'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.get({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/{epoch_id}/retry:
+    post:
+      tags: [Epochs]
+      operationId: lucid_retry_epoch
+      summary: Retry failed epoch
+      x-speakeasy-mcp:
+        name: lucid_retry_epoch
+        description: Retry a failed epoch.
+      parameters:
+        - in: path
+          name: epoch_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epoch]
+                properties:
+                  success: {type: boolean}
+                  epoch:
+                    type: object
+                    required: [epoch_id, status]
+                    properties:
+                      epoch_id: {type: string}
+                      status: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.retry({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/{epoch_id}/verify:
+    get:
+      tags: [Epochs]
+      operationId: lucid_verify_epoch
+      summary: Verify epoch anchor
+      x-speakeasy-mcp:
+        name: lucid_verify_epoch
+        description: Verify an epoch anchor on-chain.
+      parameters:
+        - in: path
+          name: epoch_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, valid]
+                properties:
+                  success: {type: boolean}
+                  valid: {type: boolean}
+                  on_chain_root: {type: string, nullable: true}
+                  expected_root: {type: string, nullable: true}
+                  tx_signature: {type: string, nullable: true}
+                  error: {type: string, nullable: true}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.verify({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/{epoch_id}/transaction:
+    get:
+      tags: [Epochs]
+      operationId: lucid_get_epoch_transaction
+      summary: Get epoch anchoring transaction
+      x-speakeasy-mcp:
+        name: lucid_get_epoch_transaction
+        description: Get epoch anchoring transaction details.
+      parameters:
+        - in: path
+          name: epoch_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, tx_signature]
+                properties:
+                  success: {type: boolean}
+                  tx_signature: {type: string}
+                  slot: {type: integer}
+                  block_time: {type: integer}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getTransaction({
+                epochId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/receipts/commit-root:
+    post:
+      tags: [Epochs]
+      operationId: lucid_commit_epoch_root
+      summary: Commit epoch root
+      x-speakeasy-mcp:
+        name: lucid_commit_epoch_root
+        description: Commit an epoch root to chain.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_id: {type: string}
+                epoch_id: {type: string}
+                force: {type: boolean}
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, epoch_id, root, tx]
+                properties:
+                  success: {type: boolean}
+                  epoch_id: {type: string}
+                  root: {type: string}
+                  tx: {type: string}
+                  leaf_count: {type: integer}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.commitRoot({});
+
+              console.log(result);
+            }
+
+            run();
+  /v1/receipts/commit-roots-batch:
+    post:
+      tags: [Epochs]
+      operationId: lucid_commit_epoch_roots_batch
+      summary: Commit multiple epoch roots
+      x-speakeasy-mcp:
+        name: lucid_commit_epoch_roots_batch
+        description: Commit multiple epoch roots.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [epoch_ids]
+              properties:
+                epoch_ids:
+                  type: array
+                  items: {type: string}
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, total, successful_count, failed_count, results]
+                properties:
+                  success: {type: boolean}
+                  total: {type: integer}
+                  successful_count: {type: integer}
+                  failed_count: {type: integer}
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        success: {type: boolean}
+                        epoch_id: {type: string}
+                        root: {type: string}
+                        signature: {type: string}
+                        error: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.commitRootsBatch({
+                epochIds: [
+                  "<value 1>",
+                ],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/anchoring/health:
+    get:
+      tags: [Epochs]
+      operationId: lucid_get_anchoring_health
+      summary: Anchoring service health
+      x-speakeasy-mcp:
+        name: lucid_get_anchoring_health
+        description: Health check for anchoring service.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, connected]
+                properties:
+                  success: {type: boolean}
+                  connected: {type: boolean}
+                  network: {type: string}
+                  authority: {type: string}
+                  mock_mode: {type: boolean}
+                  error: {type: string}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getAnchoringHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/ready:
+    get:
+      tags: [Epochs]
+      operationId: lucid_list_epochs_ready
+      summary: Get epochs ready for finalization
+      x-speakeasy-mcp:
+        name: lucid_list_epochs_ready
+        description: List epochs ready for finalization.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpochsReadyResponse'
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.listReady();
+
+              console.log(result);
+            }
+
+            run();
+  /v1/epochs/stats:
+    get:
+      tags: [Epochs]
+      operationId: lucid_get_epoch_stats
+      summary: Epoch statistics
+      x-speakeasy-mcp:
+        name: lucid_get_epoch_stats
+        description: Get epoch statistics.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpochStatsResponse'
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.epochs.getStats();
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Payouts
+  # ===========================================================================
+  /v1/payouts/calculate:
+    post:
+      tags: [Payouts]
+      operationId: lucid_calculate_payout
+      summary: Calculate payout split
+      x-speakeasy-mcp:
+        name: lucid_calculate_payout
+        description: Calculate payout split between recipients.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutCalculateRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, payout]
+                properties:
+                  success: {type: boolean}
+                  payout: {$ref: '#/components/schemas/Payout'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.calculate({
+                runId: "<id>",
+                totalAmountLamports: 721074,
+                computeWallet: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/payouts/from-receipt:
+    post:
+      tags: [Payouts]
+      operationId: lucid_payout_from_receipt
+      summary: Create payout from receipt token data
+      x-speakeasy-mcp:
+        name: lucid_payout_from_receipt
+        description: Create payout split from receipt token data.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayoutFromReceiptRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, payout]
+                properties:
+                  success: {type: boolean}
+                  payout: {$ref: '#/components/schemas/Payout'}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.createFromReceipt({
+                runId: "<id>",
+                tokensIn: 844317,
+                tokensOut: 600261,
+                pricePer1kTokensLamports: "<value>",
+                computeWallet: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/payouts/{run_id}:
+    get:
+      tags: [Payouts]
+      operationId: lucid_get_payout
+      summary: Get payout by run_id
+      x-speakeasy-mcp:
+        name: lucid_get_payout
+        description: Get payout for a run_id.
+      parameters:
+        - in: path
+          name: run_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, payout]
+                properties:
+                  success: {type: boolean}
+                  payout: {$ref: '#/components/schemas/Payout'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.get({
+                runId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /v1/payouts/{run_id}/verify:
+    get:
+      tags: [Payouts]
+      operationId: lucid_verify_payout
+      summary: Verify payout split
+      x-speakeasy-mcp:
+        name: lucid_verify_payout
+        description: Verify payout split integrity.
+      parameters:
+        - in: path
+          name: run_id
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, valid]
+                properties:
+                  success: {type: boolean}
+                  valid: {type: boolean}
+                  total_matches: {type: boolean}
+                  recipients_valid: {type: boolean}
+                  hash_valid: {type: boolean}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.payouts.verify({
+                runId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Health
+  # ===========================================================================
+  /health:
+    get:
+      tags: [Health]
+      operationId: check_system_health
+      summary: Overall system health
+      x-speakeasy-mcp:
+        name: check_system_health
+        description: Check overall system health including all dependencies.
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+        '503':
+          description: Degraded or down
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SystemHealth'
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkSystemHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /health/live:
+    get:
+      tags: [Health]
+      operationId: check_liveness
+      summary: Liveness probe
+      x-speakeasy-mcp:
+        name: check_liveness
+        description: Liveness probe - is the application alive?
+      responses:
+        '200':
+          description: Alive
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, timestamp, uptime]
+                properties:
+                  status: {type: string, example: alive}
+                  timestamp: {type: string, format: date-time}
+                  uptime: {type: number}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkLiveness();
+
+              console.log(result);
+            }
+
+            run();
+  /health/ready:
+    get:
+      tags: [Health]
+      operationId: check_readiness
+      summary: Readiness probe
+      x-speakeasy-mcp:
+        name: check_readiness
+        description: Readiness probe - is the application ready to serve traffic?
+      responses:
+        '200':
+          description: Ready
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: {type: string}
+                  timestamp: {type: string, format: date-time}
+                  dependencies:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/HealthCheckResult'
+        '503':
+          description: Not ready
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: {type: string}
+                  timestamp: {type: string, format: date-time}
+                  error: {type: string}
+                  dependencies:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/HealthCheckResult'
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkReadiness();
+
+              console.log(result);
+            }
+
+            run();
+  /health/database:
+    get:
+      tags: [Health]
+      operationId: check_database_health
+      summary: Database health check
+      x-speakeasy-mcp:
+        name: check_database_health
+        description: Check database connectivity and latency.
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+        '503':
+          description: Unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkDatabaseHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /health/redis:
+    get:
+      tags: [Health]
+      operationId: check_redis_health
+      summary: Redis health check
+      x-speakeasy-mcp:
+        name: check_redis_health
+        description: Check Redis connectivity and latency.
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+        '503':
+          description: Unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkRedisHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /health/nango:
+    get:
+      tags: [Health]
+      operationId: check_nango_health
+      summary: Nango service health check
+      x-speakeasy-mcp:
+        name: check_nango_health
+        description: Check Nango service connectivity and latency.
+      responses:
+        '200':
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+        '503':
+          description: Unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResult'
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.checkNangoHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /health/detailed:
+    get:
+      tags: [Health]
+      operationId: get_detailed_health
+      summary: Detailed health with statistics
+      x-speakeasy-mcp:
+        name: get_detailed_health
+        description: Detailed health check including system resources and statistics.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status, timestamp, uptime, version, environment, dependencies]
+                properties:
+                  status:
+                    type: string
+                    enum: [healthy, degraded, down]
+                  timestamp: {type: string, format: date-time}
+                  uptime: {type: number}
+                  version: {type: string}
+                  environment: {type: string}
+                  dependencies:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/HealthCheckResult'
+                  statistics: {type: object, additionalProperties: true, nullable: true}
+                  resources:
+                    type: object
+                    properties:
+                      memory: {type: object, additionalProperties: true}
+                      cpu: {type: object, additionalProperties: true}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.health.getDetailedHealth();
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Agents — Core MMR
+  # ===========================================================================
+  /api/agents/init:
+    post:
+      tags: [Agents]
+      operationId: init_agent
+      summary: Initialize an AI agent
+      x-speakeasy-mcp:
+        name: init_agent
+        description: Initialize or load an AI agent for MMR-based proof-of-contribution.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentInitRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, initialized]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  initialized: {type: boolean}
+                  stats: {$ref: '#/components/schemas/AgentStats'}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.initAgent({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/epoch:
+    post:
+      tags: [Agents]
+      operationId: process_agent_epoch
+      summary: Process an epoch for an agent
+      x-speakeasy-mcp:
+        name: process_agent_epoch
+        description: Process an epoch of vectors for an AI agent.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentEpochRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, epochNumber, vectorCount, mmrRoot]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  epochNumber: {type: integer}
+                  vectorCount: {type: integer}
+                  mmrRoot: {type: string}
+                  ipfsCid: {type: string}
+                  transactionSignature: {type: string}
+                  gasCost: {$ref: '#/components/schemas/GasCost'}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.processAgentEpoch({
+                agentId: "<id>",
+                vectors: [
+                  "<value 1>",
+                  "<value 2>",
+                  "<value 3>",
+                ],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/batch-epochs:
+    post:
+      tags: [Agents]
+      operationId: process_agent_batch_epochs
+      summary: Process multiple epochs in batch
+      x-speakeasy-mcp:
+        name: process_agent_batch_epochs
+        description: Process multiple epochs in batch for one or more agents.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentBatchEpochsRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, processedEpochs, results, totalGasCost]
+                properties:
+                  success: {type: boolean}
+                  processedEpochs: {type: integer}
+                  results:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        agentId: {type: string}
+                        epochNumber: {type: integer}
+                        mmrRoot: {type: string}
+                        ipfsCid: {type: string}
+                        transactionSignature: {type: string}
+                        gasCost: {$ref: '#/components/schemas/GasCost'}
+                  totalGasCost: {$ref: '#/components/schemas/GasCost'}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.processAgentBatchEpochs({
+                epochs: [],
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/proof:
+    post:
+      tags: [Agents]
+      operationId: generate_agent_proof
+      summary: Generate proof of contribution
+      x-speakeasy-mcp:
+        name: generate_agent_proof
+        description: Generate cryptographic proof of contribution for a specific vector.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentProofRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, vectorText, epochNumber, proof, verified]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  vectorText: {type: string}
+                  epochNumber: {type: integer}
+                  proof: {type: object, additionalProperties: true}
+                  verified: {type: boolean}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.generateAgentProof({
+                agentId: "<id>",
+                vectorText: "<value>",
+                epochNumber: 73472,
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/{agentId}/stats:
+    get:
+      tags: [Agents]
+      operationId: get_agent_stats
+      summary: Get agent statistics
+      x-speakeasy-mcp:
+        name: get_agent_stats
+        description: Get statistics and current status for an AI agent.
+      parameters:
+        - in: path
+          name: agentId
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, stats]
+                properties:
+                  success: {type: boolean}
+                  stats: {$ref: '#/components/schemas/AgentStats'}
+                  message: {type: string}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentStats({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/{agentId}/history:
+    get:
+      tags: [Agents]
+      operationId: get_agent_history
+      summary: Get agent MMR root history
+      x-speakeasy-mcp:
+        name: get_agent_history
+        description: Get an agent's MMR root history across epochs.
+      parameters:
+        - in: path
+          name: agentId
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, history, totalEpochs]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  history:
+                    type: array
+                    items: {$ref: '#/components/schemas/AgentHistoryEntry'}
+                  totalEpochs: {type: integer}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentHistory({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/{agentId}/root:
+    get:
+      tags: [Agents]
+      operationId: get_agent_root
+      summary: Get current MMR root for agent
+      x-speakeasy-mcp:
+        name: get_agent_root
+        description: Get the current MMR root for an AI agent.
+      parameters:
+        - in: path
+          name: agentId
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, currentRoot]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  currentRoot: {type: string}
+                  message: {type: string}
+        '404': {$ref: '#/components/responses/NotFound'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentRoot({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/{agentId}/verify:
+    get:
+      tags: [Agents]
+      operationId: verify_agent_mmr
+      summary: Verify MMR integrity for agent
+      x-speakeasy-mcp:
+        name: verify_agent_mmr
+        description: Verify MMR integrity for an AI agent.
+      parameters:
+        - in: path
+          name: agentId
+          required: true
+          schema: {type: string}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, agentId, verification]
+                properties:
+                  success: {type: boolean}
+                  agentId: {type: string}
+                  verification: {type: object, additionalProperties: true}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.verifyAgentMmr({
+                agentId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents:
+    get:
+      tags: [Agents]
+      operationId: list_agents
+      summary: List all registered agents
+      x-speakeasy-mcp:
+        name: list_agents
+        description: List all registered AI agents with their stats.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, totalAgents, agents]
+                properties:
+                  success: {type: boolean}
+                  totalAgents: {type: integer}
+                  agents:
+                    type: array
+                    items: {$ref: '#/components/schemas/AgentStats'}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.listAgents();
+
+              console.log(result);
+            }
+
+            run();
+  # ===========================================================================
+  # Agents — Planner (Phase 3)
+  # ===========================================================================
+  /api/agents/plan:
+    post:
+      tags: [Agents]
+      operationId: plan_agent_workflow
+      summary: Plan a workflow from a goal
+      x-speakeasy-mcp:
+        name: plan_agent_workflow
+        description: Plan a workflow from a natural language goal using CrewAI.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentPlanRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, goal, flowspec, reasoning]
+                properties:
+                  success: {type: boolean}
+                  goal: {type: string}
+                  flowspec: {type: object, additionalProperties: true}
+                  reasoning: {type: string}
+                  complexity: {type: string}
+                  workflowId: {type: string}
+                  execution: {type: object, additionalProperties: true}
+                  executionError: {type: string}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '503': {$ref: '#/components/responses/ServiceUnavailable'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.planAgentWorkflow({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/accomplish:
+    post:
+      tags: [Agents]
+      operationId: accomplish_agent_goal
+      summary: Plan and execute a workflow in one call
+      x-speakeasy-mcp:
+        name: accomplish_agent_goal
+        description: Plan and execute a workflow in one call via the Agent Orchestrator.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgentAccomplishRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, goal]
+                properties:
+                  success: {type: boolean}
+                  goal: {type: string}
+                  result: {type: object, additionalProperties: true}
+                  execution: {type: object, additionalProperties: true}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.accomplishAgentGoal({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/accomplish/preview:
+    post:
+      tags: [Agents]
+      operationId: preview_agent_workflow
+      summary: Preview a workflow without executing
+      x-speakeasy-mcp:
+        name: preview_agent_workflow
+        description: Preview a planned workflow (dry run) without executing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [goal]
+              properties:
+                goal: {type: string}
+                context: {type: object, additionalProperties: true}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, preview, flowspec]
+                properties:
+                  success: {type: boolean}
+                  preview: {type: object, additionalProperties: true}
+                  flowspec: {type: object, additionalProperties: true}
+                  reasoning: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.previewAgentWorkflow({
+                goal: "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/history/{tenantId}:
+    get:
+      tags: [Agents]
+      operationId: get_agent_orchestrator_history
+      summary: Get agent execution history for a tenant
+      x-speakeasy-mcp:
+        name: get_agent_orchestrator_history
+        description: Get agent execution history for a specific tenant.
+      parameters:
+        - in: path
+          name: tenantId
+          required: true
+          schema: {type: string}
+        - in: query
+          name: limit
+          schema: {type: integer, minimum: 1}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, tenantId, history]
+                properties:
+                  success: {type: boolean}
+                  tenantId: {type: string}
+                  history:
+                    type: array
+                    items: {type: object, additionalProperties: true}
+                  stats: {type: object, additionalProperties: true}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getAgentOrchestratorHistory({
+                tenantId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/orchestrator/health:
+    get:
+      tags: [Agents]
+      operationId: check_agent_orchestrator_health
+      summary: Agent orchestrator health check
+      x-speakeasy-mcp:
+        name: check_agent_orchestrator_health
+        description: Check health of all agent orchestrator services.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, health]
+                properties:
+                  success: {type: boolean}
+                  health: {type: object, additionalProperties: true}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.checkAgentOrchestratorHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/execute:
+    post:
+      tags: [Agents]
+      operationId: execute_agent_flowspec
+      summary: Execute a FlowSpec
+      x-speakeasy-mcp:
+        name: execute_agent_flowspec
+        description: Execute a FlowSpec with automatic executor selection.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [flowspec, context]
+              properties:
+                flowspec: {type: object, additionalProperties: true}
+                context:
+                  type: object
+                  required: [tenantId]
+                  properties:
+                    tenantId: {type: string}
+                    variables: {type: object, additionalProperties: true}
+                executor:
+                  type: string
+                  enum: [n8n, langgraph]
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success]
+                properties:
+                  success: {type: boolean}
+                  result: {type: object, additionalProperties: true}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.executeAgentFlowspec({
+                flowspec: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+                context: {
+                  tenantId: "<id>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/validate:
+    post:
+      tags: [Agents]
+      operationId: validate_flowspec
+      summary: Validate a FlowSpec structure
+      x-speakeasy-mcp:
+        name: validate_flowspec
+        description: Validate a FlowSpec structure without executing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              description: FlowSpec object to validate
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, validation]
+                properties:
+                  success: {type: boolean}
+                  validation: {type: object, additionalProperties: true}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.validateFlowspec({
+                "key": "<value>",
+                "key1": "<value>",
+              });
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/planner/info:
+    get:
+      tags: [Agents]
+      operationId: get_planner_info
+      summary: Get planner service info
+      x-speakeasy-mcp:
+        name: get_planner_info
+        description: Get agent planner service information and status.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, status]
+                properties:
+                  success: {type: boolean}
+                  status: {type: string}
+                  info: {type: object, additionalProperties: true}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getPlannerInfo();
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/executor/health:
+    get:
+      tags: [Agents]
+      operationId: check_executor_health
+      summary: Check executor health
+      x-speakeasy-mcp:
+        name: check_executor_health
+        description: Check health of executor backends (n8n, LangGraph).
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, executors]
+                properties:
+                  success: {type: boolean}
+                  executors:
+                    type: object
+                    properties:
+                      n8n: {type: boolean}
+                      langgraph: {type: boolean}
+                  message: {type: string}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.checkExecutorHealth();
+
+              console.log(result);
+            }
+
+            run();
+  /api/agents/executor/decision:
+    post:
+      tags: [Agents]
+      operationId: get_executor_decision
+      summary: Get executor decision for a FlowSpec
+      x-speakeasy-mcp:
+        name: get_executor_decision
+        description: Get recommended executor for a FlowSpec without executing.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [flowspec]
+              properties:
+                flowspec: {type: object, additionalProperties: true}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [success, decision]
+                properties:
+                  success: {type: boolean}
+                  decision:
+                    type: object
+                    properties:
+                      executor: {type: string}
+                      reason: {type: string}
+                  message: {type: string}
+        '400': {$ref: '#/components/responses/BadRequest'}
+        '500': {$ref: '#/components/responses/InternalServerError'}
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.agents.getExecutorDecision({
+                flowspec: {
+                  "key": "<value>",
+                  "key1": "<value>",
+                  "key2": "<value>",
+                },
+              });
+
+              console.log(result);
+            }
+
+            run();
+# =============================================================================
+# Components
+# =============================================================================
+components:
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    UnprocessableEntity:
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema: {$ref: '#/components/schemas/ErrorResponse'}
+  schemas:
+    # =========================================================================
+    # Passport schemas
+    # =========================================================================
+    PassportType:
+      type: string
+      enum: [model, compute, tool, dataset, agent, voice, other]
+    PassportStatus:
+      type: string
+      enum: [active, deprecated, revoked]
+    Passport:
+      type: object
+      required: [passport_id, type, owner, status, created_at, updated_at]
+      properties:
+        passport_id: {type: string}
+        type: {$ref: '#/components/schemas/PassportType'}
+        owner: {type: string}
+        name: {type: string, nullable: true}
+        description: {type: string, nullable: true}
+        version: {type: string, nullable: true}
+        tags:
+          type: array
+          items: {type: string}
+          nullable: true
+        status: {$ref: '#/components/schemas/PassportStatus'}
+        metadata:
+          type: object
+          additionalProperties: true
+          nullable: true
+        metadata_hash: {type: string, nullable: true}
+        created_at: {type: integer}
+        updated_at: {type: integer}
+        on_chain:
+          type: object
+          nullable: true
+          properties:
+            pda: {type: string, nullable: true}
+            tx: {type: string, nullable: true}
+            synced_at: {type: integer, nullable: true}
+    CreatePassportRequest:
+      type: object
+      required: [type, owner, metadata]
+      properties:
+        type: {$ref: '#/components/schemas/PassportType'}
+        owner: {type: string}
+        metadata:
+          type: object
+          additionalProperties: true
+        name: {type: string}
+        description: {type: string}
+        version: {type: string}
+        tags:
+          type: array
+          items: {type: string}
+    UpdatePassportRequest:
+      type: object
+      properties:
+        metadata:
+          type: object
+          additionalProperties: true
+        name: {type: string}
+        description: {type: string}
+        version: {type: string}
+        tags:
+          type: array
+          items: {type: string}
+        status: {$ref: '#/components/schemas/PassportStatus'}
+    CreatePassportResponse:
+      type: object
+      required: [success, passport_id, passport]
+      properties:
+        success: {type: boolean}
+        passport_id: {type: string}
+        passport: {$ref: '#/components/schemas/Passport'}
+    GetPassportResponse:
+      type: object
+      required: [success, passport]
+      properties:
+        success: {type: boolean}
+        passport: {$ref: '#/components/schemas/Passport'}
+    ListPassportsResponse:
+      type: object
+      required: [success, passports, pagination]
+      properties:
+        success: {type: boolean}
+        passports:
+          type: array
+          items: {$ref: '#/components/schemas/Passport'}
+        pagination: {$ref: '#/components/schemas/Pagination'}
+    Pagination:
+      type: object
+      required: [total, page, per_page, total_pages]
+      properties:
+        total: {type: integer}
+        page: {type: integer}
+        per_page: {type: integer}
+        total_pages: {type: integer}
+    # =========================================================================
+    # Policy
+    # =========================================================================
+    Policy:
+      type: object
+      required: [policy_version]
+      additionalProperties: false
+      properties:
+        policy_version: {type: string, description: "Policy schema version, e.g. '1.0'"}
+        allow_regions:
+          type: array
+          items: {type: string}
+        residency_required: {type: boolean}
+        attestation:
+          type: object
+          additionalProperties: false
+          properties:
+            attestation_required: {type: boolean}
+            require_cc_on: {type: boolean}
+            fallback_allowed: {type: boolean}
+        latency:
+          type: object
+          additionalProperties: false
+          properties:
+            p95_ms_budget: {type: integer}
+            hard_timeout_ms: {type: integer}
+        cost:
+          type: object
+          additionalProperties: false
+          properties:
+            max_price_per_1k_tokens_usd: {type: number}
+            spot_only: {type: boolean}
+        privacy:
+          type: object
+          additionalProperties: false
+          properties:
+            store_inputs: {type: boolean}
+            redact_pii: {type: boolean}
+    # =========================================================================
+    # ComputeMeta / ModelMeta schemas  (mirror schemas/*.schema.json)
+    # =========================================================================
+    ComputeHardware:
+      type: object
+      required: [gpu, vram_gb]
+      properties:
+        gpu: {type: string, description: "GPU model (e.g. 'NVIDIA-A100-40GB')"}
+        vram_gb: {type: integer, minimum: 0, description: GPU VRAM in gigabytes}
+        arch: {type: string, description: "GPU architecture (e.g. 'ampere', 'hopper')"}
+        gpu_count: {type: integer, minimum: 1, default: 1}
+        cpu_cores: {type: integer, minimum: 1}
+        memory_gb: {type: integer, minimum: 1, description: System RAM in gigabytes}
+    ComputeRuntime:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          enum: [vllm, tgi, tensorrt, hf-inference-api, openai-compatible, custom]
+        version: {type: string}
+        image: {type: string, description: Docker image reference}
+    ComputeCapabilities:
+      type: object
+      properties:
+        supports_streaming: {type: boolean, default: true}
+        supports_attestation: {type: boolean, default: false}
+        supports_cc_on: {type: boolean, default: false}
+        inference_types:
+          type: array
+          items:
+            type: string
+            enum: [text-generation, chat-completion, embeddings, image-generation, speech-to-text]
+    ComputeEndpoints:
+      type: object
+      required: [inference_url]
+      properties:
+        inference_url: {type: string, description: URL for inference requests}
+        quote_url: {type: string, format: uri}
+        jobs_url: {type: string, format: uri}
+        health_url: {type: string, format: uri}
+        metrics_url: {type: string, format: uri}
+    ComputeWorker:
+      type: object
+      required: [worker_id, status]
+      properties:
+        worker_id: {type: string}
+        status:
+          type: string
+          enum: [online, offline, degraded, draining]
+        last_heartbeat: {type: integer, description: Unix timestamp of last heartbeat}
+    ComputeMeta:
+      type: object
+      description: >-
+        Metadata for a compute provider passport. Validated against schemas/ComputeMeta.schema.json (additionalProperties: false).
+      required: [schema_version, compute_passport_id, provider_type, regions, hardware, runtimes, endpoints]
+      properties:
+        schema_version: {type: string, enum: ['1.0']}
+        compute_passport_id: {type: string, minLength: 10}
+        provider_type:
+          type: string
+          enum: [depin, cloud, onprem, managed]
+        execution_mode:
+          type: string
+          enum: [byo_runtime, managed_endpoint]
+        operator_pubkey:
+          type: string
+          pattern: '^[a-f0-9]{64}$'
+          description: ed25519 public key (hex) of the provider operator
+        regions:
+          type: array
+          items: {type: string}
+          minItems: 1
+        residency_supported: {type: boolean, default: false}
+        hardware: {$ref: '#/components/schemas/ComputeHardware'}
+        gpu_fingerprint:
+          type: string
+          nullable: true
+          description: "GPU hardware fingerprint. Must be null for managed_endpoint mode."
+        runtime_hash:
+          type: string
+          nullable: true
+          pattern: '^sha256:[a-f0-9]{64}$'
+          description: "Docker image digest. Must be null for managed_endpoint mode."
+        runtimes:
+          type: array
+          items: {$ref: '#/components/schemas/ComputeRuntime'}
+          minItems: 1
+        capabilities: {$ref: '#/components/schemas/ComputeCapabilities'}
+        network:
+          type: object
+          properties:
+            p95_ms_estimate: {type: integer, minimum: 0}
+            bandwidth: {type: string}
+        limits:
+          type: object
+          properties:
+            max_context: {type: integer, minimum: 0}
+            max_batch: {type: integer, minimum: 0}
+            max_input_tokens: {type: integer, minimum: 1}
+            max_output_tokens: {type: integer, minimum: 1}
+            requests_per_minute: {type: integer, minimum: 1}
+        pricing:
+          type: object
+          properties:
+            price_per_1k_tokens_estimate: {type: number, minimum: 0}
+            price_per_minute_estimate: {type: number, minimum: 0}
+            per_input_token: {type: number, minimum: 0}
+            per_output_token: {type: number, minimum: 0}
+            currency:
+              type: string
+              enum: [lamports, usd_cents, credits]
+        endpoints: {$ref: '#/components/schemas/ComputeEndpoints'}
+        workers:
+          type: array
+          items: {$ref: '#/components/schemas/ComputeWorker'}
+        sla:
+          type: object
+          properties:
+            tier:
+              type: string
+              enum: [best-effort, standard, premium, enterprise]
+            uptime_target: {type: number, minimum: 0, maximum: 100}
+        policy_tags:
+          type: array
+          items: {type: string}
+          description: "Tags for matching (e.g. 'hipaa', 'gdpr', 'no-logging')"
+        metadata:
+          type: object
+          additionalProperties: true
+    ModelRequirements:
+      type: object
+      properties:
+        min_vram_gb: {type: integer, minimum: 0}
+        gpu_classes:
+          type: array
+          items: {type: string}
+        cuda_min: {type: string}
+    ModelMeta:
+      type: object
+      description: >-
+        Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
+      required: [schema_version, model_passport_id, format, runtime_recommended]
+      properties:
+        schema_version: {type: string, enum: ['1.0']}
+        model_passport_id: {type: string, minLength: 10}
+        format:
+          type: string
+          enum: [safetensors, gguf, api]
+        runtime_recommended:
+          type: string
+          enum: [vllm, tgi, tensorrt, llmproxy, openai]
+        name: {type: string}
+        description: {type: string}
+        provider: {type: string, description: "Provider name (e.g. llm-proxy, openai)"}
+        base:
+          type: string
+          enum: [hf, openai, anthropic, google, cohere, custom_endpoint]
+          default: hf
+        hf:
+          type: object
+          properties:
+            repo_id: {type: string}
+            revision: {type: string}
+        context_length: {type: integer, minimum: 1}
+        quantizations:
+          type: array
+          items:
+            type: string
+            enum: [fp16, int8, awq, gptq, gguf_q4]
+        requirements: {$ref: '#/components/schemas/ModelRequirements'}
+        endpoints:
+          type: object
+          properties:
+            openai_compat_base_url: {type: string}
+            auth_mode:
+              type: string
+              enum: [byok, lucid_key, none]
+              default: none
+        artifacts:
+          type: array
+          items: {type: string}
+        weights_uri: {type: string}
+        weights_hash: {type: string}
+    # =========================================================================
+    # Chat / Inference schemas
+    # =========================================================================
+    ChatMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role:
+          type: string
+          enum: [system, user, assistant, function]
+        content: {type: string}
+        name: {type: string}
+        function_call:
+          type: object
+          properties:
+            name: {type: string}
+            arguments: {type: string}
+    InferenceRequest:
+      type: object
+      properties:
+        model_passport_id: {type: string}
+        model: {type: string}
+        prompt: {type: string}
+        messages:
+          type: array
+          items: {$ref: '#/components/schemas/ChatMessage'}
+        max_tokens: {type: integer}
+        temperature: {type: number}
+        top_p: {type: number}
+        top_k: {type: integer}
+        stop:
+          type: array
+          items: {type: string}
+        stream: {type: boolean}
+        policy: {$ref: '#/components/schemas/Policy'}
+        compute_passport_id: {type: string}
+        trace_id: {type: string}
+        request_id: {type: string}
+    InferenceResult:
+      type: object
+      required: [success, run_id, tokens_in, tokens_out, ttft_ms, total_latency_ms, model_passport_id, compute_passport_id, runtime]
+      properties:
+        success: {type: boolean}
+        run_id: {type: string}
+        request_id: {type: string}
+        trace_id: {type: string}
+        text: {type: string}
+        finish_reason: {type: string}
+        tokens_in: {type: integer}
+        tokens_out: {type: integer}
+        ttft_ms: {type: integer}
+        total_latency_ms: {type: integer}
+        model_passport_id: {type: string}
+        compute_passport_id: {type: string}
+        runtime: {type: string}
+        policy_hash: {type: string}
+        receipt_id: {type: string}
+        used_fallback: {type: boolean}
+        fallback_reason: {type: string}
+        error: {type: string}
+        error_code: {type: string}
+    ChatCompletionRequest:
+      type: object
+      required: [model, messages]
+      properties:
+        model: {type: string}
+        messages:
+          type: array
+          items: {$ref: '#/components/schemas/ChatMessage'}
+        max_tokens: {type: integer}
+        temperature: {type: number}
+        top_p: {type: number}
+        stop:
+          oneOf:
+            - type: string
+            - type: array
+              items: {type: string}
+        stream: {type: boolean}
+        policy: {$ref: '#/components/schemas/Policy'}
+        trace_id: {type: string}
+    ChatCompletionResponse:
+      type: object
+      required: [id, object, created, model, choices, usage]
+      properties:
+        id: {type: string}
+        object: {type: string}
+        created: {type: integer}
+        model: {type: string}
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index: {type: integer}
+              message: {$ref: '#/components/schemas/ChatMessage'}
+              finish_reason: {type: string, nullable: true}
+        usage:
+          type: object
+          required: [prompt_tokens, completion_tokens, total_tokens]
+          properties:
+            prompt_tokens: {type: integer}
+            completion_tokens: {type: integer}
+            total_tokens: {type: integer}
+    # =========================================================================
+    # Error
+    # =========================================================================
+    ErrorResponse:
+      type: object
+      properties:
+        success: {type: boolean}
+        error: {type: string}
+        message: {type: string}
+        error_code: {type: string}
+        details: {}
+    # =========================================================================
+    # Compute
+    # =========================================================================
+    ComputeHeartbeat:
+      type: object
+      required: [compute_passport_id, status]
+      properties:
+        compute_passport_id: {type: string}
+        status:
+          type: string
+          enum: [healthy, degraded, down]
+        queue_depth: {type: integer}
+        price_per_1k_tokens_estimate: {type: number}
+        p95_ms_estimate: {type: number}
+    # =========================================================================
+    # Receipt schemas
+    # =========================================================================
+    Receipt:
+      type: object
+      required: [run_id, model_passport_id, compute_passport_id, policy_hash, runtime, timestamp, receipt_hash, receipt_signature, signer_pubkey, signer_type, metrics]
+      properties:
+        schema_version: {type: string}
+        run_id: {type: string}
+        model_passport_id: {type: string}
+        compute_passport_id: {type: string}
+        policy_hash: {type: string}
+        runtime: {type: string}
+        timestamp: {type: integer}
+        trace_id: {type: string}
+        image_hash: {type: string}
+        model_hash: {type: string}
+        attestation: {type: object, additionalProperties: true}
+        execution_mode: {type: string}
+        job_hash: {type: string}
+        quote_hash: {type: string}
+        node_id: {type: string}
+        runtime_hash: {type: string, nullable: true}
+        gpu_fingerprint: {type: string, nullable: true}
+        outputs_hash: {type: string}
+        output_ref: {type: string}
+        start_ts: {type: integer}
+        end_ts: {type: integer}
+        input_ref: {type: string}
+        error_code: {type: string}
+        error_message: {type: string}
+        metrics:
+          type: object
+          required: [ttft_ms, tokens_in, tokens_out]
+          properties:
+            ttft_ms: {type: integer}
+            tokens_in: {type: integer}
+            tokens_out: {type: integer}
+            p95_ms: {type: integer}
+            total_latency_ms: {type: integer}
+            queue_wait_ms: {type: integer}
+            queue_time_ms: {type: integer}
+            cold_start_ms: {type: integer}
+            model_load_ms: {type: integer}
+            cache_hit: {type: boolean}
+        receipt_hash: {type: string}
+        receipt_signature: {type: string}
+        signer_pubkey: {type: string}
+        signer_type:
+          type: string
+          enum: [orchestrator, compute, worker]
+        _mmr_leaf_index: {type: integer}
+        anchor:
+          type: object
+          nullable: true
+          properties:
+            chain: {type: string}
+            tx: {type: string}
+            root: {type: string}
+            epoch_id: {type: string}
+    CreateReceiptRequest:
+      type: object
+      description: Input fields for creating a receipt. The backend computes the hash, signature, and wraps metrics.
+      required: [model_passport_id, compute_passport_id, policy_hash, runtime, tokens_in, tokens_out, ttft_ms]
+      properties:
+        model_passport_id: {type: string}
+        compute_passport_id: {type: string}
+        policy_hash: {type: string}
+        runtime: {type: string}
+        tokens_in: {type: integer}
+        tokens_out: {type: integer}
+        ttft_ms: {type: integer}
+        total_latency_ms: {type: integer}
+        timestamp: {type: integer}
+        trace_id: {type: string}
+        run_id: {type: string}
+        image_hash: {type: string}
+        model_hash: {type: string}
+        attestation: {type: object, additionalProperties: true}
+        execution_mode: {type: string}
+        node_id: {type: string}
+        runtime_hash: {type: string}
+        gpu_fingerprint: {type: string}
+    ReceiptProof:
+      type: object
+      required: [run_id, receipt_hash, leaf_index, proof, root]
+      properties:
+        run_id: {type: string}
+        receipt_hash: {type: string}
+        leaf_index: {type: integer}
+        proof:
+          type: array
+          items: {type: string}
+          description: Sibling hashes along the Merkle path
+        root: {type: string}
+        directions:
+          type: array
+          items:
+            type: string
+            enum: ['L', 'R']
+          description: Direction of each sibling (L = sibling is on left, R = on right).
+    ReceiptVerification:
+      type: object
+      properties:
+        success: {type: boolean}
+        valid: {type: boolean}
+        hash_valid: {type: boolean}
+        signature_valid: {type: boolean}
+        inclusion_valid: {type: boolean}
+        expected_hash: {type: string}
+        computed_hash: {type: string}
+        merkle_root: {type: string}
+    ReceiptHashVerification:
+      type: object
+      required: [success, verified, receipt_hash]
+      properties:
+        success: {type: boolean}
+        verified: {type: boolean}
+        receipt_hash: {type: string}
+        run_id: {type: string}
+        hash_valid: {type: boolean}
+        signature_valid: {type: boolean}
+        signer_pubkey: {type: string}
+        signer_type: {type: string}
+        execution_mode: {type: string}
+        runtime_hash: {type: string}
+        gpu_fingerprint: {type: string}
+        inclusion_proof:
+          type: object
+          nullable: true
+          properties:
+            leaf_index: {type: integer}
+            proof:
+              type: array
+              items: {type: string}
+            root: {type: string}
+            directions:
+              type: array
+              items: {type: string}
+        inclusion_valid: {type: boolean}
+        epoch:
+          type: object
+          nullable: true
+          properties:
+            epoch_id: {type: string}
+            mmr_root: {type: string}
+            chain_tx: {type: string}
+            finalized_at: {type: integer}
+        on_chain_verified: {type: boolean}
+        tx_signature: {type: string, nullable: true}
+    # =========================================================================
+    # Epoch schemas
+    # =========================================================================
+    Epoch:
+      type: object
+      required: [epoch_id, mmr_root, leaf_count, created_at, status]
+      properties:
+        epoch_id: {type: string}
+        project_id: {type: string}
+        mmr_root: {type: string}
+        leaf_count: {type: integer}
+        created_at: {type: integer}
+        finalized_at: {type: integer}
+        status:
+          type: string
+          enum: [open, anchoring, anchored, failed]
+        chain_tx: {type: string}
+        error: {type: string}
+        start_leaf_index: {type: integer}
+        end_leaf_index: {type: integer}
+    EpochStatsResponse:
+      type: object
+      required: [success, stats]
+      properties:
+        success: {type: boolean}
+        stats:
+          type: object
+          properties:
+            total_epochs: {type: integer}
+            total_receipts: {type: integer}
+            by_status:
+              type: object
+              properties:
+                open: {type: integer}
+                anchoring: {type: integer}
+                anchored: {type: integer}
+                failed: {type: integer}
+            avg_receipts_per_epoch: {type: number}
+            last_anchor_time: {type: integer}
+    EpochsReadyResponse:
+      type: object
+      required: [success, count, epochs]
+      properties:
+        success: {type: boolean}
+        count: {type: integer}
+        epochs:
+          type: array
+          items:
+            type: object
+            properties:
+              epoch_id: {type: string}
+              project_id: {type: string}
+              leaf_count: {type: integer}
+              created_at: {type: integer}
+              mmr_root: {type: string}
+    # =========================================================================
+    # Payout schemas
+    # =========================================================================
+    PayoutCalculateRequest:
+      type: object
+      required: [run_id, total_amount_lamports, compute_wallet]
+      properties:
+        run_id: {type: string}
+        total_amount_lamports:
+          oneOf:
+            - type: string
+            - type: integer
+        compute_wallet: {type: string}
+        model_wallet: {type: string}
+        orchestrator_wallet: {type: string}
+        config:
+          $ref: '#/components/schemas/PayoutConfig'
+    PayoutFromReceiptRequest:
+      type: object
+      required: [run_id, tokens_in, tokens_out, price_per_1k_tokens_lamports, compute_wallet]
+      properties:
+        run_id: {type: string}
+        tokens_in: {type: integer}
+        tokens_out: {type: integer}
+        price_per_1k_tokens_lamports:
+          oneOf:
+            - type: string
+            - type: integer
+        compute_wallet: {type: string}
+        model_wallet: {type: string}
+        orchestrator_wallet: {type: string}
+        config:
+          $ref: '#/components/schemas/PayoutConfig'
+    PayoutConfig:
+      type: object
+      description: Payout split configuration (basis points, must sum to 10000)
+      properties:
+        compute_bp:
+          type: integer
+          description: Basis points for compute provider (e.g., 7000 = 70%)
+          minimum: 0
+          maximum: 10000
+        model_bp:
+          type: integer
+          description: Basis points for model owner (e.g., 2000 = 20%)
+          minimum: 0
+          maximum: 10000
+        orchestrator_bp:
+          type: integer
+          description: Basis points for orchestrator (e.g., 1000 = 10%)
+          minimum: 0
+          maximum: 10000
+    Payout:
+      type: object
+      required: [run_id, total_amount_lamports, recipients, payout_hash, timestamp]
+      properties:
+        run_id: {type: string}
+        total_amount_lamports: {type: string, description: BigInt serialized as string}
+        recipients:
+          type: array
+          items: {$ref: '#/components/schemas/PayoutRecipient'}
+        payout_hash: {type: string}
+        timestamp: {type: integer}
+    PayoutRecipient:
+      type: object
+      required: [role, wallet, bp, amount_lamports]
+      properties:
+        role: {type: string}
+        wallet: {type: string}
+        bp: {type: integer}
+        amount_lamports: {type: string, description: BigInt serialized as string}
+    PassportStatsResponse:
+      type: object
+      required: [success, stats]
+      properties:
+        success: {type: boolean}
+        stats:
+          type: object
+          required: [total, by_type, by_status]
+          properties:
+            total: {type: integer}
+            by_type:
+              type: object
+              properties:
+                model: {type: integer}
+                compute: {type: integer}
+                tool: {type: integer}
+                dataset: {type: integer}
+                agent: {type: integer}
+            by_status:
+              type: object
+              properties:
+                active: {type: integer}
+                deprecated: {type: integer}
+                revoked: {type: integer}
+    # =========================================================================
+    # Health schemas
+    # =========================================================================
+    HealthCheckResult:
+      type: object
+      required: [status]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, down]
+        latency: {type: number}
+        error: {type: string}
+        details: {type: object, additionalProperties: true}
+    SystemHealth:
+      type: object
+      required: [status, timestamp, uptime, version, dependencies]
+      properties:
+        status:
+          type: string
+          enum: [healthy, degraded, down]
+        timestamp: {type: string, format: date-time}
+        uptime: {type: number}
+        version: {type: string}
+        dependencies:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/HealthCheckResult'
+    # =========================================================================
+    # Agent schemas
+    # =========================================================================
+    AgentInitRequest:
+      type: object
+      required: [agentId]
+      properties:
+        agentId: {type: string}
+        ipfsCid: {type: string}
+    AgentEpochRequest:
+      type: object
+      required: [agentId, vectors]
+      properties:
+        agentId: {type: string}
+        vectors:
+          type: array
+          items: {type: string}
+          minItems: 1
+        epochNumber: {type: integer}
+    AgentBatchEpochsRequest:
+      type: object
+      required: [epochs]
+      properties:
+        epochs:
+          type: array
+          items:
+            type: object
+            required: [agentId, vectors]
+            properties:
+              agentId: {type: string}
+              vectors:
+                type: array
+                items: {type: string}
+                minItems: 1
+              epochNumber: {type: integer}
+    AgentProofRequest:
+      type: object
+      required: [agentId, vectorText, epochNumber]
+      properties:
+        agentId: {type: string}
+        vectorText: {type: string}
+        epochNumber: {type: integer}
+    AgentStats:
+      type: object
+      properties:
+        agentId: {type: string}
+        totalEpochs: {type: integer}
+        totalVectors: {type: integer}
+        currentRoot: {type: string}
+        lastEpoch: {type: integer}
+        createdAt: {type: string, format: date-time}
+    AgentHistoryEntry:
+      type: object
+      properties:
+        epoch: {type: integer}
+        root: {type: string}
+        timestamp: {type: integer}
+        date: {type: string, format: date-time}
+    GasCost:
+      type: object
+      required: [iGas, mGas, total]
+      properties:
+        iGas: {type: integer}
+        mGas: {type: integer}
+        total: {type: integer}
+    AgentPlanRequest:
+      type: object
+      required: [goal]
+      properties:
+        goal: {type: string}
+        context: {type: object, additionalProperties: true}
+        constraints:
+          type: array
+          items: {type: string}
+        autoExecute: {type: boolean}
+    AgentAccomplishRequest:
+      type: object
+      required: [goal]
+      properties:
+        goal: {type: string}
+        context: {type: object, additionalProperties: true}
+        preferredExecutor:
+          type: string
+          enum: [n8n, langgraph]
+        dryRun: {type: boolean}
