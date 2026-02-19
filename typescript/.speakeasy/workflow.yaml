@@ -9,11 +9,19 @@ sources:
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api
+    docs-source:
+        inputs:
+            - location: ../openapi.yaml
+        overlays:
+            - location: .speakeasy/speakeasy-modifications-overlay.yaml
+            - location: code-samples.yaml
+        output: ../openapi-with-code-samples.yaml
 targets:
     raijin-labs-lucid-ai:
         target: typescript
         source: LucidLayer API
         codeSamples:
+            output: code-samples.yaml
             registry:
                 location: registry.speakeasyapi.dev/raijin-labs-gc4/lucid/lucid-layer-api-typescript-code-samples
             labelOverride:
