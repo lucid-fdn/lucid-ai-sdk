@@ -12,8 +12,14 @@ import * as models from "../index.js";
 
 export type LucidMatchExplainRequest = {
   policy?: models.Policy | undefined;
-  computeMeta?: { [k: string]: any } | undefined;
-  modelMeta?: { [k: string]: any } | undefined;
+  /**
+   * Metadata for a compute provider passport. Validated against schemas/ComputeMeta.schema.json (additionalProperties: false).
+   */
+  computeMeta?: models.ComputeMeta | undefined;
+  /**
+   * Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
+   */
+  modelMeta?: models.ModelMeta | undefined;
 };
 
 /**
@@ -29,8 +35,8 @@ export type LucidMatchExplainResponse = {
 /** @internal */
 export type LucidMatchExplainRequest$Outbound = {
   policy?: models.Policy$Outbound | undefined;
-  compute_meta?: { [k: string]: any } | undefined;
-  model_meta?: { [k: string]: any } | undefined;
+  compute_meta?: models.ComputeMeta$Outbound | undefined;
+  model_meta?: models.ModelMeta$Outbound | undefined;
 };
 
 /** @internal */
@@ -40,8 +46,8 @@ export const LucidMatchExplainRequest$outboundSchema: z.ZodMiniType<
 > = z.pipe(
   z.object({
     policy: z.optional(models.Policy$outboundSchema),
-    computeMeta: z.optional(z.record(z.string(), z.any())),
-    modelMeta: z.optional(z.record(z.string(), z.any())),
+    computeMeta: z.optional(models.ComputeMeta$outboundSchema),
+    modelMeta: z.optional(models.ModelMeta$outboundSchema),
   }),
   z.transform((v) => {
     return remap$(v, {

@@ -11,9 +11,12 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidMatchRequest = {
-  modelMeta?: { [k: string]: any } | undefined;
+  /**
+   * Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
+   */
+  modelMeta?: models.ModelMeta | undefined;
   policy?: models.Policy | undefined;
-  computeCatalog?: Array<{ [k: string]: any }> | undefined;
+  computeCatalog?: Array<models.ComputeMeta> | undefined;
   requireLiveHealthy?: boolean | undefined;
 };
 
@@ -28,9 +31,9 @@ export type LucidMatchResponse = {
 
 /** @internal */
 export type LucidMatchRequest$Outbound = {
-  model_meta?: { [k: string]: any } | undefined;
+  model_meta?: models.ModelMeta$Outbound | undefined;
   policy?: models.Policy$Outbound | undefined;
-  compute_catalog?: Array<{ [k: string]: any }> | undefined;
+  compute_catalog?: Array<models.ComputeMeta$Outbound> | undefined;
   require_live_healthy: boolean;
 };
 
@@ -40,9 +43,9 @@ export const LucidMatchRequest$outboundSchema: z.ZodMiniType<
   LucidMatchRequest
 > = z.pipe(
   z.object({
-    modelMeta: z.optional(z.record(z.string(), z.any())),
+    modelMeta: z.optional(models.ModelMeta$outboundSchema),
     policy: z.optional(models.Policy$outboundSchema),
-    computeCatalog: z.optional(z.array(z.record(z.string(), z.any()))),
+    computeCatalog: z.optional(z.array(models.ComputeMeta$outboundSchema)),
     requireLiveHealthy: z._default(z.boolean(), true),
   }),
   z.transform((v) => {
