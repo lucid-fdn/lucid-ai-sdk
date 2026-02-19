@@ -32,3 +32,30 @@ jobs:
     secrets:
       github_access_token: ${{ secrets.GITHUB_TOKEN }}
       speakeasy_api_key: ${{ secrets.SPEAKEASY_API_KEY }}
+  merge-openapi:
+    needs: generate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Install speakeasy CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/speakeasy-api/speakeasy/main/install.sh | sh
+        env:
+          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+      - name: Apply code-samples overlay to OpenAPI
+        run: |
+          speakeasy overlay apply \
+            -s openapi.yaml \
+            -o typescript/code-samples.yaml \
+            > openapi-with-code-samples.yaml
+        env:
+          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+      - name: Commit merged OpenAPI
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add openapi-with-code-samples.yaml
+          git diff --cached --quiet || git commit -m "chore: update openapi-with-code-samples.yaml"
+          git push
