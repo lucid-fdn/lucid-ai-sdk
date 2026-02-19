@@ -5,15 +5,15 @@ management:
   docVersion: 0.2.0
   speakeasyVersion: 1.722.6
   generationVersion: 2.832.6
-  releaseVersion: 0.5.2
-  configChecksum: 2919cc7b58b08ebb1c62830cb65ea9e1
+  releaseVersion: 0.5.3
+  configChecksum: c67065463bfb14a161e3e5a0cedfa481
   repoURL: https://github.com/raijinlabs/lucid-ai-sdk.git
   repoSubDirectory: typescript
   installationURL: https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
 persistentEdits:
-  generation_id: 1a9744c4-7efd-4959-8b55-ef82655f1f5d
-  pristine_commit_hash: cd477de65435a4f3b4dfd5e0c90ed516afe6dc62
-  pristine_tree_hash: 97c17b8d7437f890aa00f48ad3e64923fd358ea5
+  generation_id: add513ab-dec0-460e-a80f-0026db2c6311
+  pristine_commit_hash: 5114429a0db3ffe3f196ae26ecd92aec4481fd3c
+  pristine_tree_hash: 644ea6b6a4dd3a12e79cd796e6ac5e10b90d3102
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -963,12 +963,12 @@ trackedFiles:
     pristine_git_object: e541374764ba03f72082bca79d57f23eb9bcd560
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:e05f9d0f544079513ea65fc710955770c979c119
-    pristine_git_object: 23c4140d4767f7dab0fa9a7882ec7fe9835428bb
+    last_write_checksum: sha1:71373632e56d244992b0b76426b7c209f86f2cff
+    pristine_git_object: 83abb7a2bfeec0d9e747842d0a19b48b6baab1c4
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:6c9035a04c8bc4f5a44bf8648ab9e570d82d322e
-    pristine_git_object: 67ee0c36cfeffc7b14d6d1ec91c9d4906c88bd09
+    last_write_checksum: sha1:b2a3f513d7164a32390d8391f261104523a2ccdd
+    pristine_git_object: d0e7c02bddc11bb0fafb020b0419bf3f59b6e564
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:acd63588d1ce7b241472994bc970a51fcb131fa4
@@ -1271,8 +1271,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:ce46330c93c09b66bb48de9ec4d973d56f55e7ff
-    pristine_git_object: 8ca05f5236dace5ad3afd9c5d9c6358d325eaf82
+    last_write_checksum: sha1:6de4b9539377ec487b4209cd2844900fbd7b47b8
+    pristine_git_object: 16946a9ef23dfaf351a38f3b578c4137a208349f
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
