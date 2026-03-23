@@ -5,62 +5,18 @@
 import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
-import * as openEnums from "../types/enums.js";
-import { OpenEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  ExternalRegistrationStatus,
+  ExternalRegistrationStatus$inboundSchema,
+} from "./externalregistrationstatus.js";
 import {
   PassportStatus,
   PassportStatus$inboundSchema,
 } from "./passportstatus.js";
 import { PassportType, PassportType$inboundSchema } from "./passporttype.js";
-
-/**
- * Projection status
- */
-export const PassportExternalRegistrationsStatus = {
-  Synced: "synced",
-  Failed: "failed",
-  Pending: "pending",
-} as const;
-/**
- * Projection status
- */
-export type PassportExternalRegistrationsStatus = OpenEnum<
-  typeof PassportExternalRegistrationsStatus
->;
-
-export type ExternalRegistrations = {
-  /**
-   * ID on the external registry (e.g., Metaplex asset pubkey)
-   */
-  externalId?: string | undefined;
-  /**
-   * Registration transaction signature
-   */
-  txSignature?: string | undefined;
-  /**
-   * ERC-8004 registration document URI on DePIN storage
-   */
-  registrationDocUri?: string | null | undefined;
-  /**
-   * Unix ms when first registered
-   */
-  registeredAt?: number | undefined;
-  /**
-   * Unix ms of last sync attempt
-   */
-  lastSyncedAt?: number | undefined;
-  /**
-   * Projection status
-   */
-  status?: PassportExternalRegistrationsStatus | undefined;
-  /**
-   * Last error message (null when synced)
-   */
-  lastError?: string | null | undefined;
-};
 
 export type OnChain = {
   pda?: string | null | undefined;
@@ -103,43 +59,13 @@ export type Passport = {
    * External identity projection status per registry (summary cache). Key is registry name.
    */
   externalRegistrations?:
-    | { [k: string]: ExternalRegistrations }
+    | { [k: string]: ExternalRegistrationStatus }
     | null
     | undefined;
   createdAt: number;
   updatedAt: number;
   onChain?: OnChain | null | undefined;
 };
-
-/** @internal */
-export const PassportExternalRegistrationsStatus$inboundSchema: z.ZodMiniType<
-  PassportExternalRegistrationsStatus,
-  unknown
-> = openEnums.inboundSchema(PassportExternalRegistrationsStatus);
-
-/** @internal */
-export const ExternalRegistrations$inboundSchema: z.ZodMiniType<
-  ExternalRegistrations,
-  unknown
-> = z.object({
-  externalId: types.optional(types.string()),
-  txSignature: types.optional(types.string()),
-  registrationDocUri: z.optional(z.nullable(types.string())),
-  registeredAt: types.optional(types.number()),
-  lastSyncedAt: types.optional(types.number()),
-  status: types.optional(PassportExternalRegistrationsStatus$inboundSchema),
-  lastError: z.optional(z.nullable(types.string())),
-});
-
-export function externalRegistrationsFromJSON(
-  jsonString: string,
-): SafeParseResult<ExternalRegistrations, SDKValidationError> {
-  return safeParse(
-    jsonString,
-    (x) => ExternalRegistrations$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ExternalRegistrations' from JSON`,
-  );
-}
 
 /** @internal */
 export const OnChain$inboundSchema: z.ZodMiniType<OnChain, unknown> = z.pipe(
@@ -184,10 +110,9 @@ export const Passport$inboundSchema: z.ZodMiniType<Passport, unknown> = z.pipe(
     nft_chain: z.optional(z.nullable(types.string())),
     share_token_mint: z.optional(z.nullable(types.string())),
     external_registrations: z.optional(
-      z.nullable(z.record(
-        z.string(),
-        z.lazy(() => ExternalRegistrations$inboundSchema),
-      )),
+      z.nullable(
+        z.record(z.string(), ExternalRegistrationStatus$inboundSchema),
+      ),
     ),
     created_at: types.number(),
     updated_at: types.number(),

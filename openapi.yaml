@@ -4481,6 +4481,37 @@ paths:
         '404': { $ref: '#/components/responses/NotFound' }
         '500': { $ref: '#/components/responses/InternalServerError' }
 
+  /v1/passports/{passport_id}/projections/retry:
+    post:
+      tags: [Passports]
+      operationId: lucid_retry_passport_projections
+      summary: Retry failed identity projections
+      description: |
+        Triggers a retry of identity projection to all configured external registries
+        (Metaplex, QuantuLabs) for a passport. Useful when projections are stuck in
+        'failed' or 'pending' status. Runs asynchronously — returns immediately with
+        current projection status.
+      parameters:
+        - name: passport_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Retry triggered
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success: { type: boolean }
+                  message: { type: string }
+                  current_registrations:
+                    type: object
+                    additionalProperties:
+                      $ref: '#/components/schemas/ExternalRegistrationStatus'
+        '404': { description: Passport not found }
+
   /v1/passports/{passport_id}/endpoints:
     patch:
       tags: [Passports]
@@ -7015,6 +7046,18 @@ components:
     # =========================================================================
     # Passport schemas
     # =========================================================================
+    ExternalRegistrationStatus:
+      type: object
+      properties:
+        externalId: { type: string, description: 'ID on the external registry' }
+        txSignature: { type: string, description: 'Registration transaction signature' }
+        registrationDocUri: { type: string, nullable: true, description: 'ERC-8004 registration doc URI' }
+        registeredAt: { type: integer, description: 'Unix ms when first registered' }
+        lastSyncedAt: { type: integer, description: 'Unix ms of last sync attempt' }
+        status:
+          type: string
+          enum: [synced, failed, pending]
+        lastError: { type: string, nullable: true, description: 'Last error message' }
     PassportType:
       type: string
       enum: [model, compute, tool, dataset, agent, voice, other]
@@ -7052,18 +7095,7 @@ components:
           nullable: true
           description: 'External identity projection status per registry (summary cache). Key is registry name.'
           additionalProperties:
-            type: object
-            properties:
-              externalId: { type: string, description: 'ID on the external registry (e.g., Metaplex asset pubkey)' }
-              txSignature: { type: string, description: 'Registration transaction signature' }
-              registrationDocUri: { type: string, nullable: true, description: 'ERC-8004 registration document URI on DePIN storage' }
-              registeredAt: { type: integer, description: 'Unix ms when first registered' }
-              lastSyncedAt: { type: integer, description: 'Unix ms of last sync attempt' }
-              status:
-                type: string
-                enum: [synced, failed, pending]
-                description: 'Projection status'
-              lastError: { type: string, nullable: true, description: 'Last error message (null when synced)' }
+            $ref: '#/components/schemas/ExternalRegistrationStatus'
         created_at: { type: integer }
         updated_at: { type: integer }
         on_chain:

@@ -11,6 +11,7 @@ import { passportsListPendingSync } from "../funcs/passportsListPendingSync.js";
 import { passportsLucidListAgentPassports } from "../funcs/passportsLucidListAgentPassports.js";
 import { passportsLucidListDatasets } from "../funcs/passportsLucidListDatasets.js";
 import { passportsLucidListTools } from "../funcs/passportsLucidListTools.js";
+import { passportsLucidRetryPassportProjections } from "../funcs/passportsLucidRetryPassportProjections.js";
 import { passportsLucidUpdatePassportEndpoints } from "../funcs/passportsLucidUpdatePassportEndpoints.js";
 import { passportsLucidUpdatePassportPricing } from "../funcs/passportsLucidUpdatePassportPricing.js";
 import { passportsSearchModels } from "../funcs/passportsSearchModels.js";
@@ -244,6 +245,26 @@ export class Passports extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.GetPassportResponse> {
     return unwrapAsync(passportsLucidUpdatePassportPricing(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Retry failed identity projections
+   *
+   * @remarks
+   * Triggers a retry of identity projection to all configured external registries
+   * (Metaplex, QuantuLabs) for a passport. Useful when projections are stuck in
+   * 'failed' or 'pending' status. Runs asynchronously — returns immediately with
+   * current projection status.
+   */
+  async lucidRetryPassportProjections(
+    request: operations.LucidRetryPassportProjectionsRequest,
+    options?: RequestOptions,
+  ): Promise<operations.LucidRetryPassportProjectionsResponse> {
+    return unwrapAsync(passportsLucidRetryPassportProjections(
       this,
       request,
       options,

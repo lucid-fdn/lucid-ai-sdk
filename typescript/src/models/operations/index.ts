@@ -133,6 +133,7 @@ export * from "./lucidreceivedeploymentwebhook.js";
 export * from "./lucidregisteragentonchain.js";
 export * from "./lucidresolvedispute.js";
 export * from "./lucidretryepoch.js";
+export * from "./lucidretrypassportprojections.js";
 export * from "./lucidrollbackdeployment.js";
 export * from "./lucidroute.js";
 export * from "./lucidsearchcompute.js";

@@ -55,6 +55,7 @@ export * from "./epochstatsresponse.js";
 export * from "./escrowinfo.js";
 export * from "./escrowstatus.js";
 export * from "./estimategasrequest.js";
+export * from "./externalregistrationstatus.js";
 export * from "./gascost.js";
 export * from "./generatezkmlproofrequest.js";
 export * from "./getdisputeresponse.js";

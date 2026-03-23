@@ -2102,6 +2102,25 @@ actions:
             }
 
             run();
+  - target: $["paths"]["/v1/passports/{passport_id}/projections/retry"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+            const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+            async function run() {
+              const result = await raijinLabsLucidAi.passports.lucidRetryPassportProjections({
+                passportId: "<id>",
+              });
+
+              console.log(result);
+            }
+
+            run();
   - target: $["paths"]["/v1/passports/{passport_id}/sync"]["post"]
     update:
       x-codeSamples:

@@ -737,6 +737,7 @@ run();
 * [lucidListDatasets](docs/sdks/passports/README.md#lucidlistdatasets) - List dataset passports
 * [lucidListAgentPassports](docs/sdks/passports/README.md#lucidlistagentpassports) - List agent passports
 * [lucidUpdatePassportPricing](docs/sdks/passports/README.md#lucidupdatepassportpricing) - Update passport pricing
+* [lucidRetryPassportProjections](docs/sdks/passports/README.md#lucidretrypassportprojections) - Retry failed identity projections
 * [lucidUpdatePassportEndpoints](docs/sdks/passports/README.md#lucidupdatepassportendpoints) - Update passport endpoint URLs
 
 ### [Paymaster](docs/sdks/paymaster/README.md)
@@ -953,6 +954,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`passportsLucidListAgentPassports`](docs/sdks/passports/README.md#lucidlistagentpassports) - List agent passports
 - [`passportsLucidListDatasets`](docs/sdks/passports/README.md#lucidlistdatasets) - List dataset passports
 - [`passportsLucidListTools`](docs/sdks/passports/README.md#lucidlisttools) - List tool passports
+- [`passportsLucidRetryPassportProjections`](docs/sdks/passports/README.md#lucidretrypassportprojections) - Retry failed identity projections
 - [`passportsLucidUpdatePassportEndpoints`](docs/sdks/passports/README.md#lucidupdatepassportendpoints) - Update passport endpoint URLs
 - [`passportsLucidUpdatePassportPricing`](docs/sdks/passports/README.md#lucidupdatepassportpricing) - Update passport pricing
 - [`passportsSearchModels`](docs/sdks/passports/README.md#searchmodels) - Search model passports
@@ -1248,10 +1250,10 @@ run();
 
 
 **Inherit from [`RaijinLabsLucidAiError`](./src/models/errors/raijinlabslucidaierror.ts)**:
-* [`X402PaymentRequiredError`](./src/models/errors/x402paymentrequirederror.ts): Payment Required (x402). Status code `402`. Applicable to 3 of 184 methods.*
-* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 184 methods.*
-* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 184 methods.*
-* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 184 methods.*
+* [`X402PaymentRequiredError`](./src/models/errors/x402paymentrequirederror.ts): Payment Required (x402). Status code `402`. Applicable to 3 of 185 methods.*
+* [`HealthCheckResultError`](./src/models/errors/healthcheckresulterror.ts): Healthy. Status code `503`. Applicable to 3 of 185 methods.*
+* [`SystemHealthError`](./src/models/errors/systemhealtherror.ts): Healthy. Status code `503`. Applicable to 1 of 185 methods.*
+* [`ServiceUnavailableError`](./src/models/errors/serviceunavailableerror.ts): Not ready. Status code `503`. Applicable to 1 of 185 methods.*
 * [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

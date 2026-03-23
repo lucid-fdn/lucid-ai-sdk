@@ -19,6 +19,7 @@ AI asset identity — create, list, update, delete model/compute/tool/dataset/ag
 * [lucidListDatasets](#lucidlistdatasets) - List dataset passports
 * [lucidListAgentPassports](#lucidlistagentpassports) - List agent passports
 * [lucidUpdatePassportPricing](#lucidupdatepassportpricing) - Update passport pricing
+* [lucidRetryPassportProjections](#lucidretrypassportprojections) - Retry failed identity projections
 * [lucidUpdatePassportEndpoints](#lucidupdatepassportendpoints) - Update passport endpoint URLs
 
 ## create
@@ -980,6 +981,79 @@ run();
 | ------------------------------------ | ------------------------------------ | ------------------------------------ |
 | errors.ErrorResponse                 | 403, 404                             | application/json                     |
 | errors.ErrorResponse                 | 500                                  | application/json                     |
+| errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
+
+## lucidRetryPassportProjections
+
+Triggers a retry of identity projection to all configured external registries
+(Metaplex, QuantuLabs) for a passport. Useful when projections are stuck in
+'failed' or 'pending' status. Runs asynchronously — returns immediately with
+current projection status.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="lucid_retry_passport_projections" method="post" path="/v1/passports/{passport_id}/projections/retry" -->
+```typescript
+import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.lucidRetryPassportProjections({
+    passportId: "<id>",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
+import { passportsLucidRetryPassportProjections } from "raijin-labs-lucid-ai/funcs/passportsLucidRetryPassportProjections.js";
+
+// Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
+
+async function run() {
+  const res = await passportsLucidRetryPassportProjections(raijinLabsLucidAi, {
+    passportId: "<id>",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("passportsLucidRetryPassportProjections failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.LucidRetryPassportProjectionsRequest](../../models/operations/lucidretrypassportprojectionsrequest.md)                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[operations.LucidRetryPassportProjectionsResponse](../../models/operations/lucidretrypassportprojectionsresponse.md)\>**
+
+### Errors
+
+| Error Type                           | Status Code                          | Content Type                         |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
 ## lucidUpdatePassportEndpoints
