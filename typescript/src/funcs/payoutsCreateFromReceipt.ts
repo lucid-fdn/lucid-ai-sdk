@@ -9,6 +9,7 @@ import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
+import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -28,6 +29,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Create payout from receipt token data
+ *
+ * @remarks
+ * Extract token usage data from a receipt and compute the payout split automatically. Uses the receipt's model and compute passport IDs to resolve the split configuration.
  */
 export function payoutsCreateFromReceipt(
   client: RaijinLabsLucidAiCore,
@@ -93,22 +97,37 @@ async function $do(
     Accept: "application/json",
   }));
 
+  const secConfig = await extractSecurity(client._options.bearerAuth);
+  const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
+
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "lucid_payout_from_receipt",
     oAuth2Scopes: null,
 
-    resolvedSecurity: null,
+    resolvedSecurity: requestSecurity,
 
-    securitySource: null,
+    securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig
+      || {
+        strategy: "backoff",
+        backoff: {
+          initialInterval: 500,
+          maxInterval: 60000,
+          exponent: 1.5,
+          maxElapsedTime: 300000,
+        },
+        retryConnectionErrors: true,
+      }
       || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryCodes: options?.retryCodes || ["408", "429", "5XX"],
   };
 
   const requestRes = client._createRequest(context, {
+    security: requestSecurity,
     method: "POST",
     baseURL: options?.serverURL,
     path: path,

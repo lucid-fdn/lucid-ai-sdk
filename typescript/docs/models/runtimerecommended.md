@@ -11,5 +11,5 @@ let value: RuntimeRecommended = "tensorrt";
 ## Values
 
 ```typescript
-"vllm" | "tgi" | "tensorrt" | "llmproxy" | "openai"
+"vllm" | "tgi" | "tensorrt" | "trustgate" | "openai"
 ```

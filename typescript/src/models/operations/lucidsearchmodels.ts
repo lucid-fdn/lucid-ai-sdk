@@ -5,36 +5,87 @@
 import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../../lib/primitives.js";
 import { safeParse } from "../../lib/schemas.js";
+import { ClosedEnum } from "../../types/enums.js";
 import { Result as SafeParseResult } from "../../types/fp.js";
 import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
+/**
+ * Tri-state filter: 'true' returns only models that can serve inference (healthy compute or API-hosted), 'false' returns only unavailable models (missing compute), omit for all models
+ */
+export const Available = {
+  True: "true",
+  False: "false",
+} as const;
+/**
+ * Tri-state filter: 'true' returns only models that can serve inference (healthy compute or API-hosted), 'false' returns only unavailable models (missing compute), omit for all models
+ */
+export type Available = ClosedEnum<typeof Available>;
+
 export type LucidSearchModelsRequest = {
+  /**
+   * Filter by recommended runtime (vllm, tgi, tensorrt, trustgate, openai)
+   */
   runtime?: string | undefined;
+  /**
+   * Filter by model format (safetensors, gguf, or api)
+   */
   format?: string | undefined;
+  /**
+   * Maximum VRAM requirement in GB
+   */
   maxVram?: number | undefined;
+  /**
+   * Tri-state filter: 'true' returns only models that can serve inference (healthy compute or API-hosted), 'false' returns only unavailable models (missing compute), omit for all models
+   */
+  available?: Available | undefined;
+  /**
+   * Filter by model owner wallet address
+   */
   owner?: string | undefined;
+  /**
+   * Comma-separated tag filter
+   */
   tags?: string | undefined;
+  /**
+   * Free-text search across model name and description
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidSearchModelsResponse = {
+export type LucidSearchModelsResponseBody = {
   success: boolean;
   models: Array<models.Passport>;
   pagination: models.Pagination;
 };
+
+export type LucidSearchModelsResponse = {
+  result: LucidSearchModelsResponseBody;
+};
+
+/** @internal */
+export const Available$outboundSchema: z.ZodMiniEnum<typeof Available> = z.enum(
+  Available,
+);
 
 /** @internal */
 export type LucidSearchModelsRequest$Outbound = {
   runtime?: string | undefined;
   format?: string | undefined;
   max_vram?: number | undefined;
+  available?: string | undefined;
   owner?: string | undefined;
   tags?: string | undefined;
   search?: string | undefined;
@@ -51,6 +102,7 @@ export const LucidSearchModelsRequest$outboundSchema: z.ZodMiniType<
     runtime: z.optional(z.string()),
     format: z.optional(z.string()),
     maxVram: z.optional(z.int()),
+    available: z.optional(Available$outboundSchema),
     owner: z.optional(z.string()),
     tags: z.optional(z.string()),
     search: z.optional(z.string()),
@@ -74,14 +126,39 @@ export function lucidSearchModelsRequestToJSON(
 }
 
 /** @internal */
-export const LucidSearchModelsResponse$inboundSchema: z.ZodMiniType<
-  LucidSearchModelsResponse,
+export const LucidSearchModelsResponseBody$inboundSchema: z.ZodMiniType<
+  LucidSearchModelsResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   models: z.array(models.Passport$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidSearchModelsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidSearchModelsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidSearchModelsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidSearchModelsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidSearchModelsResponse$inboundSchema: z.ZodMiniType<
+  LucidSearchModelsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidSearchModelsResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidSearchModelsResponseFromJSON(
   jsonString: string,

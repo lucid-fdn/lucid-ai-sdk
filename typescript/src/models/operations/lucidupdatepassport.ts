@@ -7,7 +7,13 @@ import { remap as remap$ } from "../../lib/primitives.js";
 import * as models from "../index.js";
 
 export type LucidUpdatePassportRequest = {
+  /**
+   * Unique passport identifier to update
+   */
   passportId: string;
+  /**
+   * Owner wallet address for ownership verification
+   */
   xOwnerAddress?: string | undefined;
   body: models.UpdatePassportRequest;
 };

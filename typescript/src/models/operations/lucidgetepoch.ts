@@ -11,6 +11,9 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidGetEpochRequest = {
+  /**
+   * Unique epoch identifier
+   */
   epochId: string;
 };
 

@@ -2,6 +2,8 @@
 
 ## Overview
 
+Epoch lifecycle — creation, finalization, on-chain anchoring, and retry
+
 ### Available Operations
 
 * [getCurrent](#getcurrent) - Get current epoch
@@ -19,7 +21,8 @@
 
 ## getCurrent
 
-Get current epoch
+Retrieve the current open epoch, optionally filtered by project_id. Returns epoch metadata including MMR root, leaf count, status, and timestamps.
+
 
 ### Example Usage
 
@@ -85,7 +88,8 @@ run();
 
 ## list
 
-List epochs
+Retrieve a paginated list of epochs with optional filtering by project_id and status (open, anchoring, anchored, failed). Defaults to page 1, 20 results per page.
+
 
 ### Example Usage
 
@@ -98,7 +102,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.epochs.list();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -120,7 +126,9 @@ async function run() {
   const res = await epochsList(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("epochsList failed:", res.error);
   }
@@ -151,7 +159,8 @@ run();
 
 ## create
 
-Create epoch
+Create a new epoch, optionally scoped to a project_id. The epoch starts in 'open' status with an empty MMR root and zero leaf count.
+
 
 ### Example Usage
 
@@ -162,7 +171,9 @@ import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.epochs.create({});
+  const result = await raijinLabsLucidAi.epochs.create({
+    projectId: "proj_lucid_main",
+  });
 
   console.log(result);
 }
@@ -183,7 +194,9 @@ import { epochsCreate } from "raijin-labs-lucid-ai/funcs/epochsCreate.js";
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await epochsCreate(raijinLabsLucidAi, {});
+  const res = await epochsCreate(raijinLabsLucidAi, {
+    projectId: "proj_lucid_main",
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -217,7 +230,8 @@ run();
 
 ## get
 
-Get epoch
+Retrieve a single epoch by its epoch_id, including the MMR root, leaf count, status, and on-chain anchoring details.
+
 
 ### Example Usage
 
@@ -288,7 +302,8 @@ run();
 
 ## retry
 
-Retry failed epoch
+Retry the on-chain anchoring for an epoch that previously failed. The epoch must be in 'failed' status. Resets the status and re-submits the Solana transaction.
+
 
 ### Example Usage
 
@@ -359,7 +374,8 @@ run();
 
 ## verify
 
-Verify epoch anchor
+Verify an epoch's on-chain anchor by comparing the committed MMR root on Solana with the expected off-chain root. Returns the comparison result and transaction signature.
+
 
 ### Example Usage
 
@@ -429,7 +445,8 @@ run();
 
 ## getTransaction
 
-Get epoch anchoring transaction
+Retrieve the Solana transaction details for an epoch's on-chain anchoring, including the transaction signature, slot number, and block time.
+
 
 ### Example Usage
 
@@ -500,7 +517,8 @@ run();
 
 ## commitRoot
 
-Commit epoch root
+Finalize the current epoch and commit its MMR root to Solana via the thought_epoch program. Optionally force-commit even if the epoch threshold has not been reached.
+
 
 ### Example Usage
 
@@ -567,7 +585,8 @@ run();
 
 ## commitRootsBatch
 
-Commit multiple epoch roots
+Commit multiple epoch roots to Solana in a single batch operation. Returns per-epoch success/failure results with transaction signatures. Uses the batch commit instruction for gas efficiency.
+
 
 ### Example Usage
 
@@ -642,7 +661,8 @@ run();
 
 ## getAnchoringHealth
 
-Anchoring service health
+Check the health of the on-chain anchoring service, including Solana connection status, network type, authority address, and whether mock mode is active.
+
 
 ### Example Usage
 
@@ -707,7 +727,8 @@ run();
 
 ## listReady
 
-Get epochs ready for finalization
+List all epochs that have met the finalization threshold (more than 100 receipts or older than 1 hour) and are ready to be committed on-chain.
+
 
 ### Example Usage
 
@@ -772,7 +793,8 @@ run();
 
 ## getStats
 
-Epoch statistics
+Retrieve aggregate epoch statistics including total count, counts by status, average receipts per epoch, and anchoring success rate.
+
 
 ### Example Usage
 

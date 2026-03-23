@@ -12,6 +12,6 @@ let value: LucidGetPayoutRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `runId`            | *string*           | :heavy_check_mark: | N/A                |
+| Field                                               | Type                                                | Required                                            | Description                                         |
+| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| `runId`                                             | *string*                                            | :heavy_check_mark:                                  | Inference run identifier associated with the payout |

@@ -15,4 +15,4 @@ let value: AgentInitRequest = {
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `agentId`          | *string*           | :heavy_check_mark: | N/A                |
-| `ipfsCid`          | *string*           | :heavy_minus_sign: | N/A                |
+| `depinCid`         | *string*           | :heavy_minus_sign: | N/A                |

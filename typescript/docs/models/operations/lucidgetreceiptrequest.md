@@ -12,6 +12,6 @@ let value: LucidGetReceiptRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `receiptId`        | *string*           | :heavy_check_mark: | N/A                |
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `receiptId`                      | *string*                         | :heavy_check_mark:               | Unique receipt identifier (UUID) |

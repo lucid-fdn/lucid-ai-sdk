@@ -10,7 +10,13 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type LucidDeletePassportRequest = {
+  /**
+   * Unique passport identifier to delete (soft delete)
+   */
   passportId: string;
+  /**
+   * Owner wallet address for ownership verification
+   */
   xOwnerAddress?: string | undefined;
 };
 

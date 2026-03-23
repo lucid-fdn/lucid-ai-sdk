@@ -1,0 +1,25 @@
+# LucidAddProceduralMemoryRequestBody
+
+## Example Usage
+
+```typescript
+import { LucidAddProceduralMemoryRequestBody } from "raijin-labs-lucid-ai/models/operations";
+
+let value: LucidAddProceduralMemoryRequestBody = {
+  rule: "<value>",
+  trigger: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                                          | Type                                                                                                           | Required                                                                                                       | Description                                                                                                    |
+| -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `rule`                                                                                                         | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
+| `trigger`                                                                                                      | *string*                                                                                                       | :heavy_check_mark:                                                                                             | N/A                                                                                                            |
+| `content`                                                                                                      | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `priority`                                                                                                     | *number*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `sourceMemoryIds`                                                                                              | *string*[]                                                                                                     | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `namespace`                                                                                                    | *string*                                                                                                       | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `memoryLane`                                                                                                   | [operations.LucidAddProceduralMemoryMemoryLane](../../models/operations/lucidaddproceduralmemorymemorylane.md) | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |
+| `metadata`                                                                                                     | Record<string, *any*>                                                                                          | :heavy_minus_sign:                                                                                             | N/A                                                                                                            |

@@ -12,6 +12,6 @@ let value: LucidGetPassportRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `passportId`       | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                | Type                                                 | Required                                             | Description                                          |
+| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
+| `passportId`                                         | *string*                                             | :heavy_check_mark:                                   | Unique passport identifier (e.g. ppt_model_7xK9mQ2v) |

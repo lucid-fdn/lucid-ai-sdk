@@ -11,23 +11,39 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidListToolsRequest = {
+  /**
+   * Filter by tool owner wallet address
+   */
   owner?: string | undefined;
   /**
    * Comma-separated
    */
   tags?: string | undefined;
+  /**
+   * Free-text search across tool name and description
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidListToolsResponse = {
+export type LucidListToolsResponseBody = {
   success: boolean;
   tools: Array<models.Passport>;
   pagination: models.Pagination;
+};
+
+export type LucidListToolsResponse = {
+  result: LucidListToolsResponseBody;
 };
 
 /** @internal */
@@ -67,14 +83,39 @@ export function lucidListToolsRequestToJSON(
 }
 
 /** @internal */
-export const LucidListToolsResponse$inboundSchema: z.ZodMiniType<
-  LucidListToolsResponse,
+export const LucidListToolsResponseBody$inboundSchema: z.ZodMiniType<
+  LucidListToolsResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   tools: z.array(models.Passport$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidListToolsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidListToolsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidListToolsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidListToolsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidListToolsResponse$inboundSchema: z.ZodMiniType<
+  LucidListToolsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidListToolsResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidListToolsResponseFromJSON(
   jsonString: string,

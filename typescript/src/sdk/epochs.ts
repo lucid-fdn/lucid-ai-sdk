@@ -18,10 +18,14 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Epochs extends ClientSDK {
   /**
    * Get current epoch
+   *
+   * @remarks
+   * Retrieve the current open epoch, optionally filtered by project_id. Returns epoch metadata including MMR root, leaf count, status, and timestamps.
    */
   async getCurrent(
     request?: operations.LucidGetCurrentEpochRequest | undefined,
@@ -36,12 +40,17 @@ export class Epochs extends ClientSDK {
 
   /**
    * List epochs
+   *
+   * @remarks
+   * Retrieve a paginated list of epochs with optional filtering by project_id and status (open, anchoring, anchored, failed). Defaults to page 1, 20 results per page.
    */
   async list(
     request?: operations.LucidListEpochsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidListEpochsResponse> {
-    return unwrapAsync(epochsList(
+  ): Promise<
+    PageIterator<operations.LucidListEpochsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(epochsList(
       this,
       request,
       options,
@@ -50,6 +59,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Create epoch
+   *
+   * @remarks
+   * Create a new epoch, optionally scoped to a project_id. The epoch starts in 'open' status with an empty MMR root and zero leaf count.
    */
   async create(
     request: operations.LucidCreateEpochRequest,
@@ -64,6 +76,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Get epoch
+   *
+   * @remarks
+   * Retrieve a single epoch by its epoch_id, including the MMR root, leaf count, status, and on-chain anchoring details.
    */
   async get(
     request: operations.LucidGetEpochRequest,
@@ -78,6 +93,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Retry failed epoch
+   *
+   * @remarks
+   * Retry the on-chain anchoring for an epoch that previously failed. The epoch must be in 'failed' status. Resets the status and re-submits the Solana transaction.
    */
   async retry(
     request: operations.LucidRetryEpochRequest,
@@ -92,6 +110,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Verify epoch anchor
+   *
+   * @remarks
+   * Verify an epoch's on-chain anchor by comparing the committed MMR root on Solana with the expected off-chain root. Returns the comparison result and transaction signature.
    */
   async verify(
     request: operations.LucidVerifyEpochRequest,
@@ -106,6 +127,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Get epoch anchoring transaction
+   *
+   * @remarks
+   * Retrieve the Solana transaction details for an epoch's on-chain anchoring, including the transaction signature, slot number, and block time.
    */
   async getTransaction(
     request: operations.LucidGetEpochTransactionRequest,
@@ -120,6 +144,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Commit epoch root
+   *
+   * @remarks
+   * Finalize the current epoch and commit its MMR root to Solana via the thought_epoch program. Optionally force-commit even if the epoch threshold has not been reached.
    */
   async commitRoot(
     request: operations.LucidCommitEpochRootRequest,
@@ -134,6 +161,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Commit multiple epoch roots
+   *
+   * @remarks
+   * Commit multiple epoch roots to Solana in a single batch operation. Returns per-epoch success/failure results with transaction signatures. Uses the batch commit instruction for gas efficiency.
    */
   async commitRootsBatch(
     request: operations.LucidCommitEpochRootsBatchRequest,
@@ -148,6 +178,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Anchoring service health
+   *
+   * @remarks
+   * Check the health of the on-chain anchoring service, including Solana connection status, network type, authority address, and whether mock mode is active.
    */
   async getAnchoringHealth(
     options?: RequestOptions,
@@ -160,6 +193,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Get epochs ready for finalization
+   *
+   * @remarks
+   * List all epochs that have met the finalization threshold (more than 100 receipts or older than 1 hour) and are ready to be committed on-chain.
    */
   async listReady(
     options?: RequestOptions,
@@ -172,6 +208,9 @@ export class Epochs extends ClientSDK {
 
   /**
    * Epoch statistics
+   *
+   * @remarks
+   * Retrieve aggregate epoch statistics including total count, counts by status, average receipts per epoch, and anchoring success rate.
    */
   async getStats(
     options?: RequestOptions,

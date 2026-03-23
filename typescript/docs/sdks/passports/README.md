@@ -2,6 +2,8 @@
 
 ## Overview
 
+AI asset identity — create, list, update, delete model/compute/tool/dataset/agent passports
+
 ### Available Operations
 
 * [create](#create) - Create a passport
@@ -16,10 +18,13 @@
 * [lucidListTools](#lucidlisttools) - List tool passports
 * [lucidListDatasets](#lucidlistdatasets) - List dataset passports
 * [lucidListAgentPassports](#lucidlistagentpassports) - List agent passports
+* [lucidUpdatePassportPricing](#lucidupdatepassportpricing) - Update passport pricing
+* [lucidUpdatePassportEndpoints](#lucidupdatepassportendpoints) - Update passport endpoint URLs
 
 ## create
 
-Create a passport
+Register a new AI asset passport (model, compute, tool, dataset, or agent) with metadata validated against the appropriate JSON schema. Returns the created passport with its generated passport_id.
+
 
 ### Example Usage
 
@@ -31,13 +36,26 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
   const result = await raijinLabsLucidAi.passports.create({
-    type: "dataset",
-    owner: "<value>",
+    type: "model",
+    owner: "7xK9mQ2vNbPfYkRd3JhEzV1LnWqA8tUcGp4SyDfH5Bo",
     metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+      "schema_version": "1.0",
+      "model_passport_id": "ppt_model_7xK9mQ2v",
+      "format": "safetensors",
+      "runtime_recommended": "vllm",
+      "context_length": 32768,
+      "hf": {
+        "repo_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      },
     },
+    name: "mistral-7b-instruct",
+    description: "Mistral 7B Instruct fine-tuned for chat",
+    version: "1.0.0",
+    tags: [
+      "llm",
+      "chat",
+      "instruct",
+    ],
   });
 
   console.log(result);
@@ -60,13 +78,26 @@ const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
   const res = await passportsCreate(raijinLabsLucidAi, {
-    type: "dataset",
-    owner: "<value>",
+    type: "model",
+    owner: "7xK9mQ2vNbPfYkRd3JhEzV1LnWqA8tUcGp4SyDfH5Bo",
     metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+      "schema_version": "1.0",
+      "model_passport_id": "ppt_model_7xK9mQ2v",
+      "format": "safetensors",
+      "runtime_recommended": "vllm",
+      "context_length": 32768,
+      "hf": {
+        "repo_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      },
     },
+    name: "mistral-7b-instruct",
+    description: "Mistral 7B Instruct fine-tuned for chat",
+    version: "1.0.0",
+    tags: [
+      "llm",
+      "chat",
+      "instruct",
+    ],
   });
   if (res.ok) {
     const { value: result } = res;
@@ -102,7 +133,8 @@ run();
 
 ## list
 
-List passports
+Retrieve a paginated list of passports with optional filtering by type, owner, status, and tags. Supports free-text search across name, description, and tags. Defaults to page 1, 20 results per page.
+
 
 ### Example Usage
 
@@ -115,7 +147,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.passports.list();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -137,7 +171,9 @@ async function run() {
   const res = await passportsList(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("passportsList failed:", res.error);
   }
@@ -157,7 +193,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ListPassportsResponse](../../models/listpassportsresponse.md)\>**
+**Promise\<[operations.LucidListPassportsResponse](../../models/operations/lucidlistpassportsresponse.md)\>**
 
 ### Errors
 
@@ -168,7 +204,8 @@ run();
 
 ## get
 
-Get a passport
+Retrieve a single passport by its passport_id, including all metadata, on-chain sync status, DePIN storage CIDs, and NFT mint addresses.
+
 
 ### Example Usage
 
@@ -239,7 +276,8 @@ run();
 
 ## update
 
-Update a passport
+Update mutable fields on an existing passport (metadata, name, description, version, tags, status). Requires the X-Owner-Address header for ownership verification if configured.
+
 
 ### Example Usage
 
@@ -312,7 +350,8 @@ run();
 
 ## delete
 
-Delete a passport (soft delete)
+Soft-delete a passport by setting its status to revoked. The passport record is retained for audit purposes. Requires X-Owner-Address header for ownership verification.
+
 
 ### Example Usage
 
@@ -383,7 +422,8 @@ run();
 
 ## sync
 
-Trigger on-chain sync for a passport
+Initiate an on-chain sync for a passport, writing its metadata hash to the Solana lucid_passports program. Returns the PDA address and transaction signature on success.
+
 
 ### Example Usage
 
@@ -454,7 +494,8 @@ run();
 
 ## listPendingSync
 
-Get passports pending sync
+List all passports that have been created or updated off-chain but not yet synced to on-chain state. Useful for monitoring the sync backlog.
+
 
 ### Example Usage
 
@@ -519,7 +560,8 @@ run();
 
 ## getStats
 
-Passport statistics
+Retrieve aggregate statistics about passports including counts by type, status breakdown, and sync status. No authentication required.
+
 
 ### Example Usage
 
@@ -584,7 +626,8 @@ run();
 
 ## searchModels
 
-Search model passports
+Search model passports with ModelMeta-specific filters including runtime, format, max VRAM, and availability. The availability filter is tri-state: 'true' for models with healthy compute, 'false' for unavailable models, omit for all.
+
 
 ### Example Usage
 
@@ -597,7 +640,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.passports.searchModels();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -619,7 +664,9 @@ async function run() {
   const res = await passportsSearchModels(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("passportsSearchModels failed:", res.error);
   }
@@ -650,7 +697,8 @@ run();
 
 ## lucidListTools
 
-List tool passports
+List active tool passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
+
 
 ### Example Usage
 
@@ -663,7 +711,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.passports.lucidListTools();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -685,7 +735,9 @@ async function run() {
   const res = await passportsLucidListTools(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("passportsLucidListTools failed:", res.error);
   }
@@ -716,7 +768,8 @@ run();
 
 ## lucidListDatasets
 
-List dataset passports
+List active dataset passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
+
 
 ### Example Usage
 
@@ -729,7 +782,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.passports.lucidListDatasets();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -751,7 +806,9 @@ async function run() {
   const res = await passportsLucidListDatasets(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("passportsLucidListDatasets failed:", res.error);
   }
@@ -782,7 +839,8 @@ run();
 
 ## lucidListAgentPassports
 
-List agent passports
+List active agent passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
+
 
 ### Example Usage
 
@@ -795,7 +853,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.passports.lucidListAgentPassports();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -817,7 +877,9 @@ async function run() {
   const res = await passportsLucidListAgentPassports(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("passportsLucidListAgentPassports failed:", res.error);
   }
@@ -843,5 +905,153 @@ run();
 
 | Error Type                           | Status Code                          | Content Type                         |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| errors.ErrorResponse                 | 500                                  | application/json                     |
+| errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
+
+## lucidUpdatePassportPricing
+
+Update pricing-related fields on a passport (e.g., price per token, pricing model). Requires X-Owner-Address header for ownership verification.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="lucid_update_passport_pricing" method="patch" path="/v1/passports/{passport_id}/pricing" -->
+```typescript
+import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.lucidUpdatePassportPricing({
+    passportId: "<id>",
+    body: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
+import { passportsLucidUpdatePassportPricing } from "raijin-labs-lucid-ai/funcs/passportsLucidUpdatePassportPricing.js";
+
+// Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
+
+async function run() {
+  const res = await passportsLucidUpdatePassportPricing(raijinLabsLucidAi, {
+    passportId: "<id>",
+    body: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("passportsLucidUpdatePassportPricing failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.LucidUpdatePassportPricingRequest](../../models/operations/lucidupdatepassportpricingrequest.md)                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GetPassportResponse](../../models/getpassportresponse.md)\>**
+
+### Errors
+
+| Error Type                           | Status Code                          | Content Type                         |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| errors.ErrorResponse                 | 403, 404                             | application/json                     |
+| errors.ErrorResponse                 | 500                                  | application/json                     |
+| errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
+
+## lucidUpdatePassportEndpoints
+
+Update the endpoint URLs on a passport (inference URL, health URL, metrics URL). Requires X-Owner-Address header for ownership verification.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="lucid_update_passport_endpoints" method="patch" path="/v1/passports/{passport_id}/endpoints" -->
+```typescript
+import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
+
+const raijinLabsLucidAi = new RaijinLabsLucidAi();
+
+async function run() {
+  const result = await raijinLabsLucidAi.passports.lucidUpdatePassportEndpoints({
+    passportId: "<id>",
+    body: {},
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
+import { passportsLucidUpdatePassportEndpoints } from "raijin-labs-lucid-ai/funcs/passportsLucidUpdatePassportEndpoints.js";
+
+// Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
+
+async function run() {
+  const res = await passportsLucidUpdatePassportEndpoints(raijinLabsLucidAi, {
+    passportId: "<id>",
+    body: {},
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("passportsLucidUpdatePassportEndpoints failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.LucidUpdatePassportEndpointsRequest](../../models/operations/lucidupdatepassportendpointsrequest.md)                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.GetPassportResponse](../../models/getpassportresponse.md)\>**
+
+### Errors
+
+| Error Type                           | Status Code                          | Content Type                         |
+| ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| errors.ErrorResponse                 | 403, 404                             | application/json                     |
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |

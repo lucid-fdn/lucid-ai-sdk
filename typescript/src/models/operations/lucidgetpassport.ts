@@ -6,6 +6,9 @@ import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../../lib/primitives.js";
 
 export type LucidGetPassportRequest = {
+  /**
+   * Unique passport identifier (e.g. ppt_model_7xK9mQ2v)
+   */
   passportId: string;
 };
 

@@ -20,6 +20,10 @@ export type Direction = OpenEnum<typeof Direction>;
 export type ReceiptProof = {
   runId: string;
   receiptHash: string;
+  /**
+   * The leaf hash (receipt_hash) at leaf_index
+   */
+  leaf?: string | undefined;
   leafIndex: number;
   /**
    * Sibling hashes along the Merkle path
@@ -42,6 +46,7 @@ export const ReceiptProof$inboundSchema: z.ZodMiniType<ReceiptProof, unknown> =
     z.object({
       run_id: types.string(),
       receipt_hash: types.string(),
+      leaf: types.optional(types.string()),
       leaf_index: types.number(),
       proof: z.array(types.string()),
       root: types.string(),

@@ -2,6 +2,8 @@
 
 ## Overview
 
+Revenue split calculation and payout execution (basis-point math)
+
 ### Available Operations
 
 * [calculate](#calculate) - Calculate payout split
@@ -11,7 +13,8 @@
 
 ## calculate
 
-Calculate payout split
+Calculate a revenue split for a set of recipients using basis-point math. Default split is 70% compute, 20% model, 10% protocol (configurable via request body).
+
 
 ### Example Usage
 
@@ -86,7 +89,8 @@ run();
 
 ## createFromReceipt
 
-Create payout from receipt token data
+Extract token usage data from a receipt and compute the payout split automatically. Uses the receipt's model and compute passport IDs to resolve the split configuration.
+
 
 ### Example Usage
 
@@ -165,7 +169,8 @@ run();
 
 ## get
 
-Get payout by run_id
+Retrieve the computed payout split for a specific inference run by its run_id, including per-recipient amounts and the overall split configuration.
+
 
 ### Example Usage
 
@@ -236,7 +241,8 @@ run();
 
 ## verify
 
-Verify payout split
+Verify the integrity of a payout split by checking that recipient amounts sum to the total, all recipients are valid addresses, and the payout hash is correct.
+
 
 ### Example Usage
 

@@ -11,6 +11,9 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidGetReceiptRequest = {
+  /**
+   * Unique receipt identifier (UUID)
+   */
   receiptId: string;
 };
 

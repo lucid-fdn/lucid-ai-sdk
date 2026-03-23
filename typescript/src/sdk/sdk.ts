@@ -3,20 +3,41 @@
  */
 
 import { ClientSDK } from "../lib/sdks.js";
+import { A2A } from "./a2a.js";
 import { Agents } from "./agents.js";
+import { Anchoring } from "./anchoring.js";
+import { Chains } from "./chains.js";
 import { Compute } from "./compute.js";
+import { CrossChain } from "./crosschain.js";
+import { Disputes } from "./disputes.js";
 import { Epochs } from "./epochs.js";
+import { Escrow } from "./escrow.js";
 import { Health } from "./health.js";
+import { Identity } from "./identity.js";
 import { Match } from "./match.js";
+import { Memory } from "./memory.js";
+import { Modules } from "./modules.js";
 import { Passports } from "./passports.js";
+import { Paymaster } from "./paymaster.js";
+import { Payments } from "./payments.js";
 import { Payouts } from "./payouts.js";
 import { Receipts } from "./receipts.js";
+import { Reputation } from "./reputation.js";
 import { Run } from "./run.js";
+import { Shares } from "./shares.js";
+import { Tba } from "./tba.js";
+import { Webhooks } from "./webhooks.js";
+import { ZkML } from "./zkml.js";
 
 export class RaijinLabsLucidAi extends ClientSDK {
   private _passports?: Passports;
   get passports(): Passports {
     return (this._passports ??= new Passports(this._options));
+  }
+
+  private _shares?: Shares;
+  get shares(): Shares {
+    return (this._shares ??= new Shares(this._options));
   }
 
   private _compute?: Compute;
@@ -44,6 +65,16 @@ export class RaijinLabsLucidAi extends ClientSDK {
     return (this._epochs ??= new Epochs(this._options));
   }
 
+  private _memory?: Memory;
+  get memory(): Memory {
+    return (this._memory ??= new Memory(this._options));
+  }
+
+  private _anchoring?: Anchoring;
+  get anchoring(): Anchoring {
+    return (this._anchoring ??= new Anchoring(this._options));
+  }
+
   private _payouts?: Payouts;
   get payouts(): Payouts {
     return (this._payouts ??= new Payouts(this._options));
@@ -57,5 +88,70 @@ export class RaijinLabsLucidAi extends ClientSDK {
   private _agents?: Agents;
   get agents(): Agents {
     return (this._agents ??= new Agents(this._options));
+  }
+
+  private _escrow?: Escrow;
+  get escrow(): Escrow {
+    return (this._escrow ??= new Escrow(this._options));
+  }
+
+  private _disputes?: Disputes;
+  get disputes(): Disputes {
+    return (this._disputes ??= new Disputes(this._options));
+  }
+
+  private _paymaster?: Paymaster;
+  get paymaster(): Paymaster {
+    return (this._paymaster ??= new Paymaster(this._options));
+  }
+
+  private _identity?: Identity;
+  get identity(): Identity {
+    return (this._identity ??= new Identity(this._options));
+  }
+
+  private _tba?: Tba;
+  get tba(): Tba {
+    return (this._tba ??= new Tba(this._options));
+  }
+
+  private _modules?: Modules;
+  get modules(): Modules {
+    return (this._modules ??= new Modules(this._options));
+  }
+
+  private _zkML?: ZkML;
+  get zkML(): ZkML {
+    return (this._zkML ??= new ZkML(this._options));
+  }
+
+  private _payments?: Payments;
+  get payments(): Payments {
+    return (this._payments ??= new Payments(this._options));
+  }
+
+  private _webhooks?: Webhooks;
+  get webhooks(): Webhooks {
+    return (this._webhooks ??= new Webhooks(this._options));
+  }
+
+  private _a2A?: A2A;
+  get a2A(): A2A {
+    return (this._a2A ??= new A2A(this._options));
+  }
+
+  private _reputation?: Reputation;
+  get reputation(): Reputation {
+    return (this._reputation ??= new Reputation(this._options));
+  }
+
+  private _chains?: Chains;
+  get chains(): Chains {
+    return (this._chains ??= new Chains(this._options));
+  }
+
+  private _crossChain?: CrossChain;
+  get crossChain(): CrossChain {
+    return (this._crossChain ??= new CrossChain(this._options));
   }
 }

@@ -2,30 +2,33 @@
 
 ## Overview
 
+System health — liveness, readiness, and per-dependency status checks
+
 ### Available Operations
 
-* [checkSystemHealth](#checksystemhealth) - Overall system health
-* [checkLiveness](#checkliveness) - Liveness probe
-* [checkReadiness](#checkreadiness) - Readiness probe
-* [checkDatabaseHealth](#checkdatabasehealth) - Database health check
-* [checkRedisHealth](#checkredishealth) - Redis health check
-* [checkNangoHealth](#checknangohealth) - Nango service health check
-* [getDetailedHealth](#getdetailedhealth) - Detailed health with statistics
+* [lucidCheckSystemHealth](#lucidchecksystemhealth) - Overall system health
+* [lucidCheckLiveness](#lucidcheckliveness) - Liveness probe
+* [lucidCheckReadiness](#lucidcheckreadiness) - Readiness probe
+* [lucidCheckDatabaseHealth](#lucidcheckdatabasehealth) - Database health check
+* [lucidCheckRedisHealth](#lucidcheckredishealth) - Redis health check
+* [lucidCheckNangoHealth](#lucidchecknangohealth) - Nango service health check
+* [lucidGetDetailedHealth](#lucidgetdetailedhealth) - Detailed health with statistics
 
-## checkSystemHealth
+## lucidCheckSystemHealth
 
-Overall system health
+Check overall system health including all dependencies (database, Redis, Solana, Nango). Returns healthy, degraded, or down status with a 200 when healthy or 503 when degraded/down. Use /health/detailed for resource metrics.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_system_health" method="get" path="/health" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_system_health" method="get" path="/health" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkSystemHealth();
+  const result = await raijinLabsLucidAi.health.lucidCheckSystemHealth();
 
   console.log(result);
 }
@@ -39,19 +42,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckSystemHealth } from "raijin-labs-lucid-ai/funcs/healthCheckSystemHealth.js";
+import { healthLucidCheckSystemHealth } from "raijin-labs-lucid-ai/funcs/healthLucidCheckSystemHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckSystemHealth(raijinLabsLucidAi);
+  const res = await healthLucidCheckSystemHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckSystemHealth failed:", res.error);
+    console.log("healthLucidCheckSystemHealth failed:", res.error);
   }
 }
 
@@ -77,20 +80,21 @@ run();
 | errors.SystemHealthError             | 503                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkLiveness
+## lucidCheckLiveness
 
-Liveness probe
+Kubernetes-compatible liveness probe. Returns 200 if the application process is alive. Does not check dependencies. Use /health/ready for full readiness.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_liveness" method="get" path="/health/live" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_liveness" method="get" path="/health/live" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkLiveness();
+  const result = await raijinLabsLucidAi.health.lucidCheckLiveness();
 
   console.log(result);
 }
@@ -104,19 +108,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckLiveness } from "raijin-labs-lucid-ai/funcs/healthCheckLiveness.js";
+import { healthLucidCheckLiveness } from "raijin-labs-lucid-ai/funcs/healthLucidCheckLiveness.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckLiveness(raijinLabsLucidAi);
+  const res = await healthLucidCheckLiveness(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckLiveness failed:", res.error);
+    console.log("healthLucidCheckLiveness failed:", res.error);
   }
 }
 
@@ -133,7 +137,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.CheckLivenessResponse](../../models/operations/checklivenessresponse.md)\>**
+**Promise\<[operations.LucidCheckLivenessResponse](../../models/operations/lucidchecklivenessresponse.md)\>**
 
 ### Errors
 
@@ -141,20 +145,21 @@ run();
 | ------------------------------------ | ------------------------------------ | ------------------------------------ |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkReadiness
+## lucidCheckReadiness
 
-Readiness probe
+Kubernetes-compatible readiness probe. Checks all dependencies (database, Redis, etc.) and returns 200 only when the service is ready to accept traffic. Returns 503 with dependency status details when not ready.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_readiness" method="get" path="/health/ready" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_readiness" method="get" path="/health/ready" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkReadiness();
+  const result = await raijinLabsLucidAi.health.lucidCheckReadiness();
 
   console.log(result);
 }
@@ -168,19 +173,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckReadiness } from "raijin-labs-lucid-ai/funcs/healthCheckReadiness.js";
+import { healthLucidCheckReadiness } from "raijin-labs-lucid-ai/funcs/healthLucidCheckReadiness.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckReadiness(raijinLabsLucidAi);
+  const res = await healthLucidCheckReadiness(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckReadiness failed:", res.error);
+    console.log("healthLucidCheckReadiness failed:", res.error);
   }
 }
 
@@ -197,7 +202,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.CheckReadinessResponse](../../models/operations/checkreadinessresponse.md)\>**
+**Promise\<[operations.LucidCheckReadinessResponse](../../models/operations/lucidcheckreadinessresponse.md)\>**
 
 ### Errors
 
@@ -206,20 +211,21 @@ run();
 | errors.ServiceUnavailableError       | 503                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkDatabaseHealth
+## lucidCheckDatabaseHealth
 
-Database health check
+Check database (PostgreSQL/Supabase) connectivity and query latency. Returns 503 when the database is unreachable.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_database_health" method="get" path="/health/database" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_database_health" method="get" path="/health/database" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkDatabaseHealth();
+  const result = await raijinLabsLucidAi.health.lucidCheckDatabaseHealth();
 
   console.log(result);
 }
@@ -233,19 +239,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckDatabaseHealth } from "raijin-labs-lucid-ai/funcs/healthCheckDatabaseHealth.js";
+import { healthLucidCheckDatabaseHealth } from "raijin-labs-lucid-ai/funcs/healthLucidCheckDatabaseHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckDatabaseHealth(raijinLabsLucidAi);
+  const res = await healthLucidCheckDatabaseHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckDatabaseHealth failed:", res.error);
+    console.log("healthLucidCheckDatabaseHealth failed:", res.error);
   }
 }
 
@@ -271,20 +277,21 @@ run();
 | errors.HealthCheckResultError        | 503                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkRedisHealth
+## lucidCheckRedisHealth
 
-Redis health check
+Check Redis connectivity and latency. Redis is used for spent proof deduplication and caching. Returns 503 when Redis is unreachable.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_redis_health" method="get" path="/health/redis" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_redis_health" method="get" path="/health/redis" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkRedisHealth();
+  const result = await raijinLabsLucidAi.health.lucidCheckRedisHealth();
 
   console.log(result);
 }
@@ -298,19 +305,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckRedisHealth } from "raijin-labs-lucid-ai/funcs/healthCheckRedisHealth.js";
+import { healthLucidCheckRedisHealth } from "raijin-labs-lucid-ai/funcs/healthLucidCheckRedisHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckRedisHealth(raijinLabsLucidAi);
+  const res = await healthLucidCheckRedisHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckRedisHealth failed:", res.error);
+    console.log("healthLucidCheckRedisHealth failed:", res.error);
   }
 }
 
@@ -336,20 +343,21 @@ run();
 | errors.HealthCheckResultError        | 503                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkNangoHealth
+## lucidCheckNangoHealth
 
-Nango service health check
+Check Nango OAuth service connectivity. Nango manages third-party OAuth connections for agent integrations. Returns 503 when Nango is unreachable.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_nango_health" method="get" path="/health/nango" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_nango_health" method="get" path="/health/nango" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.checkNangoHealth();
+  const result = await raijinLabsLucidAi.health.lucidCheckNangoHealth();
 
   console.log(result);
 }
@@ -363,19 +371,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthCheckNangoHealth } from "raijin-labs-lucid-ai/funcs/healthCheckNangoHealth.js";
+import { healthLucidCheckNangoHealth } from "raijin-labs-lucid-ai/funcs/healthLucidCheckNangoHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthCheckNangoHealth(raijinLabsLucidAi);
+  const res = await healthLucidCheckNangoHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthCheckNangoHealth failed:", res.error);
+    console.log("healthLucidCheckNangoHealth failed:", res.error);
   }
 }
 
@@ -401,20 +409,21 @@ run();
 | errors.HealthCheckResultError        | 503                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getDetailedHealth
+## lucidGetDetailedHealth
 
-Detailed health with statistics
+Detailed health check including system resources (memory, CPU), per-dependency status, version info, environment, and aggregate statistics. Use this for operational dashboards and monitoring.
+
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_detailed_health" method="get" path="/health/detailed" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_detailed_health" method="get" path="/health/detailed" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.health.getDetailedHealth();
+  const result = await raijinLabsLucidAi.health.lucidGetDetailedHealth();
 
   console.log(result);
 }
@@ -428,19 +437,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { healthGetDetailedHealth } from "raijin-labs-lucid-ai/funcs/healthGetDetailedHealth.js";
+import { healthLucidGetDetailedHealth } from "raijin-labs-lucid-ai/funcs/healthLucidGetDetailedHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await healthGetDetailedHealth(raijinLabsLucidAi);
+  const res = await healthLucidGetDetailedHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("healthGetDetailedHealth failed:", res.error);
+    console.log("healthLucidGetDetailedHealth failed:", res.error);
   }
 }
 
@@ -457,7 +466,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GetDetailedHealthResponse](../../models/operations/getdetailedhealthresponse.md)\>**
+**Promise\<[operations.LucidGetDetailedHealthResponse](../../models/operations/lucidgetdetailedhealthresponse.md)\>**
 
 ### Errors
 

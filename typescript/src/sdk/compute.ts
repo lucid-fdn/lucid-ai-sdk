@@ -9,16 +9,22 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Compute extends ClientSDK {
   /**
    * Search compute passports
+   *
+   * @remarks
+   * Search compute passports with ComputeMeta-specific filters including region, runtime, provider type, minimum VRAM, and GPU model. Returns paginated results with full passport details.
    */
   async searchCompute(
     request?: operations.LucidSearchComputeRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidSearchComputeResponse> {
-    return unwrapAsync(computeSearchCompute(
+  ): Promise<
+    PageIterator<operations.LucidSearchComputeResponse, { page: number }>
+  > {
+    return unwrapResultIterator(computeSearchCompute(
       this,
       request,
       options,
@@ -27,6 +33,9 @@ export class Compute extends ClientSDK {
 
   /**
    * Submit compute node heartbeat
+   *
+   * @remarks
+   * Submit a heartbeat from a compute node to register or update its live state. Compute nodes must send heartbeats within the 30-second TTL to remain eligible for matching. Includes queue depth and P95 latency estimates.
    */
   async heartbeat(
     request: models.ComputeHeartbeat,
@@ -41,6 +50,9 @@ export class Compute extends ClientSDK {
 
   /**
    * Get compute node health
+   *
+   * @remarks
+   * Get the current health state of a compute node. Returns 503 if the node's heartbeat has expired (>30s since last heartbeat).
    */
   async getNodeHealth(
     request: operations.LucidGetHealthRequest,

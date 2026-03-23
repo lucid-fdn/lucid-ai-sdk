@@ -2,6 +2,8 @@
 
 ## Overview
 
+OpenAI-compatible inference (chat completions) and model listing
+
 ### Available Operations
 
 * [inference](#inference) - Run inference (optionally streaming via SSE)
@@ -9,7 +11,8 @@
 
 ## inference
 
-Run inference (optionally streaming via SSE)
+Execute inference through the LucidLayer execution gateway. Supports both streaming (SSE) and non-streaming responses. A cryptographic receipt is generated for each successful inference.
+
 
 ### Example Usage
 
@@ -76,7 +79,10 @@ run();
 
 ## chatCompletions
 
-OpenAI-compatible chat completions
+x402-gated with dynamic pricing. If `X402_ENABLED=true`, requests without
+a valid `X-Payment-Proof` header receive HTTP 402 with payment instructions.
+Pricing is resolved per-model from the asset_pricing table.
+
 
 ### Example Usage
 
@@ -88,8 +94,21 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
   const result = await raijinLabsLucidAi.run.chatCompletions({
-    model: "Alpine",
-    messages: [],
+    body: {
+      model: "mistral-7b-instruct",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful AI assistant.",
+        },
+        {
+          role: "user",
+          content: "Explain how MMR proofs work in one paragraph.",
+        },
+      ],
+      maxTokens: 256,
+      temperature: 0.7,
+    },
   });
 
   console.log(result);
@@ -112,8 +131,21 @@ const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
   const res = await runChatCompletions(raijinLabsLucidAi, {
-    model: "Alpine",
-    messages: [],
+    body: {
+      model: "mistral-7b-instruct",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful AI assistant.",
+        },
+        {
+          role: "user",
+          content: "Explain how MMR proofs work in one paragraph.",
+        },
+      ],
+      maxTokens: 256,
+      temperature: 0.7,
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -130,7 +162,7 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [models.ChatCompletionRequest](../../models/chatcompletionrequest.md)                                                                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidChatCompletionsRequest](../../models/operations/lucidchatcompletionsrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -144,5 +176,6 @@ run();
 | Error Type                           | Status Code                          | Content Type                         |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ |
 | errors.ErrorResponse                 | 400                                  | application/json                     |
+| errors.X402PaymentRequiredError      | 402                                  | application/json                     |
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |

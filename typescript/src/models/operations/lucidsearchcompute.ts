@@ -11,25 +11,59 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidSearchComputeRequest = {
+  /**
+   * Comma-separated region filter (e.g. us-east-1, eu-west-1)
+   */
   regions?: string | undefined;
+  /**
+   * Comma-separated runtime filter (e.g. vllm, tgi)
+   */
   runtimes?: string | undefined;
+  /**
+   * Filter by provider type (depin, cloud, onprem, managed)
+   */
   providerType?: string | undefined;
+  /**
+   * Minimum VRAM requirement in GB
+   */
   minVram?: number | undefined;
+  /**
+   * Filter by GPU model (e.g. NVIDIA-A100-40GB)
+   */
   gpu?: string | undefined;
+  /**
+   * Filter by compute provider owner wallet address
+   */
   owner?: string | undefined;
+  /**
+   * Comma-separated tag filter
+   */
   tags?: string | undefined;
+  /**
+   * Free-text search across compute passport fields
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidSearchComputeResponse = {
+export type LucidSearchComputeResponseBody = {
   success: boolean;
   compute: Array<models.Passport>;
   pagination: models.Pagination;
+};
+
+export type LucidSearchComputeResponse = {
+  result: LucidSearchComputeResponseBody;
 };
 
 /** @internal */
@@ -81,14 +115,39 @@ export function lucidSearchComputeRequestToJSON(
 }
 
 /** @internal */
-export const LucidSearchComputeResponse$inboundSchema: z.ZodMiniType<
-  LucidSearchComputeResponse,
+export const LucidSearchComputeResponseBody$inboundSchema: z.ZodMiniType<
+  LucidSearchComputeResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   compute: z.array(models.Passport$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidSearchComputeResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidSearchComputeResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidSearchComputeResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidSearchComputeResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidSearchComputeResponse$inboundSchema: z.ZodMiniType<
+  LucidSearchComputeResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidSearchComputeResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidSearchComputeResponseFromJSON(
   jsonString: string,

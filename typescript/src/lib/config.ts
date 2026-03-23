@@ -8,21 +8,42 @@ import { RetryConfig } from "./retries.js";
 import { Params, pathToFunc } from "./url.js";
 
 /**
+ * Local / self-hosted (default for open-source users)
+ */
+export const ServerLocal = "local";
+/**
+ * Self-hosted instance (custom host and port)
+ */
+export const ServerSelfHosted = "self-hosted";
+/**
+ * Managed cloud (Raijin Labs hosted)
+ */
+export const ServerCloud = "cloud";
+/**
  * Contains the list of servers available to the SDK
  */
-export const ServerList = [
-  /**
-   * Production server
-   */
-  "https://api.lucid.foundation",
-] as const;
+export const ServerList = {
+  [ServerLocal]: "http://localhost:3001",
+  [ServerSelfHosted]: "https://{host}:{port}",
+  [ServerCloud]: "https://api.lucid.foundation",
+} as const;
 
 export type SDKOptions = {
+  bearerAuth?: string | (() => Promise<string>) | undefined;
+
   httpClient?: HTTPClient;
   /**
    * Allows overriding the default server used by the SDK
    */
-  serverIdx?: number | undefined;
+  server?: keyof typeof ServerList | undefined;
+  /**
+   * Sets the host variable for url substitution
+   */
+  host?: string | undefined;
+  /**
+   * Sets the port variable for url substitution
+   */
+  port?: string | undefined;
   /**
    * Allows overriding the default server URL used by the SDK
    */
@@ -42,14 +63,21 @@ export type SDKOptions = {
 export function serverURLFromOptions(options: SDKOptions): URL | null {
   let serverURL = options.serverURL;
 
-  const params: Params = {};
+  const serverParams: Record<string, Params> = {
+    "local": {},
+    "self-hosted": {
+      "host": options.host ?? "localhost",
+      "port": options.port ?? "3001",
+    },
+    "cloud": {},
+  };
+
+  let params: Params = {};
 
   if (!serverURL) {
-    const serverIdx = options.serverIdx ?? 0;
-    if (serverIdx < 0 || serverIdx >= ServerList.length) {
-      throw new Error(`Invalid server index ${serverIdx}`);
-    }
-    serverURL = ServerList[serverIdx] || "";
+    const server = options.server ?? ServerLocal;
+    serverURL = ServerList[server] || "";
+    params = serverParams[server] || {};
   }
 
   const u = pathToFunc(serverURL)(params);
@@ -58,9 +86,9 @@ export function serverURLFromOptions(options: SDKOptions): URL | null {
 
 export const SDK_METADATA = {
   language: "typescript",
-  openapiDocVersion: "0.2.0",
-  sdkVersion: "0.5.3",
-  genVersion: "2.832.6",
+  openapiDocVersion: "1.0.0",
+  sdkVersion: "0.6.0",
+  genVersion: "2.866.2",
   userAgent:
-    "speakeasy-sdk/typescript 0.5.3 2.832.6 0.2.0 raijin-labs-lucid-ai",
+    "speakeasy-sdk/typescript 0.6.0 2.866.2 1.0.0 raijin-labs-lucid-ai",
 } as const;

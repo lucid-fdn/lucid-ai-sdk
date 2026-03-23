@@ -10,6 +10,9 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type LucidRetryEpochRequest = {
+  /**
+   * Epoch identifier to retry anchoring for
+   */
   epochId: string;
 };
 

@@ -27,7 +27,7 @@ export const RuntimeRecommended = {
   Vllm: "vllm",
   Tgi: "tgi",
   Tensorrt: "tensorrt",
-  Llmproxy: "llmproxy",
+  Trustgate: "trustgate",
   Openai: "openai",
 } as const;
 export type RuntimeRecommended = ClosedEnum<typeof RuntimeRecommended>;
@@ -79,7 +79,7 @@ export type ModelMeta = {
   name?: string | undefined;
   description?: string | undefined;
   /**
-   * Provider name (e.g. llm-proxy, openai)
+   * Provider name (e.g. trustgate, openai)
    */
   provider?: string | undefined;
   base?: Base | undefined;

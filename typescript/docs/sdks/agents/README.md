@@ -2,42 +2,47 @@
 
 ## Overview
 
+DEPRECATED: Legacy agent MMR orchestration (use AgentDeploy, AgentMirror instead)
+
 ### Available Operations
 
-* [initAgent](#initagent) - Initialize an AI agent
-* [processAgentEpoch](#processagentepoch) - Process an epoch for an agent
-* [processAgentBatchEpochs](#processagentbatchepochs) - Process multiple epochs in batch
-* [generateAgentProof](#generateagentproof) - Generate proof of contribution
-* [getAgentStats](#getagentstats) - Get agent statistics
-* [getAgentHistory](#getagenthistory) - Get agent MMR root history
-* [getAgentRoot](#getagentroot) - Get current MMR root for agent
-* [verifyAgentMmr](#verifyagentmmr) - Verify MMR integrity for agent
-* [listAgents](#listagents) - List all registered agents
-* [planAgentWorkflow](#planagentworkflow) - Plan a workflow from a goal
-* [accomplishAgentGoal](#accomplishagentgoal) - Plan and execute a workflow in one call
-* [previewAgentWorkflow](#previewagentworkflow) - Preview a workflow without executing
-* [getAgentOrchestratorHistory](#getagentorchestratorhistory) - Get agent execution history for a tenant
-* [checkAgentOrchestratorHealth](#checkagentorchestratorhealth) - Agent orchestrator health check
-* [executeAgentFlowspec](#executeagentflowspec) - Execute a FlowSpec
-* [validateFlowspec](#validateflowspec) - Validate a FlowSpec structure
-* [getPlannerInfo](#getplannerinfo) - Get planner service info
-* [checkExecutorHealth](#checkexecutorhealth) - Check executor health
-* [getExecutorDecision](#getexecutordecision) - Get executor decision for a FlowSpec
+* [~~lucidInitAgent~~](#lucidinitagent) - Initialize an AI agent :warning: **Deprecated**
+* [~~lucidProcessAgentEpoch~~](#lucidprocessagentepoch) - Process an epoch for an agent :warning: **Deprecated**
+* [~~lucidProcessAgentBatchEpochs~~](#lucidprocessagentbatchepochs) - Process multiple epochs in batch :warning: **Deprecated**
+* [~~lucidGenerateAgentProof~~](#lucidgenerateagentproof) - Generate proof of contribution :warning: **Deprecated**
+* [~~lucidGetAgentStats~~](#lucidgetagentstats) - Get agent statistics :warning: **Deprecated**
+* [~~lucidGetAgentHistory~~](#lucidgetagenthistory) - Get agent MMR root history :warning: **Deprecated**
+* [~~lucidGetAgentRoot~~](#lucidgetagentroot) - Get current MMR root for agent :warning: **Deprecated**
+* [~~lucidVerifyAgentMmr~~](#lucidverifyagentmmr) - Verify MMR integrity for agent :warning: **Deprecated**
+* [~~lucidListAgents~~](#lucidlistagents) - List all registered agents :warning: **Deprecated**
+* [~~lucidPlanAgentWorkflow~~](#lucidplanagentworkflow) - Plan a workflow from a goal :warning: **Deprecated**
+* [~~lucidAccomplishAgentGoal~~](#lucidaccomplishagentgoal) - Plan and execute a workflow in one call :warning: **Deprecated**
+* [~~lucidPreviewAgentWorkflow~~](#lucidpreviewagentworkflow) - Preview a workflow without executing :warning: **Deprecated**
+* [~~lucidGetAgentOrchestratorHistory~~](#lucidgetagentorchestratorhistory) - Get agent execution history for a tenant :warning: **Deprecated**
+* [~~lucidCheckAgentOrchestratorHealth~~](#lucidcheckagentorchestratorhealth) - Agent orchestrator health check :warning: **Deprecated**
+* [~~lucidExecuteAgentFlowspec~~](#lucidexecuteagentflowspec) - Execute a FlowSpec :warning: **Deprecated**
+* [~~lucidValidateFlowspec~~](#lucidvalidateflowspec) - Validate a FlowSpec structure :warning: **Deprecated**
+* [~~lucidGetPlannerInfo~~](#lucidgetplannerinfo) - Get planner service info :warning: **Deprecated**
+* [~~lucidCheckExecutorHealth~~](#lucidcheckexecutorhealth) - Check executor health :warning: **Deprecated**
+* [~~lucidGetExecutorDecision~~](#lucidgetexecutordecision) - Get executor decision for a FlowSpec :warning: **Deprecated**
 
-## initAgent
+## ~~lucidInitAgent~~
 
-Initialize an AI agent
+DEPRECATED. Initialize or load a legacy agent for MMR-based proof-of-contribution tracking. Use /v1/agents/deploy instead for new agent deployments.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="init_agent" method="post" path="/api/agents/init" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_init_agent" method="post" path="/api/agents/init" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.initAgent({
+  const result = await raijinLabsLucidAi.agents.lucidInitAgent({
     agentId: "<id>",
   });
 
@@ -53,21 +58,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsInitAgent } from "raijin-labs-lucid-ai/funcs/agentsInitAgent.js";
+import { agentsLucidInitAgent } from "raijin-labs-lucid-ai/funcs/agentsLucidInitAgent.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsInitAgent(raijinLabsLucidAi, {
+  const res = await agentsLucidInitAgent(raijinLabsLucidAi, {
     agentId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsInitAgent failed:", res.error);
+    console.log("agentsLucidInitAgent failed:", res.error);
   }
 }
 
@@ -85,7 +90,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.InitAgentResponse](../../models/operations/initagentresponse.md)\>**
+**Promise\<[operations.LucidInitAgentResponse](../../models/operations/lucidinitagentresponse.md)\>**
 
 ### Errors
 
@@ -95,26 +100,25 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## processAgentEpoch
+## ~~lucidProcessAgentEpoch~~
 
-Process an epoch for an agent
+DEPRECATED. Process an epoch of vectors for a legacy agent, computing the MMR root and optionally anchoring on-chain. Use /v1/agents/* endpoints instead.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="process_agent_epoch" method="post" path="/api/agents/epoch" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_process_agent_epoch" method="post" path="/api/agents/epoch" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.processAgentEpoch({
+  const result = await raijinLabsLucidAi.agents.lucidProcessAgentEpoch({
     agentId: "<id>",
-    vectors: [
-      "<value 1>",
-      "<value 2>",
-      "<value 3>",
-    ],
+    vectors: [],
   });
 
   console.log(result);
@@ -129,26 +133,22 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsProcessAgentEpoch } from "raijin-labs-lucid-ai/funcs/agentsProcessAgentEpoch.js";
+import { agentsLucidProcessAgentEpoch } from "raijin-labs-lucid-ai/funcs/agentsLucidProcessAgentEpoch.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsProcessAgentEpoch(raijinLabsLucidAi, {
+  const res = await agentsLucidProcessAgentEpoch(raijinLabsLucidAi, {
     agentId: "<id>",
-    vectors: [
-      "<value 1>",
-      "<value 2>",
-      "<value 3>",
-    ],
+    vectors: [],
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsProcessAgentEpoch failed:", res.error);
+    console.log("agentsLucidProcessAgentEpoch failed:", res.error);
   }
 }
 
@@ -166,7 +166,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.ProcessAgentEpochResponse](../../models/operations/processagentepochresponse.md)\>**
+**Promise\<[operations.LucidProcessAgentEpochResponse](../../models/operations/lucidprocessagentepochresponse.md)\>**
 
 ### Errors
 
@@ -176,20 +176,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## processAgentBatchEpochs
+## ~~lucidProcessAgentBatchEpochs~~
 
-Process multiple epochs in batch
+DEPRECATED. Process multiple epochs in batch for one or more legacy agents. Returns per-epoch results with MMR roots and transaction signatures. Use /v1/agents/* endpoints instead.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="process_agent_batch_epochs" method="post" path="/api/agents/batch-epochs" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_process_agent_batch_epochs" method="post" path="/api/agents/batch-epochs" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.processAgentBatchEpochs({
+  const result = await raijinLabsLucidAi.agents.lucidProcessAgentBatchEpochs({
     epochs: [],
   });
 
@@ -205,21 +208,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsProcessAgentBatchEpochs } from "raijin-labs-lucid-ai/funcs/agentsProcessAgentBatchEpochs.js";
+import { agentsLucidProcessAgentBatchEpochs } from "raijin-labs-lucid-ai/funcs/agentsLucidProcessAgentBatchEpochs.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsProcessAgentBatchEpochs(raijinLabsLucidAi, {
+  const res = await agentsLucidProcessAgentBatchEpochs(raijinLabsLucidAi, {
     epochs: [],
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsProcessAgentBatchEpochs failed:", res.error);
+    console.log("agentsLucidProcessAgentBatchEpochs failed:", res.error);
   }
 }
 
@@ -237,7 +240,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.ProcessAgentBatchEpochsResponse](../../models/operations/processagentbatchepochsresponse.md)\>**
+**Promise\<[operations.LucidProcessAgentBatchEpochsResponse](../../models/operations/lucidprocessagentbatchepochsresponse.md)\>**
 
 ### Errors
 
@@ -247,23 +250,26 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## generateAgentProof
+## ~~lucidGenerateAgentProof~~
 
-Generate proof of contribution
+DEPRECATED. Generate a cryptographic MMR proof of contribution for a specific vector submitted by a legacy agent. Use /v1/agents/{passportId}/proof instead.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="generate_agent_proof" method="post" path="/api/agents/proof" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_generate_agent_proof" method="post" path="/api/agents/proof" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.generateAgentProof({
+  const result = await raijinLabsLucidAi.agents.lucidGenerateAgentProof({
     agentId: "<id>",
     vectorText: "<value>",
-    epochNumber: 73472,
+    epochNumber: 783802,
   });
 
   console.log(result);
@@ -278,23 +284,23 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGenerateAgentProof } from "raijin-labs-lucid-ai/funcs/agentsGenerateAgentProof.js";
+import { agentsLucidGenerateAgentProof } from "raijin-labs-lucid-ai/funcs/agentsLucidGenerateAgentProof.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGenerateAgentProof(raijinLabsLucidAi, {
+  const res = await agentsLucidGenerateAgentProof(raijinLabsLucidAi, {
     agentId: "<id>",
     vectorText: "<value>",
-    epochNumber: 73472,
+    epochNumber: 783802,
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGenerateAgentProof failed:", res.error);
+    console.log("agentsLucidGenerateAgentProof failed:", res.error);
   }
 }
 
@@ -312,7 +318,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GenerateAgentProofResponse](../../models/operations/generateagentproofresponse.md)\>**
+**Promise\<[operations.LucidGenerateAgentProofResponse](../../models/operations/lucidgenerateagentproofresponse.md)\>**
 
 ### Errors
 
@@ -322,20 +328,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getAgentStats
+## ~~lucidGetAgentStats~~
 
-Get agent statistics
+DEPRECATED. Retrieve statistics and current status for a legacy agent including epoch count, total vectors, and current MMR root. Use /v1/agents/{passportId}/receipts instead.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_agent_stats" method="get" path="/api/agents/{agentId}/stats" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_agent_stats" method="get" path="/api/agents/{agentId}/stats" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getAgentStats({
+  const result = await raijinLabsLucidAi.agents.lucidGetAgentStats({
     agentId: "<id>",
   });
 
@@ -351,21 +360,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetAgentStats } from "raijin-labs-lucid-ai/funcs/agentsGetAgentStats.js";
+import { agentsLucidGetAgentStats } from "raijin-labs-lucid-ai/funcs/agentsLucidGetAgentStats.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetAgentStats(raijinLabsLucidAi, {
+  const res = await agentsLucidGetAgentStats(raijinLabsLucidAi, {
     agentId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetAgentStats failed:", res.error);
+    console.log("agentsLucidGetAgentStats failed:", res.error);
   }
 }
 
@@ -376,14 +385,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetAgentStatsRequest](../../models/operations/getagentstatsrequest.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidGetAgentStatsRequest](../../models/operations/lucidgetagentstatsrequest.md)                                                                                   | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetAgentStatsResponse](../../models/operations/getagentstatsresponse.md)\>**
+**Promise\<[operations.LucidGetAgentStatsResponse](../../models/operations/lucidgetagentstatsresponse.md)\>**
 
 ### Errors
 
@@ -393,20 +402,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getAgentHistory
+## ~~lucidGetAgentHistory~~
 
-Get agent MMR root history
+DEPRECATED. Retrieve a legacy agent's MMR root history across all epochs, ordered chronologically. Use /v1/agents/{passportId}/epoch instead.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_agent_history" method="get" path="/api/agents/{agentId}/history" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_agent_history" method="get" path="/api/agents/{agentId}/history" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getAgentHistory({
+  const result = await raijinLabsLucidAi.agents.lucidGetAgentHistory({
     agentId: "<id>",
   });
 
@@ -422,21 +434,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetAgentHistory } from "raijin-labs-lucid-ai/funcs/agentsGetAgentHistory.js";
+import { agentsLucidGetAgentHistory } from "raijin-labs-lucid-ai/funcs/agentsLucidGetAgentHistory.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetAgentHistory(raijinLabsLucidAi, {
+  const res = await agentsLucidGetAgentHistory(raijinLabsLucidAi, {
     agentId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetAgentHistory failed:", res.error);
+    console.log("agentsLucidGetAgentHistory failed:", res.error);
   }
 }
 
@@ -447,14 +459,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetAgentHistoryRequest](../../models/operations/getagenthistoryrequest.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidGetAgentHistoryRequest](../../models/operations/lucidgetagenthistoryrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetAgentHistoryResponse](../../models/operations/getagenthistoryresponse.md)\>**
+**Promise\<[operations.LucidGetAgentHistoryResponse](../../models/operations/lucidgetagenthistoryresponse.md)\>**
 
 ### Errors
 
@@ -463,20 +475,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getAgentRoot
+## ~~lucidGetAgentRoot~~
 
-Get current MMR root for agent
+DEPRECATED. Retrieve the current MMR root hash for a legacy agent. Use /v1/agents/{passportId}/proof instead for the modern equivalent.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_agent_root" method="get" path="/api/agents/{agentId}/root" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_agent_root" method="get" path="/api/agents/{agentId}/root" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getAgentRoot({
+  const result = await raijinLabsLucidAi.agents.lucidGetAgentRoot({
     agentId: "<id>",
   });
 
@@ -492,21 +507,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetAgentRoot } from "raijin-labs-lucid-ai/funcs/agentsGetAgentRoot.js";
+import { agentsLucidGetAgentRoot } from "raijin-labs-lucid-ai/funcs/agentsLucidGetAgentRoot.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetAgentRoot(raijinLabsLucidAi, {
+  const res = await agentsLucidGetAgentRoot(raijinLabsLucidAi, {
     agentId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetAgentRoot failed:", res.error);
+    console.log("agentsLucidGetAgentRoot failed:", res.error);
   }
 }
 
@@ -517,14 +532,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetAgentRootRequest](../../models/operations/getagentrootrequest.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidGetAgentRootRequest](../../models/operations/lucidgetagentrootrequest.md)                                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetAgentRootResponse](../../models/operations/getagentrootresponse.md)\>**
+**Promise\<[operations.LucidGetAgentRootResponse](../../models/operations/lucidgetagentrootresponse.md)\>**
 
 ### Errors
 
@@ -534,20 +549,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## verifyAgentMmr
+## ~~lucidVerifyAgentMmr~~
 
-Verify MMR integrity for agent
+DEPRECATED. Verify the MMR integrity for a legacy agent by recomputing the tree and comparing roots. Use /v1/receipts/{receipt_id}/verify for receipt-level verification.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="verify_agent_mmr" method="get" path="/api/agents/{agentId}/verify" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_verify_agent_mmr" method="get" path="/api/agents/{agentId}/verify" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.verifyAgentMmr({
+  const result = await raijinLabsLucidAi.agents.lucidVerifyAgentMmr({
     agentId: "<id>",
   });
 
@@ -563,21 +581,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsVerifyAgentMmr } from "raijin-labs-lucid-ai/funcs/agentsVerifyAgentMmr.js";
+import { agentsLucidVerifyAgentMmr } from "raijin-labs-lucid-ai/funcs/agentsLucidVerifyAgentMmr.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsVerifyAgentMmr(raijinLabsLucidAi, {
+  const res = await agentsLucidVerifyAgentMmr(raijinLabsLucidAi, {
     agentId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsVerifyAgentMmr failed:", res.error);
+    console.log("agentsLucidVerifyAgentMmr failed:", res.error);
   }
 }
 
@@ -588,14 +606,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.VerifyAgentMmrRequest](../../models/operations/verifyagentmmrrequest.md)                                                                                           | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidVerifyAgentMmrRequest](../../models/operations/lucidverifyagentmmrrequest.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.VerifyAgentMmrResponse](../../models/operations/verifyagentmmrresponse.md)\>**
+**Promise\<[operations.LucidVerifyAgentMmrResponse](../../models/operations/lucidverifyagentmmrresponse.md)\>**
 
 ### Errors
 
@@ -604,20 +622,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## listAgents
+## ~~lucidListAgents~~
 
-List all registered agents
+DEPRECATED. List all legacy registered agents with their statistics. Use GET /v1/agents (lucid_list_agent_passports) for the modern passport-based agent listing.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="list_agents" method="get" path="/api/agents" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_list_agents" method="get" path="/api/agents" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.listAgents();
+  const result = await raijinLabsLucidAi.agents.lucidListAgents();
 
   console.log(result);
 }
@@ -631,19 +652,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsListAgents } from "raijin-labs-lucid-ai/funcs/agentsListAgents.js";
+import { agentsLucidListAgents } from "raijin-labs-lucid-ai/funcs/agentsLucidListAgents.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsListAgents(raijinLabsLucidAi);
+  const res = await agentsLucidListAgents(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsListAgents failed:", res.error);
+    console.log("agentsLucidListAgents failed:", res.error);
   }
 }
 
@@ -660,7 +681,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.ListAgentsResponse](../../models/operations/listagentsresponse.md)\>**
+**Promise\<[operations.LucidListAgentsResponse](../../models/operations/lucidlistagentsresponse.md)\>**
 
 ### Errors
 
@@ -669,20 +690,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## planAgentWorkflow
+## ~~lucidPlanAgentWorkflow~~
 
-Plan a workflow from a goal
+DEPRECATED. Plan a multi-step workflow from a natural language goal using the CrewAI planner. Returns a FlowSpec, reasoning explanation, and complexity estimate.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="plan_agent_workflow" method="post" path="/api/agents/plan" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_plan_agent_workflow" method="post" path="/api/agents/plan" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.planAgentWorkflow({
+  const result = await raijinLabsLucidAi.agents.lucidPlanAgentWorkflow({
     goal: "<value>",
   });
 
@@ -698,21 +722,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsPlanAgentWorkflow } from "raijin-labs-lucid-ai/funcs/agentsPlanAgentWorkflow.js";
+import { agentsLucidPlanAgentWorkflow } from "raijin-labs-lucid-ai/funcs/agentsLucidPlanAgentWorkflow.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsPlanAgentWorkflow(raijinLabsLucidAi, {
+  const res = await agentsLucidPlanAgentWorkflow(raijinLabsLucidAi, {
     goal: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsPlanAgentWorkflow failed:", res.error);
+    console.log("agentsLucidPlanAgentWorkflow failed:", res.error);
   }
 }
 
@@ -730,7 +754,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.PlanAgentWorkflowResponse](../../models/operations/planagentworkflowresponse.md)\>**
+**Promise\<[operations.LucidPlanAgentWorkflowResponse](../../models/operations/lucidplanagentworkflowresponse.md)\>**
 
 ### Errors
 
@@ -740,20 +764,23 @@ run();
 | errors.ErrorResponse                 | 500, 503                             | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## accomplishAgentGoal
+## ~~lucidAccomplishAgentGoal~~
 
-Plan and execute a workflow in one call
+DEPRECATED. Plan and execute a complete workflow in a single call via the Agent Orchestrator. Combines planning and execution with automatic executor selection.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="accomplish_agent_goal" method="post" path="/api/agents/accomplish" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_accomplish_agent_goal" method="post" path="/api/agents/accomplish" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.accomplishAgentGoal({
+  const result = await raijinLabsLucidAi.agents.lucidAccomplishAgentGoal({
     goal: "<value>",
   });
 
@@ -769,21 +796,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsAccomplishAgentGoal } from "raijin-labs-lucid-ai/funcs/agentsAccomplishAgentGoal.js";
+import { agentsLucidAccomplishAgentGoal } from "raijin-labs-lucid-ai/funcs/agentsLucidAccomplishAgentGoal.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsAccomplishAgentGoal(raijinLabsLucidAi, {
+  const res = await agentsLucidAccomplishAgentGoal(raijinLabsLucidAi, {
     goal: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsAccomplishAgentGoal failed:", res.error);
+    console.log("agentsLucidAccomplishAgentGoal failed:", res.error);
   }
 }
 
@@ -801,7 +828,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.AccomplishAgentGoalResponse](../../models/operations/accomplishagentgoalresponse.md)\>**
+**Promise\<[operations.LucidAccomplishAgentGoalResponse](../../models/operations/lucidaccomplishagentgoalresponse.md)\>**
 
 ### Errors
 
@@ -811,20 +838,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## previewAgentWorkflow
+## ~~lucidPreviewAgentWorkflow~~
 
-Preview a workflow without executing
+DEPRECATED. Generate a workflow preview (dry run) from a natural language goal without executing it. Returns the FlowSpec and reasoning for review before committing.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="preview_agent_workflow" method="post" path="/api/agents/accomplish/preview" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_preview_agent_workflow" method="post" path="/api/agents/accomplish/preview" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.previewAgentWorkflow({
+  const result = await raijinLabsLucidAi.agents.lucidPreviewAgentWorkflow({
     goal: "<value>",
   });
 
@@ -840,21 +870,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsPreviewAgentWorkflow } from "raijin-labs-lucid-ai/funcs/agentsPreviewAgentWorkflow.js";
+import { agentsLucidPreviewAgentWorkflow } from "raijin-labs-lucid-ai/funcs/agentsLucidPreviewAgentWorkflow.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsPreviewAgentWorkflow(raijinLabsLucidAi, {
+  const res = await agentsLucidPreviewAgentWorkflow(raijinLabsLucidAi, {
     goal: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsPreviewAgentWorkflow failed:", res.error);
+    console.log("agentsLucidPreviewAgentWorkflow failed:", res.error);
   }
 }
 
@@ -865,14 +895,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.PreviewAgentWorkflowRequest](../../models/operations/previewagentworkflowrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidPreviewAgentWorkflowRequest](../../models/operations/lucidpreviewagentworkflowrequest.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.PreviewAgentWorkflowResponse](../../models/operations/previewagentworkflowresponse.md)\>**
+**Promise\<[operations.LucidPreviewAgentWorkflowResponse](../../models/operations/lucidpreviewagentworkflowresponse.md)\>**
 
 ### Errors
 
@@ -882,20 +912,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getAgentOrchestratorHistory
+## ~~lucidGetAgentOrchestratorHistory~~
 
-Get agent execution history for a tenant
+DEPRECATED. Retrieve the execution history for a specific tenant, including workflow results, timing, and status. Supports an optional limit parameter.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_agent_orchestrator_history" method="get" path="/api/agents/history/{tenantId}" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_agent_orchestrator_history" method="get" path="/api/agents/history/{tenantId}" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getAgentOrchestratorHistory({
+  const result = await raijinLabsLucidAi.agents.lucidGetAgentOrchestratorHistory({
     tenantId: "<id>",
   });
 
@@ -911,21 +944,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetAgentOrchestratorHistory } from "raijin-labs-lucid-ai/funcs/agentsGetAgentOrchestratorHistory.js";
+import { agentsLucidGetAgentOrchestratorHistory } from "raijin-labs-lucid-ai/funcs/agentsLucidGetAgentOrchestratorHistory.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetAgentOrchestratorHistory(raijinLabsLucidAi, {
+  const res = await agentsLucidGetAgentOrchestratorHistory(raijinLabsLucidAi, {
     tenantId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetAgentOrchestratorHistory failed:", res.error);
+    console.log("agentsLucidGetAgentOrchestratorHistory failed:", res.error);
   }
 }
 
@@ -936,14 +969,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetAgentOrchestratorHistoryRequest](../../models/operations/getagentorchestratorhistoryrequest.md)                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidGetAgentOrchestratorHistoryRequest](../../models/operations/lucidgetagentorchestratorhistoryrequest.md)                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetAgentOrchestratorHistoryResponse](../../models/operations/getagentorchestratorhistoryresponse.md)\>**
+**Promise\<[operations.LucidGetAgentOrchestratorHistoryResponse](../../models/operations/lucidgetagentorchestratorhistoryresponse.md)\>**
 
 ### Errors
 
@@ -953,20 +986,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkAgentOrchestratorHealth
+## ~~lucidCheckAgentOrchestratorHealth~~
 
-Agent orchestrator health check
+DEPRECATED. Check the health of all agent orchestrator sub-services (planner, executor router, n8n, LangGraph). Returns per-service status.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_agent_orchestrator_health" method="get" path="/api/agents/orchestrator/health" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_agent_orchestrator_health" method="get" path="/api/agents/orchestrator/health" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.checkAgentOrchestratorHealth();
+  const result = await raijinLabsLucidAi.agents.lucidCheckAgentOrchestratorHealth();
 
   console.log(result);
 }
@@ -980,19 +1016,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsCheckAgentOrchestratorHealth } from "raijin-labs-lucid-ai/funcs/agentsCheckAgentOrchestratorHealth.js";
+import { agentsLucidCheckAgentOrchestratorHealth } from "raijin-labs-lucid-ai/funcs/agentsLucidCheckAgentOrchestratorHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsCheckAgentOrchestratorHealth(raijinLabsLucidAi);
+  const res = await agentsLucidCheckAgentOrchestratorHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsCheckAgentOrchestratorHealth failed:", res.error);
+    console.log("agentsLucidCheckAgentOrchestratorHealth failed:", res.error);
   }
 }
 
@@ -1009,7 +1045,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.CheckAgentOrchestratorHealthResponse](../../models/operations/checkagentorchestratorhealthresponse.md)\>**
+**Promise\<[operations.LucidCheckAgentOrchestratorHealthResponse](../../models/operations/lucidcheckagentorchestratorhealthresponse.md)\>**
 
 ### Errors
 
@@ -1018,20 +1054,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## executeAgentFlowspec
+## ~~lucidExecuteAgentFlowspec~~
 
-Execute a FlowSpec
+DEPRECATED. Execute a FlowSpec workflow with automatic executor selection (n8n or LangGraph). Requires a tenant context with tenantId for execution tracking.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="execute_agent_flowspec" method="post" path="/api/agents/execute" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_execute_agent_flowspec" method="post" path="/api/agents/execute" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.executeAgentFlowspec({
+  const result = await raijinLabsLucidAi.agents.lucidExecuteAgentFlowspec({
     flowspec: {
       "key": "<value>",
       "key1": "<value>",
@@ -1054,14 +1093,14 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsExecuteAgentFlowspec } from "raijin-labs-lucid-ai/funcs/agentsExecuteAgentFlowspec.js";
+import { agentsLucidExecuteAgentFlowspec } from "raijin-labs-lucid-ai/funcs/agentsLucidExecuteAgentFlowspec.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsExecuteAgentFlowspec(raijinLabsLucidAi, {
+  const res = await agentsLucidExecuteAgentFlowspec(raijinLabsLucidAi, {
     flowspec: {
       "key": "<value>",
       "key1": "<value>",
@@ -1075,7 +1114,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsExecuteAgentFlowspec failed:", res.error);
+    console.log("agentsLucidExecuteAgentFlowspec failed:", res.error);
   }
 }
 
@@ -1086,14 +1125,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.ExecuteAgentFlowspecRequest](../../models/operations/executeagentflowspecrequest.md)                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidExecuteAgentFlowspecRequest](../../models/operations/lucidexecuteagentflowspecrequest.md)                                                                     | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.ExecuteAgentFlowspecResponse](../../models/operations/executeagentflowspecresponse.md)\>**
+**Promise\<[operations.LucidExecuteAgentFlowspecResponse](../../models/operations/lucidexecuteagentflowspecresponse.md)\>**
 
 ### Errors
 
@@ -1103,22 +1142,24 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## validateFlowspec
+## ~~lucidValidateFlowspec~~
 
-Validate a FlowSpec structure
+DEPRECATED. Validate a FlowSpec structure for correctness without executing it. Returns validation results including any errors or warnings found in the spec.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="validate_flowspec" method="post" path="/api/agents/validate" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_validate_flowspec" method="post" path="/api/agents/validate" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.validateFlowspec({
-    "key": "<value>",
-    "key1": "<value>",
+  const result = await raijinLabsLucidAi.agents.lucidValidateFlowspec({
+
   });
 
   console.log(result);
@@ -1133,22 +1174,21 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsValidateFlowspec } from "raijin-labs-lucid-ai/funcs/agentsValidateFlowspec.js";
+import { agentsLucidValidateFlowspec } from "raijin-labs-lucid-ai/funcs/agentsLucidValidateFlowspec.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsValidateFlowspec(raijinLabsLucidAi, {
-    "key": "<value>",
-    "key1": "<value>",
+  const res = await agentsLucidValidateFlowspec(raijinLabsLucidAi, {
+  
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsValidateFlowspec failed:", res.error);
+    console.log("agentsLucidValidateFlowspec failed:", res.error);
   }
 }
 
@@ -1166,7 +1206,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.ValidateFlowspecResponse](../../models/operations/validateflowspecresponse.md)\>**
+**Promise\<[operations.LucidValidateFlowspecResponse](../../models/operations/lucidvalidateflowspecresponse.md)\>**
 
 ### Errors
 
@@ -1176,20 +1216,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getPlannerInfo
+## ~~lucidGetPlannerInfo~~
 
-Get planner service info
+DEPRECATED. Retrieve the agent planner service information including status, available planning backends, and configuration details.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_planner_info" method="get" path="/api/agents/planner/info" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_planner_info" method="get" path="/api/agents/planner/info" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getPlannerInfo();
+  const result = await raijinLabsLucidAi.agents.lucidGetPlannerInfo();
 
   console.log(result);
 }
@@ -1203,19 +1246,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetPlannerInfo } from "raijin-labs-lucid-ai/funcs/agentsGetPlannerInfo.js";
+import { agentsLucidGetPlannerInfo } from "raijin-labs-lucid-ai/funcs/agentsLucidGetPlannerInfo.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetPlannerInfo(raijinLabsLucidAi);
+  const res = await agentsLucidGetPlannerInfo(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetPlannerInfo failed:", res.error);
+    console.log("agentsLucidGetPlannerInfo failed:", res.error);
   }
 }
 
@@ -1232,7 +1275,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.GetPlannerInfoResponse](../../models/operations/getplannerinforesponse.md)\>**
+**Promise\<[operations.LucidGetPlannerInfoResponse](../../models/operations/lucidgetplannerinforesponse.md)\>**
 
 ### Errors
 
@@ -1241,20 +1284,23 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## checkExecutorHealth
+## ~~lucidCheckExecutorHealth~~
 
-Check executor health
+DEPRECATED. Check the health of all executor backends (n8n, LangGraph), returning a boolean status for each. Used for operational monitoring.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="check_executor_health" method="get" path="/api/agents/executor/health" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_check_executor_health" method="get" path="/api/agents/executor/health" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.checkExecutorHealth();
+  const result = await raijinLabsLucidAi.agents.lucidCheckExecutorHealth();
 
   console.log(result);
 }
@@ -1268,19 +1314,19 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsCheckExecutorHealth } from "raijin-labs-lucid-ai/funcs/agentsCheckExecutorHealth.js";
+import { agentsLucidCheckExecutorHealth } from "raijin-labs-lucid-ai/funcs/agentsLucidCheckExecutorHealth.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsCheckExecutorHealth(raijinLabsLucidAi);
+  const res = await agentsLucidCheckExecutorHealth(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsCheckExecutorHealth failed:", res.error);
+    console.log("agentsLucidCheckExecutorHealth failed:", res.error);
   }
 }
 
@@ -1297,7 +1343,7 @@ run();
 
 ### Response
 
-**Promise\<[operations.CheckExecutorHealthResponse](../../models/operations/checkexecutorhealthresponse.md)\>**
+**Promise\<[operations.LucidCheckExecutorHealthResponse](../../models/operations/lucidcheckexecutorhealthresponse.md)\>**
 
 ### Errors
 
@@ -1306,24 +1352,25 @@ run();
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
-## getExecutorDecision
+## ~~lucidGetExecutorDecision~~
 
-Get executor decision for a FlowSpec
+DEPRECATED. Get the recommended executor for a FlowSpec without actually running it. Returns the executor choice (n8n or langgraph) and the reasoning behind the decision.
+
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="get_executor_decision" method="post" path="/api/agents/executor/decision" -->
+<!-- UsageSnippet language="typescript" operationID="lucid_get_executor_decision" method="post" path="/api/agents/executor/decision" -->
 ```typescript
 import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.agents.getExecutorDecision({
+  const result = await raijinLabsLucidAi.agents.lucidGetExecutorDecision({
     flowspec: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+
     },
   });
 
@@ -1339,25 +1386,23 @@ The standalone function version of this method:
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { agentsGetExecutorDecision } from "raijin-labs-lucid-ai/funcs/agentsGetExecutorDecision.js";
+import { agentsLucidGetExecutorDecision } from "raijin-labs-lucid-ai/funcs/agentsLucidGetExecutorDecision.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await agentsGetExecutorDecision(raijinLabsLucidAi, {
+  const res = await agentsLucidGetExecutorDecision(raijinLabsLucidAi, {
     flowspec: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+  
     },
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("agentsGetExecutorDecision failed:", res.error);
+    console.log("agentsLucidGetExecutorDecision failed:", res.error);
   }
 }
 
@@ -1368,14 +1413,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetExecutorDecisionRequest](../../models/operations/getexecutordecisionrequest.md)                                                                                 | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.LucidGetExecutorDecisionRequest](../../models/operations/lucidgetexecutordecisionrequest.md)                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[operations.GetExecutorDecisionResponse](../../models/operations/getexecutordecisionresponse.md)\>**
+**Promise\<[operations.LucidGetExecutorDecisionResponse](../../models/operations/lucidgetexecutordecisionresponse.md)\>**
 
 ### Errors
 

@@ -17,6 +17,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class Receipts extends ClientSDK {
   /**
    * Create a receipt
+   *
+   * @remarks
+   * Create a new cryptographic receipt for a completed inference run and append it to the Merkle Mountain Range. The receipt is Ed25519-signed by the orchestrator and includes timing metrics.
    */
   async create(
     request: models.CreateReceiptRequest,
@@ -31,6 +34,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Get a receipt
+   *
+   * @remarks
+   * Retrieve a single receipt by its UUID, including the receipt hash, Ed25519 signature, signer public key, and inference metrics (tokens, latency, TTFT).
    */
   async get(
     request: operations.LucidGetReceiptRequest,
@@ -45,6 +51,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Verify a receipt (hash + signature + inclusion)
+   *
+   * @remarks
+   * Verify a receipt's integrity by checking its SHA-256 hash against the canonical JSON content, validating the Ed25519 signature, and confirming MMR inclusion. Returns per-check pass/fail status.
    */
   async verify(
     request: operations.LucidVerifyReceiptRequest,
@@ -59,6 +68,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Get inclusion proof for receipt
+   *
+   * @remarks
+   * Retrieve the MMR inclusion proof for a receipt, containing the sibling hashes needed to verify the receipt's membership in the Merkle Mountain Range.
    */
   async getProof(
     request: operations.LucidGetReceiptProofRequest,
@@ -73,6 +85,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Verify receipt by hash with inclusion proof and epoch info
+   *
+   * @remarks
+   * Verify a receipt using its 64-character hex hash. Returns the inclusion proof, on-chain anchoring status, and epoch information. This is the primary verification endpoint for the Fluid Compute protocol.
    */
   async lucidVerifyReceiptByHash(
     request: operations.LucidVerifyReceiptByHashRequest,
@@ -87,6 +102,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Get current MMR root
+   *
+   * @remarks
+   * Retrieve the current global MMR root hash and total leaf count. The root is recomputed via right-to-left peak bagging after each receipt append.
    */
   async getMmrRoot(
     options?: RequestOptions,
@@ -99,6 +117,9 @@ export class Receipts extends ClientSDK {
 
   /**
    * Get orchestrator signing public key
+   *
+   * @remarks
+   * Retrieve the Ed25519 public key used by the orchestrator to sign receipts. Clients use this key to independently verify receipt signatures offline.
    */
   async getSignerPubKey(
     options?: RequestOptions,

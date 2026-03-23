@@ -11,23 +11,39 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidListDatasetsRequest = {
+  /**
+   * Filter by dataset owner wallet address
+   */
   owner?: string | undefined;
   /**
    * Comma-separated
    */
   tags?: string | undefined;
+  /**
+   * Free-text search across dataset name and description
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidListDatasetsResponse = {
+export type LucidListDatasetsResponseBody = {
   success: boolean;
   datasets: Array<models.Passport>;
   pagination: models.Pagination;
+};
+
+export type LucidListDatasetsResponse = {
+  result: LucidListDatasetsResponseBody;
 };
 
 /** @internal */
@@ -67,14 +83,39 @@ export function lucidListDatasetsRequestToJSON(
 }
 
 /** @internal */
-export const LucidListDatasetsResponse$inboundSchema: z.ZodMiniType<
-  LucidListDatasetsResponse,
+export const LucidListDatasetsResponseBody$inboundSchema: z.ZodMiniType<
+  LucidListDatasetsResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   datasets: z.array(models.Passport$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidListDatasetsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidListDatasetsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidListDatasetsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidListDatasetsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidListDatasetsResponse$inboundSchema: z.ZodMiniType<
+  LucidListDatasetsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidListDatasetsResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidListDatasetsResponseFromJSON(
   jsonString: string,

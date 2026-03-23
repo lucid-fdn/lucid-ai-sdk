@@ -12,6 +12,9 @@ import { unwrapAsync } from "../types/fp.js";
 export class Match extends ClientSDK {
   /**
    * Evaluate policy against compute/model meta
+   *
+   * @remarks
+   * Evaluate a policy against compute and model metadata, returning a detailed explanation of whether the compute node is allowed and the reasons for the decision. Useful for debugging policy mismatches.
    */
   async explain(
     request: operations.LucidMatchExplainRequest,
@@ -26,6 +29,9 @@ export class Match extends ClientSDK {
 
   /**
    * Match compute for model
+   *
+   * @remarks
+   * x402-gated with dynamic pricing when X402_ENABLED=true.
    */
   async compute(
     request: operations.LucidMatchRequest,
@@ -40,6 +46,9 @@ export class Match extends ClientSDK {
 
   /**
    * Plan a route (match + resolve endpoint)
+   *
+   * @remarks
+   * Perform compute matching and resolve an executable inference endpoint in a single call. Returns the matched compute node, model, endpoint URL, runtime, policy hash, and fallback options.
    */
   async planRoute(
     request: operations.LucidRouteRequest,

@@ -2,6 +2,8 @@
 
 ## Overview
 
+Cryptographic receipts — create, verify, and generate MMR inclusion proofs
+
 ### Available Operations
 
 * [create](#create) - Create a receipt
@@ -14,7 +16,8 @@
 
 ## create
 
-Create a receipt
+Create a new cryptographic receipt for a completed inference run and append it to the Merkle Mountain Range. The receipt is Ed25519-signed by the orchestrator and includes timing metrics.
+
 
 ### Example Usage
 
@@ -26,13 +29,14 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
   const result = await raijinLabsLucidAi.receipts.create({
-    modelPassportId: "<id>",
-    computePassportId: "<id>",
-    policyHash: "<value>",
-    runtime: "<value>",
-    tokensIn: 184620,
-    tokensOut: 329999,
-    ttftMs: 417264,
+    modelPassportId: "ppt_model_7xK9mQ2v",
+    computePassportId: "ppt_compute_Xn5vR2kJ",
+    policyHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    runtime: "vllm",
+    tokensIn: 42,
+    tokensOut: 128,
+    ttftMs: 85,
+    totalLatencyMs: 1200,
   });
 
   console.log(result);
@@ -55,13 +59,14 @@ const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
   const res = await receiptsCreate(raijinLabsLucidAi, {
-    modelPassportId: "<id>",
-    computePassportId: "<id>",
-    policyHash: "<value>",
-    runtime: "<value>",
-    tokensIn: 184620,
-    tokensOut: 329999,
-    ttftMs: 417264,
+    modelPassportId: "ppt_model_7xK9mQ2v",
+    computePassportId: "ppt_compute_Xn5vR2kJ",
+    policyHash: "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    runtime: "vllm",
+    tokensIn: 42,
+    tokensOut: 128,
+    ttftMs: 85,
+    totalLatencyMs: 1200,
   });
   if (res.ok) {
     const { value: result } = res;
@@ -97,7 +102,8 @@ run();
 
 ## get
 
-Get a receipt
+Retrieve a single receipt by its UUID, including the receipt hash, Ed25519 signature, signer public key, and inference metrics (tokens, latency, TTFT).
+
 
 ### Example Usage
 
@@ -168,7 +174,8 @@ run();
 
 ## verify
 
-Verify a receipt (hash + signature + inclusion)
+Verify a receipt's integrity by checking its SHA-256 hash against the canonical JSON content, validating the Ed25519 signature, and confirming MMR inclusion. Returns per-check pass/fail status.
+
 
 ### Example Usage
 
@@ -239,7 +246,8 @@ run();
 
 ## getProof
 
-Get inclusion proof for receipt
+Retrieve the MMR inclusion proof for a receipt, containing the sibling hashes needed to verify the receipt's membership in the Merkle Mountain Range.
+
 
 ### Example Usage
 
@@ -310,7 +318,8 @@ run();
 
 ## lucidVerifyReceiptByHash
 
-Verify receipt by hash with inclusion proof and epoch info
+Verify a receipt using its 64-character hex hash. Returns the inclusion proof, on-chain anchoring status, and epoch information. This is the primary verification endpoint for the Fluid Compute protocol.
+
 
 ### Example Usage
 
@@ -381,7 +390,8 @@ run();
 
 ## getMmrRoot
 
-Get current MMR root
+Retrieve the current global MMR root hash and total leaf count. The root is recomputed via right-to-left peak bagging after each receipt append.
+
 
 ### Example Usage
 
@@ -446,7 +456,8 @@ run();
 
 ## getSignerPubKey
 
-Get orchestrator signing public key
+Retrieve the Ed25519 public key used by the orchestrator to sign receipts. Clients use this key to independently verify receipt signatures offline.
+
 
 ### Example Usage
 

@@ -12,6 +12,6 @@ let value: LucidGetEpochTransactionRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `epochId`          | *string*           | :heavy_check_mark: | N/A                |
+| Field                                                 | Type                                                  | Required                                              | Description                                           |
+| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
+| `epochId`                                             | *string*                                              | :heavy_check_mark:                                    | Epoch identifier to get anchoring transaction details |

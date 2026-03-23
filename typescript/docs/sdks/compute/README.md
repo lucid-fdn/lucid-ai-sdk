@@ -2,6 +2,8 @@
 
 ## Overview
 
+Compute node heartbeat registration and health monitoring
+
 ### Available Operations
 
 * [searchCompute](#searchcompute) - Search compute passports
@@ -10,7 +12,8 @@
 
 ## searchCompute
 
-Search compute passports
+Search compute passports with ComputeMeta-specific filters including region, runtime, provider type, minimum VRAM, and GPU model. Returns paginated results with full passport details.
+
 
 ### Example Usage
 
@@ -23,7 +26,9 @@ const raijinLabsLucidAi = new RaijinLabsLucidAi();
 async function run() {
   const result = await raijinLabsLucidAi.compute.searchCompute();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -45,7 +50,9 @@ async function run() {
   const res = await computeSearchCompute(raijinLabsLucidAi);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("computeSearchCompute failed:", res.error);
   }
@@ -76,7 +83,8 @@ run();
 
 ## heartbeat
 
-Submit compute node heartbeat
+Submit a heartbeat from a compute node to register or update its live state. Compute nodes must send heartbeats within the 30-second TTL to remain eligible for matching. Includes queue depth and P95 latency estimates.
+
 
 ### Example Usage
 
@@ -149,7 +157,8 @@ run();
 
 ## getNodeHealth
 
-Get compute node health
+Get the current health state of a compute node. Returns 503 if the node's heartbeat has expired (>30s since last heartbeat).
+
 
 ### Example Usage
 

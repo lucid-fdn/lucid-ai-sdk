@@ -10,6 +10,9 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type LucidGetEpochTransactionRequest = {
+  /**
+   * Epoch identifier to get anchoring transaction details
+   */
   epochId: string;
 };
 

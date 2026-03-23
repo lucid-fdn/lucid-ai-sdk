@@ -1,5 +1,7 @@
 # SortBy
 
+Sort field (created_at, updated_at, or name)
+
 ## Example Usage
 
 ```typescript

@@ -10,6 +10,9 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type LucidVerifyEpochRequest = {
+  /**
+   * Epoch identifier to verify on-chain anchor
+   */
   epochId: string;
 };
 

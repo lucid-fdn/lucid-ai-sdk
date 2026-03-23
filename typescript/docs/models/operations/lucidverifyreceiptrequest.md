@@ -12,6 +12,6 @@ let value: LucidVerifyReceiptRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `receiptId`        | *string*           | :heavy_check_mark: | N/A                |
+| Field                        | Type                         | Required                     | Description                  |
+| ---------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
+| `receiptId`                  | *string*                     | :heavy_check_mark:           | Receipt identifier to verify |

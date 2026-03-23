@@ -12,6 +12,6 @@ let value: LucidGetHealthRequest = {
 
 ## Fields
 
-| Field               | Type                | Required            | Description         |
-| ------------------- | ------------------- | ------------------- | ------------------- |
-| `computePassportId` | *string*            | :heavy_check_mark:  | N/A                 |
+| Field                            | Type                             | Required                         | Description                      |
+| -------------------------------- | -------------------------------- | -------------------------------- | -------------------------------- |
+| `computePassportId`              | *string*                         | :heavy_check_mark:               | Compute node passport identifier |

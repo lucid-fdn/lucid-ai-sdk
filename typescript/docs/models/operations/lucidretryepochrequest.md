@@ -12,6 +12,6 @@ let value: LucidRetryEpochRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `epochId`          | *string*           | :heavy_check_mark: | N/A                |
+| Field                                   | Type                                    | Required                                | Description                             |
+| --------------------------------------- | --------------------------------------- | --------------------------------------- | --------------------------------------- |
+| `epochId`                               | *string*                                | :heavy_check_mark:                      | Epoch identifier to retry anchoring for |

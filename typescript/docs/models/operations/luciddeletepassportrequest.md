@@ -12,7 +12,7 @@ let value: LucidDeletePassportRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `passportId`       | *string*           | :heavy_check_mark: | N/A                |
-| `xOwnerAddress`    | *string*           | :heavy_minus_sign: | N/A                |
+| Field                                              | Type                                               | Required                                           | Description                                        |
+| -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- | -------------------------------------------------- |
+| `passportId`                                       | *string*                                           | :heavy_check_mark:                                 | Unique passport identifier to delete (soft delete) |
+| `xOwnerAddress`                                    | *string*                                           | :heavy_minus_sign:                                 | Owner wallet address for ownership verification    |

@@ -11,19 +11,35 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidListEpochsRequest = {
+  /**
+   * Filter by project identifier
+   */
   projectId?: string | undefined;
+  /**
+   * Filter by epoch status (open, anchoring, anchored, failed)
+   */
   status?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidListEpochsResponse = {
+export type LucidListEpochsResponseBody = {
   success: boolean;
   epochs: Array<models.Epoch>;
   pagination: models.Pagination;
+};
+
+export type LucidListEpochsResponse = {
+  result: LucidListEpochsResponseBody;
 };
 
 /** @internal */
@@ -62,14 +78,39 @@ export function lucidListEpochsRequestToJSON(
 }
 
 /** @internal */
-export const LucidListEpochsResponse$inboundSchema: z.ZodMiniType<
-  LucidListEpochsResponse,
+export const LucidListEpochsResponseBody$inboundSchema: z.ZodMiniType<
+  LucidListEpochsResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   epochs: z.array(models.Epoch$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidListEpochsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidListEpochsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidListEpochsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidListEpochsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidListEpochsResponse$inboundSchema: z.ZodMiniType<
+  LucidListEpochsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidListEpochsResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidListEpochsResponseFromJSON(
   jsonString: string,

@@ -6,6 +6,9 @@ import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../../lib/primitives.js";
 
 export type LucidVerifyReceiptRequest = {
+  /**
+   * Receipt identifier to verify
+   */
   receiptId: string;
 };
 

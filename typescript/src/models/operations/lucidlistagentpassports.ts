@@ -11,23 +11,39 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
 export type LucidListAgentPassportsRequest = {
+  /**
+   * Filter by agent owner wallet address
+   */
   owner?: string | undefined;
   /**
    * Comma-separated
    */
   tags?: string | undefined;
+  /**
+   * Free-text search across agent name and description
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
 };
 
 /**
  * OK
  */
-export type LucidListAgentPassportsResponse = {
+export type LucidListAgentPassportsResponseBody = {
   success: boolean;
   agents: Array<models.Passport>;
   pagination: models.Pagination;
+};
+
+export type LucidListAgentPassportsResponse = {
+  result: LucidListAgentPassportsResponseBody;
 };
 
 /** @internal */
@@ -69,14 +85,40 @@ export function lucidListAgentPassportsRequestToJSON(
 }
 
 /** @internal */
-export const LucidListAgentPassportsResponse$inboundSchema: z.ZodMiniType<
-  LucidListAgentPassportsResponse,
+export const LucidListAgentPassportsResponseBody$inboundSchema: z.ZodMiniType<
+  LucidListAgentPassportsResponseBody,
   unknown
 > = z.object({
   success: types.boolean(),
   agents: z.array(models.Passport$inboundSchema),
   pagination: models.Pagination$inboundSchema,
 });
+
+export function lucidListAgentPassportsResponseBodyFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidListAgentPassportsResponseBody, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      LucidListAgentPassportsResponseBody$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidListAgentPassportsResponseBody' from JSON`,
+  );
+}
+
+/** @internal */
+export const LucidListAgentPassportsResponse$inboundSchema: z.ZodMiniType<
+  LucidListAgentPassportsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: z.lazy(() => LucidListAgentPassportsResponseBody$inboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
 
 export function lucidListAgentPassportsResponseFromJSON(
   jsonString: string,

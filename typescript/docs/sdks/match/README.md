@@ -2,6 +2,8 @@
 
 ## Overview
 
+Policy-based compute matching and route planning
+
 ### Available Operations
 
 * [explain](#explain) - Evaluate policy against compute/model meta
@@ -10,7 +12,8 @@
 
 ## explain
 
-Evaluate policy against compute/model meta
+Evaluate a policy against compute and model metadata, returning a detailed explanation of whether the compute node is allowed and the reasons for the decision. Useful for debugging policy mismatches.
+
 
 ### Example Usage
 
@@ -77,7 +80,8 @@ run();
 
 ## compute
 
-Match compute for model
+x402-gated with dynamic pricing when X402_ENABLED=true.
+
 
 ### Example Usage
 
@@ -88,7 +92,47 @@ import { RaijinLabsLucidAi } from "raijin-labs-lucid-ai";
 const raijinLabsLucidAi = new RaijinLabsLucidAi();
 
 async function run() {
-  const result = await raijinLabsLucidAi.match.compute({});
+  const result = await raijinLabsLucidAi.match.compute({
+    body: {
+      modelMeta: {
+        schemaVersion: "1.0",
+        modelPassportId: "ppt_model_7xK9mQ2v",
+        format: "safetensors",
+        runtimeRecommended: "vllm",
+        contextLength: 32768,
+        requirements: {
+          minVramGb: 16,
+        },
+      },
+      policy: {
+        policyVersion: "1.0",
+        allowRegions: [
+          "us-east-1",
+        ],
+        latency: {
+          p95MsBudget: 500,
+        },
+      },
+      computeCatalog: [
+        {
+          schemaVersion: "1.0",
+          computePassportId: "ppt_compute_Xn5vR2kJ",
+          providerType: "cloud",
+          regions: [
+            "us-east-1",
+          ],
+          hardware: {
+            gpu: "NVIDIA-A100-40GB",
+            vramGb: 40,
+          },
+          runtimes: [],
+          endpoints: {
+            inferenceUrl: "https://ironclad-puritan.biz/",
+          },
+        },
+      ],
+    },
+  });
 
   console.log(result);
 }
@@ -109,7 +153,51 @@ import { matchCompute } from "raijin-labs-lucid-ai/funcs/matchCompute.js";
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await matchCompute(raijinLabsLucidAi, {});
+  const res = await matchCompute(raijinLabsLucidAi, {
+    body: {
+      modelMeta: {
+        schemaVersion: "1.0",
+        modelPassportId: "ppt_model_7xK9mQ2v",
+        format: "safetensors",
+        runtimeRecommended: "vllm",
+        contextLength: 32768,
+        requirements: {
+          minVramGb: 16,
+        },
+      },
+      policy: {
+        policyVersion: "1.0",
+        allowRegions: [
+          "us-east-1",
+        ],
+        latency: {
+          p95MsBudget: 500,
+        },
+      },
+      computeCatalog: [
+        {
+          schemaVersion: "1.0",
+          computePassportId: "ppt_compute_Xn5vR2kJ",
+          providerType: "cloud",
+          regions: [
+            "us-east-1",
+          ],
+          hardware: {
+            gpu: "NVIDIA-A100-40GB",
+            vramGb: 40,
+          },
+          runtimes: [
+            {
+              name: "tensorrt",
+            },
+          ],
+          endpoints: {
+            inferenceUrl: "https://ironclad-puritan.biz/",
+          },
+        },
+      ],
+    },
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
@@ -138,13 +226,15 @@ run();
 
 | Error Type                           | Status Code                          | Content Type                         |
 | ------------------------------------ | ------------------------------------ | ------------------------------------ |
+| errors.X402PaymentRequiredError      | 402                                  | application/json                     |
 | errors.ErrorResponse                 | 422                                  | application/json                     |
 | errors.ErrorResponse                 | 500                                  | application/json                     |
 | errors.RaijinLabsLucidAiDefaultError | 4XX, 5XX                             | \*/\*                                |
 
 ## planRoute
 
-Plan a route (match + resolve endpoint)
+Perform compute matching and resolve an executable inference endpoint in a single call. Returns the matched compute node, model, endpoint URL, runtime, policy hash, and fallback options.
+
 
 ### Example Usage
 

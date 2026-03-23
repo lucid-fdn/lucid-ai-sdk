@@ -10,10 +10,19 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PayoutsCrosschain } from "./payoutscrosschain.js";
 
 export class Payouts extends ClientSDK {
+  private _crosschain?: PayoutsCrosschain;
+  get crosschain(): PayoutsCrosschain {
+    return (this._crosschain ??= new PayoutsCrosschain(this._options));
+  }
+
   /**
    * Calculate payout split
+   *
+   * @remarks
+   * Calculate a revenue split for a set of recipients using basis-point math. Default split is 70% compute, 20% model, 10% protocol (configurable via request body).
    */
   async calculate(
     request: models.PayoutCalculateRequest,
@@ -28,6 +37,9 @@ export class Payouts extends ClientSDK {
 
   /**
    * Create payout from receipt token data
+   *
+   * @remarks
+   * Extract token usage data from a receipt and compute the payout split automatically. Uses the receipt's model and compute passport IDs to resolve the split configuration.
    */
   async createFromReceipt(
     request: models.PayoutFromReceiptRequest,
@@ -42,6 +54,9 @@ export class Payouts extends ClientSDK {
 
   /**
    * Get payout by run_id
+   *
+   * @remarks
+   * Retrieve the computed payout split for a specific inference run by its run_id, including per-recipient amounts and the overall split configuration.
    */
   async get(
     request: operations.LucidGetPayoutRequest,
@@ -56,6 +71,9 @@ export class Payouts extends ClientSDK {
 
   /**
    * Verify payout split
+   *
+   * @remarks
+   * Verify the integrity of a payout split by checking that recipient amounts sum to the total, all recipients are valid addresses, and the payout hash is correct.
    */
   async verify(
     request: operations.LucidVerifyPayoutRequest,

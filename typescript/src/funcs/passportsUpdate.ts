@@ -9,6 +9,7 @@ import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
+import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -28,6 +29,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Update a passport
+ *
+ * @remarks
+ * Update mutable fields on an existing passport (metadata, name, description, version, tags, status). Requires the X-Owner-Address header for ownership verification if configured.
  */
 export function passportsUpdate(
   client: RaijinLabsLucidAiCore,
@@ -106,22 +110,37 @@ async function $do(
     ),
   }));
 
+  const secConfig = await extractSecurity(client._options.bearerAuth);
+  const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
+
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "lucid_update_passport",
     oAuth2Scopes: null,
 
-    resolvedSecurity: null,
+    resolvedSecurity: requestSecurity,
 
-    securitySource: null,
+    securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig
+      || {
+        strategy: "backoff",
+        backoff: {
+          initialInterval: 500,
+          maxInterval: 60000,
+          exponent: 1.5,
+          maxElapsedTime: 300000,
+        },
+        retryConnectionErrors: true,
+      }
       || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryCodes: options?.retryCodes || ["408", "429", "5XX"],
   };
 
   const requestRes = client._createRequest(context, {
+    security: requestSecurity,
     method: "PATCH",
     baseURL: options?.serverURL,
     path: path,

@@ -6,10 +6,14 @@ import * as z from "zod/v4-mini";
 import { dlv } from "./dlv.js";
 
 export interface Env {
+  RAIJINLABSLUCIDAI_BEARER_AUTH?: string | undefined;
+
   RAIJINLABSLUCIDAI_DEBUG?: boolean | undefined;
 }
 
 export const envSchema: z.ZodMiniType<Env, unknown> = z.object({
+  RAIJINLABSLUCIDAI_BEARER_AUTH: z.optional(z.string()),
+
   RAIJINLABSLUCIDAI_DEBUG: z.optional(z.coerce.boolean()),
 });
 

@@ -20,27 +20,35 @@ specific category of applications.
 
 ```typescript
 import { RaijinLabsLucidAiCore } from "raijin-labs-lucid-ai/core.js";
-import { passportsCreate } from "raijin-labs-lucid-ai/funcs/passportsCreate.js";
+import { runChatCompletions } from "raijin-labs-lucid-ai/funcs/runChatCompletions.js";
 
 // Use `RaijinLabsLucidAiCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const raijinLabsLucidAi = new RaijinLabsLucidAiCore();
 
 async function run() {
-  const res = await passportsCreate(raijinLabsLucidAi, {
-    type: "dataset",
-    owner: "<value>",
-    metadata: {
-      "key": "<value>",
-      "key1": "<value>",
-      "key2": "<value>",
+  const res = await runChatCompletions(raijinLabsLucidAi, {
+    body: {
+      model: "mistral-7b-instruct",
+      messages: [
+        {
+          role: "system",
+          content: "You are a helpful AI assistant.",
+        },
+        {
+          role: "user",
+          content: "Explain how MMR proofs work in one paragraph.",
+        },
+      ],
+      maxTokens: 256,
+      temperature: 0.7,
     },
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("passportsCreate failed:", res.error);
+    console.log("runChatCompletions failed:", res.error);
   }
 }
 

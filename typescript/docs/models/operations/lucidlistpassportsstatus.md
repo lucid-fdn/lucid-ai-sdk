@@ -1,5 +1,7 @@
 # LucidListPassportsStatus
 
+Filter by passport status (active, deprecated, revoked)
+
 
 ## Supported Types
 

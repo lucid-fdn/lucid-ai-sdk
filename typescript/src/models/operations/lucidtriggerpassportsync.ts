@@ -10,6 +10,9 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type LucidTriggerPassportSyncRequest = {
+  /**
+   * Unique passport identifier to sync on-chain
+   */
   passportId: string;
 };
 

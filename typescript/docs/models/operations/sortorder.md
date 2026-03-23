@@ -1,5 +1,7 @@
 # SortOrder
 
+Sort direction (asc or desc)
+
 ## Example Usage
 
 ```typescript

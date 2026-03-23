@@ -11,6 +11,8 @@ import { passportsListPendingSync } from "../funcs/passportsListPendingSync.js";
 import { passportsLucidListAgentPassports } from "../funcs/passportsLucidListAgentPassports.js";
 import { passportsLucidListDatasets } from "../funcs/passportsLucidListDatasets.js";
 import { passportsLucidListTools } from "../funcs/passportsLucidListTools.js";
+import { passportsLucidUpdatePassportEndpoints } from "../funcs/passportsLucidUpdatePassportEndpoints.js";
+import { passportsLucidUpdatePassportPricing } from "../funcs/passportsLucidUpdatePassportPricing.js";
 import { passportsSearchModels } from "../funcs/passportsSearchModels.js";
 import { passportsSync } from "../funcs/passportsSync.js";
 import { passportsUpdate } from "../funcs/passportsUpdate.js";
@@ -18,10 +20,14 @@ import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
 import { unwrapAsync } from "../types/fp.js";
+import { PageIterator, unwrapResultIterator } from "../types/operations.js";
 
 export class Passports extends ClientSDK {
   /**
    * Create a passport
+   *
+   * @remarks
+   * Register a new AI asset passport (model, compute, tool, dataset, or agent) with metadata validated against the appropriate JSON schema. Returns the created passport with its generated passport_id.
    */
   async create(
     request: models.CreatePassportRequest,
@@ -36,12 +42,17 @@ export class Passports extends ClientSDK {
 
   /**
    * List passports
+   *
+   * @remarks
+   * Retrieve a paginated list of passports with optional filtering by type, owner, status, and tags. Supports free-text search across name, description, and tags. Defaults to page 1, 20 results per page.
    */
   async list(
     request?: operations.LucidListPassportsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<models.ListPassportsResponse> {
-    return unwrapAsync(passportsList(
+  ): Promise<
+    PageIterator<operations.LucidListPassportsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(passportsList(
       this,
       request,
       options,
@@ -50,6 +61,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Get a passport
+   *
+   * @remarks
+   * Retrieve a single passport by its passport_id, including all metadata, on-chain sync status, DePIN storage CIDs, and NFT mint addresses.
    */
   async get(
     request: operations.LucidGetPassportRequest,
@@ -64,6 +78,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Update a passport
+   *
+   * @remarks
+   * Update mutable fields on an existing passport (metadata, name, description, version, tags, status). Requires the X-Owner-Address header for ownership verification if configured.
    */
   async update(
     request: operations.LucidUpdatePassportRequest,
@@ -78,6 +95,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Delete a passport (soft delete)
+   *
+   * @remarks
+   * Soft-delete a passport by setting its status to revoked. The passport record is retained for audit purposes. Requires X-Owner-Address header for ownership verification.
    */
   async delete(
     request: operations.LucidDeletePassportRequest,
@@ -92,6 +112,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Trigger on-chain sync for a passport
+   *
+   * @remarks
+   * Initiate an on-chain sync for a passport, writing its metadata hash to the Solana lucid_passports program. Returns the PDA address and transaction signature on success.
    */
   async sync(
     request: operations.LucidTriggerPassportSyncRequest,
@@ -106,6 +129,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Get passports pending sync
+   *
+   * @remarks
+   * List all passports that have been created or updated off-chain but not yet synced to on-chain state. Useful for monitoring the sync backlog.
    */
   async listPendingSync(
     options?: RequestOptions,
@@ -118,6 +144,9 @@ export class Passports extends ClientSDK {
 
   /**
    * Passport statistics
+   *
+   * @remarks
+   * Retrieve aggregate statistics about passports including counts by type, status breakdown, and sync status. No authentication required.
    */
   async getStats(
     options?: RequestOptions,
@@ -130,12 +159,17 @@ export class Passports extends ClientSDK {
 
   /**
    * Search model passports
+   *
+   * @remarks
+   * Search model passports with ModelMeta-specific filters including runtime, format, max VRAM, and availability. The availability filter is tri-state: 'true' for models with healthy compute, 'false' for unavailable models, omit for all.
    */
   async searchModels(
     request?: operations.LucidSearchModelsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidSearchModelsResponse> {
-    return unwrapAsync(passportsSearchModels(
+  ): Promise<
+    PageIterator<operations.LucidSearchModelsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(passportsSearchModels(
       this,
       request,
       options,
@@ -144,12 +178,17 @@ export class Passports extends ClientSDK {
 
   /**
    * List tool passports
+   *
+   * @remarks
+   * List active tool passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
    */
   async lucidListTools(
     request?: operations.LucidListToolsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidListToolsResponse> {
-    return unwrapAsync(passportsLucidListTools(
+  ): Promise<
+    PageIterator<operations.LucidListToolsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(passportsLucidListTools(
       this,
       request,
       options,
@@ -158,12 +197,17 @@ export class Passports extends ClientSDK {
 
   /**
    * List dataset passports
+   *
+   * @remarks
+   * List active dataset passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
    */
   async lucidListDatasets(
     request?: operations.LucidListDatasetsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidListDatasetsResponse> {
-    return unwrapAsync(passportsLucidListDatasets(
+  ): Promise<
+    PageIterator<operations.LucidListDatasetsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(passportsLucidListDatasets(
       this,
       request,
       options,
@@ -172,12 +216,51 @@ export class Passports extends ClientSDK {
 
   /**
    * List agent passports
+   *
+   * @remarks
+   * List active agent passports with optional filtering by owner, tags, and free-text search. Returns paginated results sorted by creation date.
    */
   async lucidListAgentPassports(
     request?: operations.LucidListAgentPassportsRequest | undefined,
     options?: RequestOptions,
-  ): Promise<operations.LucidListAgentPassportsResponse> {
-    return unwrapAsync(passportsLucidListAgentPassports(
+  ): Promise<
+    PageIterator<operations.LucidListAgentPassportsResponse, { page: number }>
+  > {
+    return unwrapResultIterator(passportsLucidListAgentPassports(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update passport pricing
+   *
+   * @remarks
+   * Update pricing-related fields on a passport (e.g., price per token, pricing model). Requires X-Owner-Address header for ownership verification.
+   */
+  async lucidUpdatePassportPricing(
+    request: operations.LucidUpdatePassportPricingRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetPassportResponse> {
+    return unwrapAsync(passportsLucidUpdatePassportPricing(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Update passport endpoint URLs
+   *
+   * @remarks
+   * Update the endpoint URLs on a passport (inference URL, health URL, metrics URL). Requires X-Owner-Address header for ownership verification.
+   */
+  async lucidUpdatePassportEndpoints(
+    request: operations.LucidUpdatePassportEndpointsRequest,
+    options?: RequestOptions,
+  ): Promise<models.GetPassportResponse> {
+    return unwrapAsync(passportsLucidUpdatePassportEndpoints(
       this,
       request,
       options,

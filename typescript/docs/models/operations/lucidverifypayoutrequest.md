@@ -12,6 +12,6 @@ let value: LucidVerifyPayoutRequest = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `runId`            | *string*           | :heavy_check_mark: | N/A                |
+| Field                                               | Type                                                | Required                                            | Description                                         |
+| --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- | --------------------------------------------------- |
+| `runId`                                             | *string*                                            | :heavy_check_mark:                                  | Inference run identifier to verify payout integrity |

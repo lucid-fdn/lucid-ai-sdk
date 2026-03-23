@@ -4,63 +4,129 @@
 
 import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../../lib/primitives.js";
+import { safeParse } from "../../lib/schemas.js";
 import { ClosedEnum } from "../../types/enums.js";
+import { Result as SafeParseResult } from "../../types/fp.js";
 import { smartUnion } from "../../types/smartUnion.js";
+import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type Type = models.PassportType | Array<models.PassportType>;
+/**
+ * Filter by passport type (model, compute, tool, dataset, agent)
+ */
+export type LucidListPassportsType =
+  | models.PassportType
+  | Array<models.PassportType>;
 
+/**
+ * Filter by passport status (active, deprecated, revoked)
+ */
 export type LucidListPassportsStatus =
   | models.PassportStatus
   | Array<models.PassportStatus>;
 
+/**
+ * Tag matching mode - all (every tag must match) or any (at least one)
+ */
 export const TagMatch = {
   All: "all",
   Any: "any",
 } as const;
+/**
+ * Tag matching mode - all (every tag must match) or any (at least one)
+ */
 export type TagMatch = ClosedEnum<typeof TagMatch>;
 
+/**
+ * Sort field (created_at, updated_at, or name)
+ */
 export const SortBy = {
   CreatedAt: "created_at",
   UpdatedAt: "updated_at",
   Name: "name",
 } as const;
+/**
+ * Sort field (created_at, updated_at, or name)
+ */
 export type SortBy = ClosedEnum<typeof SortBy>;
 
+/**
+ * Sort direction (asc or desc)
+ */
 export const SortOrder = {
   Asc: "asc",
   Desc: "desc",
 } as const;
+/**
+ * Sort direction (asc or desc)
+ */
 export type SortOrder = ClosedEnum<typeof SortOrder>;
 
 export type LucidListPassportsRequest = {
+  /**
+   * Filter by passport type (model, compute, tool, dataset, agent)
+   */
   type?: models.PassportType | Array<models.PassportType> | undefined;
+  /**
+   * Filter by owner wallet address (Solana base58 or EVM 0x)
+   */
   owner?: string | undefined;
+  /**
+   * Filter by passport status (active, deprecated, revoked)
+   */
   status?: models.PassportStatus | Array<models.PassportStatus> | undefined;
   /**
    * Comma-separated
    */
   tags?: string | undefined;
+  /**
+   * Tag matching mode - all (every tag must match) or any (at least one)
+   */
   tagMatch?: TagMatch | undefined;
+  /**
+   * Free-text search across name, description, and tags
+   */
   search?: string | undefined;
+  /**
+   * Page number for pagination (starts at 1)
+   */
   page?: number | undefined;
+  /**
+   * Number of results per page (1-100)
+   */
   perPage?: number | undefined;
+  /**
+   * Sort field (created_at, updated_at, or name)
+   */
   sortBy?: SortBy | undefined;
+  /**
+   * Sort direction (asc or desc)
+   */
   sortOrder?: SortOrder | undefined;
 };
 
-/** @internal */
-export type Type$Outbound = string | Array<string>;
+export type LucidListPassportsResponse = {
+  result: models.ListPassportsResponse;
+};
 
 /** @internal */
-export const Type$outboundSchema: z.ZodMiniType<Type$Outbound, Type> =
-  smartUnion([
-    models.PassportType$outboundSchema,
-    z.array(models.PassportType$outboundSchema),
-  ]);
+export type LucidListPassportsType$Outbound = string | Array<string>;
 
-export function typeToJSON(type: Type): string {
-  return JSON.stringify(Type$outboundSchema.parse(type));
+/** @internal */
+export const LucidListPassportsType$outboundSchema: z.ZodMiniType<
+  LucidListPassportsType$Outbound,
+  LucidListPassportsType
+> = smartUnion([
+  models.PassportType$outboundSchema,
+  z.array(models.PassportType$outboundSchema),
+]);
+
+export function lucidListPassportsTypeToJSON(
+  lucidListPassportsType: LucidListPassportsType,
+): string {
+  return JSON.stringify(
+    LucidListPassportsType$outboundSchema.parse(lucidListPassportsType),
+  );
 }
 
 /** @internal */
@@ -154,5 +220,30 @@ export function lucidListPassportsRequestToJSON(
 ): string {
   return JSON.stringify(
     LucidListPassportsRequest$outboundSchema.parse(lucidListPassportsRequest),
+  );
+}
+
+/** @internal */
+export const LucidListPassportsResponse$inboundSchema: z.ZodMiniType<
+  LucidListPassportsResponse,
+  unknown
+> = z.pipe(
+  z.object({
+    Result: models.ListPassportsResponse$inboundSchema,
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      "Result": "result",
+    });
+  }),
+);
+
+export function lucidListPassportsResponseFromJSON(
+  jsonString: string,
+): SafeParseResult<LucidListPassportsResponse, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => LucidListPassportsResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'LucidListPassportsResponse' from JSON`,
   );
 }

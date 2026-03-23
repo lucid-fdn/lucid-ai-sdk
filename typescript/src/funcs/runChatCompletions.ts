@@ -4,11 +4,12 @@
 
 import * as z from "zod/v4-mini";
 import { RaijinLabsLucidAiCore } from "../core.js";
-import { encodeJSON } from "../lib/encodings.js";
+import { encodeJSON, encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
+import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
 import {
   ConnectionError,
@@ -22,20 +23,27 @@ import { RaijinLabsLucidAiError } from "../models/errors/raijinlabslucidaierror.
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
  * OpenAI-compatible chat completions
+ *
+ * @remarks
+ * x402-gated with dynamic pricing. If `X402_ENABLED=true`, requests without
+ * a valid `X-Payment-Proof` header receive HTTP 402 with payment instructions.
+ * Pricing is resolved per-model from the asset_pricing table.
  */
 export function runChatCompletions(
   client: RaijinLabsLucidAiCore,
-  request: models.ChatCompletionRequest,
+  request: operations.LucidChatCompletionsRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
     models.ChatCompletionResponse,
     | errors.ErrorResponse
+    | errors.X402PaymentRequiredError
     | RaijinLabsLucidAiError
     | ResponseValidationError
     | ConnectionError
@@ -55,13 +63,14 @@ export function runChatCompletions(
 
 async function $do(
   client: RaijinLabsLucidAiCore,
-  request: models.ChatCompletionRequest,
+  request: operations.LucidChatCompletionsRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
       models.ChatCompletionResponse,
       | errors.ErrorResponse
+      | errors.X402PaymentRequiredError
       | RaijinLabsLucidAiError
       | ResponseValidationError
       | ConnectionError
@@ -76,21 +85,31 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => z.parse(models.ChatCompletionRequest$outboundSchema, value),
+    (value) =>
+      z.parse(operations.LucidChatCompletionsRequest$outboundSchema, value),
     "Input validation failed",
   );
   if (!parsed.ok) {
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON("body", payload, { explode: true });
+  const body = encodeJSON("body", payload.body, { explode: true });
 
   const path = pathToFunc("/v1/chat/completions")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
     Accept: "application/json",
+    "X-Payment-Proof": encodeSimple(
+      "X-Payment-Proof",
+      payload["X-Payment-Proof"],
+      { explode: false, charEncoding: "none" },
+    ),
   }));
+
+  const secConfig = await extractSecurity(client._options.bearerAuth);
+  const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
+  const requestSecurity = resolveGlobalSecurity(securityInput);
 
   const context = {
     options: client._options,
@@ -98,16 +117,27 @@ async function $do(
     operationID: "lucid_chat_completions",
     oAuth2Scopes: null,
 
-    resolvedSecurity: null,
+    resolvedSecurity: requestSecurity,
 
-    securitySource: null,
+    securitySource: client._options.bearerAuth,
     retryConfig: options?.retries
       || client._options.retryConfig
+      || {
+        strategy: "backoff",
+        backoff: {
+          initialInterval: 500,
+          maxInterval: 60000,
+          exponent: 1.5,
+          maxElapsedTime: 300000,
+        },
+        retryConnectionErrors: true,
+      }
       || { strategy: "none" },
-    retryCodes: options?.retryCodes || ["429", "500", "502", "503", "504"],
+    retryCodes: options?.retryCodes || ["408", "429", "5XX"],
   };
 
   const requestRes = client._createRequest(context, {
+    security: requestSecurity,
     method: "POST",
     baseURL: options?.serverURL,
     path: path,
@@ -123,7 +153,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "4XX", "500", "5XX"],
+    errorCodes: ["400", "402", "4XX", "500", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -139,6 +169,7 @@ async function $do(
   const [result] = await M.match<
     models.ChatCompletionResponse,
     | errors.ErrorResponse
+    | errors.X402PaymentRequiredError
     | RaijinLabsLucidAiError
     | ResponseValidationError
     | ConnectionError
@@ -150,6 +181,7 @@ async function $do(
   >(
     M.json(200, models.ChatCompletionResponse$inboundSchema),
     M.jsonErr(400, errors.ErrorResponse$inboundSchema),
+    M.jsonErr(402, errors.X402PaymentRequiredError$inboundSchema),
     M.jsonErr(500, errors.ErrorResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

@@ -10,7 +10,7 @@ import * as types from "../../types/primitives.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 import * as models from "../index.js";
 
-export type LucidMatchRequest = {
+export type LucidMatchRequestBody = {
   /**
    * Metadata for a model passport. Validated against schemas/ModelMeta.schema.json (additionalProperties: false).
    */
@@ -18,6 +18,14 @@ export type LucidMatchRequest = {
   policy?: models.Policy | undefined;
   computeCatalog?: Array<models.ComputeMeta> | undefined;
   requireLiveHealthy?: boolean | undefined;
+};
+
+export type LucidMatchRequest = {
+  /**
+   * Transaction hash proving USDC payment (x402 protocol)
+   */
+  xPaymentProof?: string | undefined;
+  body: LucidMatchRequestBody;
 };
 
 /**
@@ -30,7 +38,7 @@ export type LucidMatchResponse = {
 };
 
 /** @internal */
-export type LucidMatchRequest$Outbound = {
+export type LucidMatchRequestBody$Outbound = {
   model_meta?: models.ModelMeta$Outbound | undefined;
   policy?: models.Policy$Outbound | undefined;
   compute_catalog?: Array<models.ComputeMeta$Outbound> | undefined;
@@ -38,9 +46,9 @@ export type LucidMatchRequest$Outbound = {
 };
 
 /** @internal */
-export const LucidMatchRequest$outboundSchema: z.ZodMiniType<
-  LucidMatchRequest$Outbound,
-  LucidMatchRequest
+export const LucidMatchRequestBody$outboundSchema: z.ZodMiniType<
+  LucidMatchRequestBody$Outbound,
+  LucidMatchRequestBody
 > = z.pipe(
   z.object({
     modelMeta: z.optional(models.ModelMeta$outboundSchema),
@@ -53,6 +61,36 @@ export const LucidMatchRequest$outboundSchema: z.ZodMiniType<
       modelMeta: "model_meta",
       computeCatalog: "compute_catalog",
       requireLiveHealthy: "require_live_healthy",
+    });
+  }),
+);
+
+export function lucidMatchRequestBodyToJSON(
+  lucidMatchRequestBody: LucidMatchRequestBody,
+): string {
+  return JSON.stringify(
+    LucidMatchRequestBody$outboundSchema.parse(lucidMatchRequestBody),
+  );
+}
+
+/** @internal */
+export type LucidMatchRequest$Outbound = {
+  "X-Payment-Proof"?: string | undefined;
+  body: LucidMatchRequestBody$Outbound;
+};
+
+/** @internal */
+export const LucidMatchRequest$outboundSchema: z.ZodMiniType<
+  LucidMatchRequest$Outbound,
+  LucidMatchRequest
+> = z.pipe(
+  z.object({
+    xPaymentProof: z.optional(z.string()),
+    body: z.lazy(() => LucidMatchRequestBody$outboundSchema),
+  }),
+  z.transform((v) => {
+    return remap$(v, {
+      xPaymentProof: "X-Payment-Proof",
     });
   }),
 );

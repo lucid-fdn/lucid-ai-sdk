@@ -1,0 +1,23 @@
+# LucidMemoryHealthData
+
+## Example Usage
+
+```typescript
+import { LucidMemoryHealthData } from "raijin-labs-lucid-ai/models/operations";
+
+let value: LucidMemoryHealthData = {};
+```
+
+## Fields
+
+| Field                                                                                                | Type                                                                                                 | Required                                                                                             | Description                                                                                          |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `storeType`                                                                                          | [operations.StoreType](../../models/operations/storetype.md)                                         | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `schemaVersion`                                                                                      | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `walMode`                                                                                            | *boolean*                                                                                            | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `entryCount`                                                                                         | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `vectorCount`                                                                                        | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `pendingEmbeddings`                                                                                  | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `failedEmbeddings`                                                                                   | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `sizeMb`                                                                                             | *number*                                                                                             | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |
+| `capabilities`                                                                                       | [operations.LucidMemoryHealthCapabilities](../../models/operations/lucidmemoryhealthcapabilities.md) | :heavy_minus_sign:                                                                                   | N/A                                                                                                  |

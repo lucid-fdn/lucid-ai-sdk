@@ -1,0 +1,27 @@
+# LucidAddEntityMemoryRequestBody
+
+## Example Usage
+
+```typescript
+import { LucidAddEntityMemoryRequestBody } from "raijin-labs-lucid-ai/models/operations";
+
+let value: LucidAddEntityMemoryRequestBody = {
+  entityName: "<value>",
+  entityType: "<value>",
+};
+```
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `entityName`                                                                                           | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `entityType`                                                                                           | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `entityId`                                                                                             | *string*                                                                                               | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `content`                                                                                              | *string*                                                                                               | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `attributes`                                                                                           | Record<string, *any*>                                                                                  | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `relationships`                                                                                        | [operations.Relationship](../../models/operations/relationship.md)[]                                   | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `sourceMemoryIds`                                                                                      | *string*[]                                                                                             | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `namespace`                                                                                            | *string*                                                                                               | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `memoryLane`                                                                                           | [operations.LucidAddEntityMemoryMemoryLane](../../models/operations/lucidaddentitymemorymemorylane.md) | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |
+| `metadata`                                                                                             | Record<string, *any*>                                                                                  | :heavy_minus_sign:                                                                                     | N/A                                                                                                    |

@@ -6,13 +6,13 @@ import * as z from "zod/v4-mini";
 
 export type AgentInitRequest = {
   agentId: string;
-  ipfsCid?: string | undefined;
+  depinCid?: string | undefined;
 };
 
 /** @internal */
 export type AgentInitRequest$Outbound = {
   agentId: string;
-  ipfsCid?: string | undefined;
+  depinCid?: string | undefined;
 };
 
 /** @internal */
@@ -21,7 +21,7 @@ export const AgentInitRequest$outboundSchema: z.ZodMiniType<
   AgentInitRequest
 > = z.object({
   agentId: z.string(),
-  ipfsCid: z.optional(z.string()),
+  depinCid: z.optional(z.string()),
 });
 
 export function agentInitRequestToJSON(
