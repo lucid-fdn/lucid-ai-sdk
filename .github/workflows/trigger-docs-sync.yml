@@ -17,6 +17,6 @@ jobs:
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.DOCS_SYNC_PAT }}
-          repository: raijinlabs/docs
+          repository: lucid-fdn/lucid-docs
           event-type: sdk-updated
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
