@@ -7535,7 +7535,7 @@ paths:
               required: [image]
               properties:
                 image: {type: string, description: Docker image reference for the blue deployment}
-                target: {type: string, description: Deploy target override (docker, railway: '', akash: '', phala: '', ionet: '', nosana): ''}
+                target: {type: string, description: "Deploy target override (docker, railway, akash, phala, ionet, nosana)"}
                 env_vars: {type: object, additionalProperties: {type: string}, description: Environment variable overrides}
                 health_gate_ms: {type: integer, description: Health check wait time in milliseconds before promotion eligibility}
       responses:

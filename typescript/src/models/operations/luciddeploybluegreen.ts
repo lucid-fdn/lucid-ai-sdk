@@ -16,7 +16,7 @@ export type LucidDeployBlueGreenRequestBody = {
    */
   image: string;
   /**
-   * Deploy target override (docker
+   * Deploy target override (docker, railway, akash, phala, ionet, nosana)
    */
   target?: string | undefined;
   /**

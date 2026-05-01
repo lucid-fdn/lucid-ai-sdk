@@ -53,6 +53,14 @@ jobs:
             > openapi-with-code-samples.yaml
         env:
           SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install OpenAPI validation dependencies
+        run: python -m pip install openapi-spec-validator pyyaml
+      - name: Validate OpenAPI artifacts
+        run: python scripts/validate-openapi.py openapi.yaml openapi-with-code-samples.yaml
       - name: Commit merged OpenAPI
         run: |
           git config user.name "github-actions[bot]"
