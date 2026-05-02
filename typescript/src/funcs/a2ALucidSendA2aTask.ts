@@ -5,6 +5,7 @@
 import * as z from "zod/v4-mini";
 import { RaijinLabsLucidAiCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -33,6 +34,8 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Admin-only. Sends a task to an A2A-compatible agent. If the agent
  * has a deployment URL, the request is forwarded via the A2A client.
+ *
+ * If set, this operation will use {@link Security.bearerAuth} from the global security.
  */
 export function a2ALucidSendA2aTask(
   client: RaijinLabsLucidAiCore,
@@ -98,7 +101,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/v1/a2a/{passportId}/tasks/send")(pathParams);
 
   const headers = new Headers(compactMap({
@@ -108,7 +110,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.bearerAuth);
   const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -152,7 +154,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

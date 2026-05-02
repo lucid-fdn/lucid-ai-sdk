@@ -389,25 +389,25 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 ### NPM
 
 ```bash
-npm add git+https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript.git?subdir=typescript
+npm add git+https://github.com/lucid-fdn/lucid-ai-sdk.git?subdir=typescript
 ```
 
 ### PNPM
 
 ```bash
-pnpm add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript#path:typescript
+pnpm add https://github.com/lucid-fdn/lucid-ai-sdk#path:typescript
 ```
 
 ### Bun
 
 ```bash
-bun add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+bun add https://github.com/lucid-fdn/lucid-ai-sdk
 ```
 
 ### Yarn
 
 ```bash
-yarn add https://gitpkg.now.sh/raijinlabs/lucid-ai-sdk/typescript
+yarn add https://github.com/lucid-fdn/lucid-ai-sdk
 ```
 
 > [!NOTE]

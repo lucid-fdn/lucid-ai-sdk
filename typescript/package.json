@@ -1,6 +1,6 @@
 {
   "name": "raijin-labs-lucid-ai",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "author": "Speakeasy",
   "type": "module",
   "tshy": {
@@ -21,7 +21,7 @@
   "sideEffects": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/raijinlabs/lucid-ai-sdk.git",
+    "url": "https://github.com/lucid-fdn/lucid-ai-sdk.git",
     "directory": "typescript"
   },
   "scripts": {

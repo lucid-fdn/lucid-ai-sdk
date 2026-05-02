@@ -5,6 +5,7 @@
 import * as z from "zod/v4-mini";
 import { RaijinLabsLucidAiCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -37,6 +38,8 @@ import { Result } from "../types/fp.js";
  *
  * Both modes create a passport, deploy to the target provider, and inject Lucid env vars.
  * Returns the passport_id, deployment_id, and deployment URL.
+ *
+ * If set, this operation will use {@link Security.bearerAuth} from the global security.
  */
 export function agentsLaunchLucidLaunchAgent(
   client: RaijinLabsLucidAiCore,
@@ -105,7 +108,7 @@ async function $do(
 
   const secConfig = await extractSecurity(client._options.bearerAuth);
   const securityInput = secConfig == null ? {} : { bearerAuth: secConfig };
-  const requestSecurity = resolveGlobalSecurity(securityInput);
+  const requestSecurity = resolveGlobalSecurity(securityInput, [0]);
 
   const context = {
     options: client._options,
@@ -149,7 +152,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

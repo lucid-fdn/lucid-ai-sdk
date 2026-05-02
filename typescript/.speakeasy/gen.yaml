@@ -34,7 +34,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.6.1
+  version: 0.6.2
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -54,6 +54,7 @@ typescript:
   enumFormat: union
   envVarPrefix: RAIJINLABSLUCIDAI
   exportZodModelNamespace: false
+  fixEnumNameSanitization: false
   flatAdditionalProperties: true
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first

@@ -1,6 +1,6 @@
 
 <div align="center">
-    <a href="https://codespaces.new/raijinlabs/lucid-ai-sdk.git/tree/main"><img src="https://github.com/codespaces/badge.svg" /></a>
+    <a href="https://codespaces.new/lucid-fdn/lucid-ai-sdk.git/tree/main"><img src="https://github.com/codespaces/badge.svg" /></a>
 </div>
 <br>
 
